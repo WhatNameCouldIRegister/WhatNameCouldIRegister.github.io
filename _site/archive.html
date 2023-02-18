@@ -7,7 +7,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Archive - The Minimum Viable Model</title>
+	<title>Archive - DD's tenique website</title>
 	<link rel="canonical" href="http://localhost:4000/archive.html">
 	<meta name="description" content="Artificial Intelligence trends and concepts made easy.">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,7 +36,7 @@
         "encodingFormat": "image/png",
         "contentUrl": "http://localhost:4000/assets/img/branding/MVM-symbol-black.png",
         "url": "http://localhost:4000/assets/img/branding/MVM-symbol-black.png"},
-    "name" : "The Minimum Viable Model"}
+    "name" : "DD's tenique website"}
 }
 </script>
 <!-- Open Graph data -->
@@ -46,7 +46,7 @@
 <meta property="og:description" content=""/>
 <meta property="og:image" content="http://localhost:4000/assets/img"/>
 <meta property="og:image:alt" content="Archive"/>
-<meta property="og:site_name" content="The Minimum Viable Model" />
+<meta property="og:site_name" content="DD's tenique website" />
 <meta property="article:published_time" content="" />
 <meta property="article:modified_time" content="" />
 <meta property="article:tag" content="" />
@@ -215,7 +215,7 @@
       </nav>
       
       
-      <div class="logo"><a href="./"><img class="logo" id="logo" src="./assets/img/branding/MVM-logo-full.svg" alt="The Minimum Viable Model"></a></div>
+      <div class="logo"><a href="./"><img class="logo" id="logo" src="./assets/img/branding/MVM-logo-full.svg" alt="DD's tenique website"></a></div>
       <div class="search-icon-container">
         <span class="search-icon"><a><i class="fa fa-search" aria-hidden="true"></i></a></span>
       </div>
@@ -240,7 +240,7 @@
 		<div class="post">
 			
 
-			<a class="post-list-title" href="./AI-and-intellectual-property.html">Who owns the copyright for an AI generated creative work?</a>
+			<a class="post-list-title" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html">CPP模板机制（1）</a>
 			
 
   <span class = "post-card-meta">
@@ -252,7 +252,7 @@
     
       
       <span class="page_meta-date">
-        <time datetime="2021-04-20T00:00:00+08:00">April 20, 2021</time>
+        <time datetime="2021-01-26T03:32:20+08:00">January 26, 2021</time>
       </span>
     
     
@@ -264,7 +264,7 @@
     
     <span class="page_meta-readtime">
       
-        4 minute read
+        1 minute read
       
     </span>
   
@@ -272,14 +272,14 @@
   </span>
 
 			<div class="post-excerpt">
-				<p>Recently I was <a href="https://www.rollingstone.com/music/music-features/nirvana-kurt-cobain-ai-song-1146444/">reading an article</a> about a cool project that intends to have a neural network create songs of the late club of the 27 (artists that have tragically died at age 27 or near, and in the height of their respective careers), artists such as Amy Winehouse, Jimmy Hendrix, Curt Cobain and Jim Morrison.</p><iframe width="560" height="315" src="https://www.youtube.com/embed/tjzOzuKQhSM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe><p>The project was created by <a href="https://overthebridge.org">Over the Bridge</a>, an organization dedicated to increase awareness on mental health and substance abuse in the music industry, trying to denormalize and remove...<a class="read-more" href="./AI-and-intellectual-property.html"> read more</a>
+				<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p><h2 id="模板的声明方式">模板的声明方式</h2><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// some demotemplate &lt;typename T&gt;T func(T A) { ...}templte &lt;typename T, template A&gt; T func(A a, T t) { ...}template &lt;typename T&gt;class A {};//可变参数模板template &lt;typename T, typename... Args&gt; T func(T a, Args...) {}</code></pre></div></div><h2 id="关于模板的工作机制">关于模板的工作机制</h2><ul> <li>首先我们要明确模板常常定义在头文件中，而由此也能练习到许多模板的作用机制。</li> <li>模板定义并不是真正的定义了一个函数或者类，而是编译器根据程序员缩写的模板和形参来自己写出一个对应版本的定义，这个过程叫做模板实例化。</li> <li>编译器成成的版本通常被称为模板的实例。编译器为程序员生成对应版本的具体过程。类似宏替换。模板类在没有调用之前是不会生成代码的。</li> <li>模板的实例化凭证是编译器遇到对模板的使用时才会生成相应版本的代码，这个时间是编译期</li> <li>为什么模板要放在头文件？试想当放在源文件中，当源文件中使用到模板代码，而模板定义在其他源文件中，那么此源文件无法找到函数地址，只能等待连接时刻。那如果其他源文件中不存在对模板的特定版本实例化代码怎么办呢？那么函数重定位就会失败，模板机制就会收到影响</li></ul><h2 id="非类型模板参数">非类型模板参数</h2><p>顾名思义，模板参数不是一个类型而是一个具体的值——这个值是常量表达式。</p><p>当一个模板被实例化时，，非类型参数被一个用户提供的或者编译器推断出的值所代替。正因为模板在编译阶段编译器为我们生成一个对应的版本，所以其值应该能够编译时确定，那么他应该是一个常量或者常量表达式。</p><p>有一句话说：C++的强大在于他的编译器强大，下面这个例子就是很好的说明。</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;size_t N, size_t M&gt;int str_compare(const char (&amp;str1)[N], const char (&amp;str2)[M]){ return strcmp(str1,str2);}</code></pre></div></div><h2 id="模板默认参数">模板默认参数</h2><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;typename T = int&gt;class A {};//如果像下例实例化的模板默认A&lt;int&gt;类型A&lt;&gt; a;</code></pre></div></div><h2 id="类模板已经声明而成员函数希望在模板外实现的做法">类模板已经声明，而成员函数希望在模板外实现的做法</h2><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;typename T&gt; class A { ... T func(T a) { ... } ...};//模板外实现template &lt;typename T&gt;T A::func(T a) {}</code></pre></div></div><h2 id="关于模板类的的模板成员">关于模板类的的模板成员</h2><p>我已经不知道用什么语言来下面的代码了。但是我们知道了一些事情。</p><p>无论是定义还是声明，模板语法的优先级是最高的，不同模板的优先级又根据其声明顺序来判断，其次是函数修饰，然后是返回值。根据这个原则我们可以轻松的解析这个函数。</p><div...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
 			</div>
 		</div>
 	
 		<div class="post">
 			
 
-			<a class="post-list-title" href="./back-to-basics.html">So, what is a neural network?</a>
+			<a class="post-list-title" href="./%E5%8A%A8%E6%80%81%E5%A4%9A%E6%80%81%E7%90%86%E8%A7%A3.html">关于虚函数的一些再确认</a>
 			
 
   <span class = "post-card-meta">
@@ -291,7 +291,7 @@
     
       
       <span class="page_meta-date">
-        <time datetime="2021-04-02T00:00:00+08:00">April 2, 2021</time>
+        <time datetime="2021-01-26T03:32:20+08:00">January 26, 2021</time>
       </span>
     
     
@@ -303,7 +303,7 @@
     
     <span class="page_meta-readtime">
       
-        9 minute read
+        less than 1 minute read
       
     </span>
   
@@ -311,14 +311,14 @@
   </span>
 
 			<div class="post-excerpt">
-				<p>The omnipresence of technology nowadays has made it commonplace to read news about AI, just a quick glance at today’s headlines, and I get:</p><ul> <li><a href="https://www.morningbrew.com/emerging-tech/stories/2021/03/29/one-biggest-advancements-ai-also-sparked-fierce-debate-heres?utm_source=morning_brew">This Powerful AI Technique Led to Clashes at Google and Fierce Debate in Tech.</a></li> <li><a href="https://fortune.com/2021/04/02/ai-forecasting-supply-chain-factories-caterpillar-agco/">How A.I.-powered companies dodged the worst damage from COVID</a></li> <li><a href="https://www.mobihealthnews.com/news/emea/ai-technology-detects-ticking-time-bomb-arteries">AI technology detects ‘ticking time bomb’ arteries</a></li> <li><a href="https://www.genengnews.com/insights/ai-in-drug-discovery-starts-to-live-up-to-the-hype/">AI in Drug Discovery Starts to Live Up to the Hype</a></li> <li><a href="https://www.c4isrnet.com/artificial-intelligence/2021/04/02/pentagon-seeks-commercial-solutions-to-get-its-data-ready-for-ai/">Pentagon seeks commercial solutions to get its data ready for AI</a></li></ul><p>Topics from business, manufacturing, supply chain, medicine and biotech and even defense are covered in those news headlines, definitively the...<a class="read-more" href="./back-to-basics.html"> read more</a>
+				<ul>  <li>虚函数表是类的</li>  <li>类的每个对象前四个字节就是指向虚函数表的指针</li>  <li>虚函数表的内容是指向函数的指针</li></ul><p>父类指针指向子类对象。运行时动态多态机制。指针指向的内存地址是派生类，根据派生类对象前四个字节找到虚函数表指针，根据虚函数表指针找到虚函数表从而调用函数</p><h3 id="哪些函数不能被声明为虚函数">哪些函数不能被声明为虚函数</h3><p>常见的不不能声明为虚函数的有：普通函数（非成员函数），静态成员函数，内联成员函数，构造函数，友元函数。</p><h3 id="为什么c不支持普通函数为虚函数">为什么C++不支持普通函数为虚函数？</h3><p>普通函数（非成员函数）只能被overload，不能被override，声明为虚函数也没有什么意思，因此编译器会在编译时绑定函数。</p><h3 id="为什么c不支持构造函数为虚函数">为什么C++不支持构造函数为虚函数？</h3><p>这个原因很简单，主要是从语义上考虑，所以不支持。因为构造函数本来就是为了明确初始化对象成员才产生的，然而virtual function主要是为了再不完全了解细节的情况下也能正确处理对象。另外，virtual函数是在不同类型的对象产生不同的动作，现在对象还没有产生，如何使用virtual函数来完成你想完成的动作。 构造函数用来创建一个新的对象,而虚函数的运行是建立在对象的基础上,在构造函数执行时,对象尚未形成，所以不能将构造函数定义为虚函数。</p><h3 id="为什么c不支持内联成员函数为虚函数">为什么C++不支持内联成员函数为虚函数？</h3><p>其实很简单，那内联函数就是为了在代码中直接展开，减少函数调用花费的代价，虚函数是为了在继承后对象能够准确的执行自己的动作，这是不可能统一的。（再说了，inline函数在编译时被展开，虚函数在运行时才能动态的绑定函数） 内联函数是在编译时期展开,而虚函数的特性是运行时才动态联编,所以两者矛盾,不能定义内联函数为虚函数。</p><h3 id="为什么c不支持静态成员函数为虚函数">为什么C++不支持静态成员函数为虚函数？</h3><p>这也很简单，静态成员函数对于每个类来说只有一份代码，所有的对象都共享这一份代码，他也没有要动态绑定的必要性。 静态成员函数属于一个类而非某一对象，没有this指针，它无法进行对象的判别。  为什么C++不支持友元函数为虚函数？ 因为C++不支持友元函数的继承，对于没有继承特性的函数没有虚函数的说法。</p><a class="read-more" href="./%E5%8A%A8%E6%80%81%E5%A4%9A%E6%80%81%E7%90%86%E8%A7%A3.html"> read more</a>
 			</div>
 		</div>
 	
 		<div class="post">
 			
 
-			<a class="post-list-title" href="./starting-the-adventure.html">Starting the adventure</a>
+			<a class="post-list-title" href="./STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html">STL相关的一些面试遭遇</a>
 			
 
   <span class = "post-card-meta">
@@ -330,7 +330,7 @@
     
       
       <span class="page_meta-date">
-        <time datetime="2021-03-24T00:00:00+08:00">March 24, 2021</time>
+        <time datetime="2021-01-26T03:32:20+08:00">January 26, 2021</time>
       </span>
     
     
@@ -342,7 +342,7 @@
     
     <span class="page_meta-readtime">
       
-        10 minute read
+        less than 1 minute read
       
     </span>
   
@@ -350,7 +350,7 @@
   </span>
 
 			<div class="post-excerpt">
-				<p>In the midst of a global pandemic caused by the SARS-COV2 coronavirus; I decided to start blogging. I wanted to blog since a long time, I have always enjoyed writing, but many unknowns and having “no time” for it prevented me from taking it up. Things like: “I don’t really know who my target audience is”, “what would my topic or topics be?”, “I don’t think I am a world-class expert in anything”, and many more kept stopping me from setting up my own blog. Now seemed like a good time as any so with those and tons of other...<a class="read-more" href="./starting-the-adventure.html"> read more</a>
+				<h2 id="stl的主要组成">STL的主要组成</h2><p>容器、算法、迭代器</p><h2 id="resize和reverse的区别">resize和reverse的区别</h2><ul>  <li>改变的容器度量不一样。</li>  <li>resize改变的是容器的size, 如果size大于容器原来的size，则扩大容器空间（size）并且将扩大的空间初始化</li>  <li>reverse改变的是容器的capacity，要知道cap和size不是一个概念，cap表征容器已经开辟的空间，size代表元素的数量。cap理论上是大于等于size的，reverse的传参小于size的时候不会有事情发生，大于size的时候将capacity变化到传入参数指定的大小</li>  <li>两者的形参个数不一样。 resize带两个参数，一个表示容器大小，一个表示初始值（默认为0）；reserve只带一个参数，表示容器预留的大小。</li></ul><h2 id="vector中at和访问区别">vector中at()和【】访问区别</h2><p>at会检查下标范围，【】访问如果下表越界会造成对内存的非法访问，at()更加安全。at() 函数抛出的应当是std::out_of_range错误</p><a class="read-more" href="./STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html"> read more</a>
 			</div>
 		</div>
 	
@@ -447,12 +447,12 @@
 <footer class="main-footer">
     <div class="footer-wrapper">
         <div class="logo-symbol">
-            <a class="logo-link" title="The Minimum Viable Model" href="./">
+            <a class="logo-link" title="DD's tenique website" href="./">
                 <svg width="45px" height="45px" class="logo-symbol" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" version="1.0" viewBox="0 0 649 649"><g fill="currentColor" stroke="none"><path d="M2938 6380 c-551 -53 -1031 -220 -1478 -514 -306 -201 -588 -470 -810 -771 -276 -374 -475 -850 -559 -1336 -64 -371 -53 -836 29 -1211 155 -712 552 -1347 1130 -1810 450 -360 1021 -589 1640 -659 58 -6 202 -12 320 -12 282 0 503 26 756 87 902 220 1680 841 2079 1661 303 622 402 1333 279 2005 -90 496 -313 984 -634 1390 -111 140 -378 404 -519 513 -456 352 -957 560 -1549 643 -126 17 -558 26 -684 14z m687 -220 c77 -11 189 -32 250 -46 127 -29 345 -94 345 -103 0 -4 -341 -188 -757 -409 l-757 -403 -41 22 c-22 13 -58 26 -79 29 l-40 5 -148 370 c-82 204 -150 377 -153 386 -10 29 325 119 570 153 169 24 174 24 430 21 183 -3 273 -8 380 -25z m-1292 -546 l157 -387 -24 -28 c-13 -16 -30 -44 -36 -64 -6 -19 -17 -35 -23 -35 -7 -1 -382 -54 -834 -119 -453 -64 -823 -115 -823 -111 0 3 43 62 95 132 269 358 584 630 980 844 90 49 321 153 341 154 6 0 81 -174 167 -386z m2026 347 l37 -20 129 -440 128 -440 -35 -39 c-20 -22 -37 -44 -39 -50 -3 -8 -290 13 -929 66 -775 65 -925 80 -928 92 -2 11 223 134 785 432 433 228 794 416 801 417 7 0 30 -8 51 -18z m204 -92 c420 -211 850 -600 1137 -1027 34 -51 60 -95 57 -98 -4 -4 -805 157 -859 172 -10 3 -18 12 -18 21 0 58 -78 133 -137 133 -18 0 -33 2 -33 5 0 3 -52 184 -116 403 -63 218 -117 405 -120 415 -3 9 -3 17 1 17 3 0 42 -19 88 -41z m-913 -894 c494 -41 904 -75 912 -75 7 -1 24 -23 36 -51 l24 -50 -169 -269 -168 -270 -44 0 c-24 0 -63 -9 -86 -21 l-42 -21 -679 402 c-373 222 -688 409 -699 416 -18 13 -18 14 -1 14 10 0 422 -34 916 -75z m-1175 18 l48 -48 -31 -225 c-18 -124 -60 -417 -94 -652 l-62 -428 -44 0 c-24 0 -51 -4 -61 -10 -16 -8 -146 87 -777 566 -418 317 -761 578 -763 580 -3 3 0 9 5 14 8 8 1633 247 1700 249 25 1 42 -9 79 -46z m915 -414 l690 -411 0 -38 0 -37 -147 -46 c-82 -26 -453 -148 -825 -271 l-676 -223 -22 30 -22 29 98 669 c82 557 101 669 114 669 8 0 31 9 50 19 19 11 38 20 43 20 4 1 318 -184 697 -410z m1959 175 c251 -53 457 -97 457 -98 9 -9 123 -247 153 -320 113 -272 189 -599 209 -901 l9 -130 -231 -273 c-224 -265 -232 -273 -264 -270 l-34 3 -418 1013 -419 1013 26 30 c15 16 33 29 41 29 8 0 220 -43 471 -96z m-593 2 c6 -5 804 -1949 802 -1952 -2 -2 -274 272 -605 609 l-600 612 13 32 c20 46 17 82 -9 128 l-23 41 170 271 171 272 40 -6 c22 -3 41 -6 41 -7z m-3341 -611 c402 -307 733 -561 737 -564 31 -26 -38 -31 -947 -65 -516 -19 -941 -33 -944 -30 -2 2 6 77 18 165 49 346 162 693 324 986 44 82 52 91 66 79 9 -7 345 -264 746 -571z m2710 -142 c17 -16 39 -32 48 -38 15 -9 13 -64 -23 -695 -22 -377 -40 -686 -40 -687 0 -2 -8 -3 -19 -3 -10 0 -30 -9 -45 -21 l-27 -21 -342 200 c-188 110 -542 317 -787 460 -245 144 -445 266 -445 273 0 8 312 116 820 285 451 150 822 272 824 273 2 1 18 -11 36 -26z m590 -425 c220 -222 500 -505 623 -629 l223 -225 -17 -31 -18 -30 -585 -82 c-322 -45 -602 -85 -621 -88 -31 -4 -37 -1 -53 27 -11 17 -34 39 -53 47 -19 9 -34 21 -34 27 -1 6 16 316 37 688 l37 678 26 9 c14 5 27 10 30 10 3 1 185 -180 405 -401z m-2587 -114 c-2 -9 -224 -178 -494 -375 l-492 -359 -38 16 c-26 11 -53 14 -84 10 -25 -3 -55 -7 -67 -8 -16 -2 -106 76 -362 316 -204 192 -341 327 -341 338 0 16 10 18 83 19 45 0 431 13 857 28 984 36 942 35 938 15z m59 -88 l22 -23 -104 -467 c-58 -256 -105 -468 -105 -470 0 -2 -14 -6 -32 -10 -17 -3 -47 -18 -65 -32 l-34 -26 -339 122 -338 122 -7 45 c-5 37 -3 47 12 58 10 7 229 169 488 359 258 190 472 346 475 346 3 0 15 -11 27 -24z m1013 -430 c421 -245 769 -452 775 -460 5 -8 7 -18 3 -21 -3 -4 -417 -41 -920 -84 l-913 -77 -16 26 c-9 15 -29 36 -45 47 l-28 21 104 465 105 465 43 7 c27 4 55 17 75 35 18 16 37 28 42 26 6 -2 354 -204 775 -450z m-2307 -276 c-7 -71 -4 -98 10 -126 l15 -30 -206 -248 -206 -248 -27 59 c-140 314 -228 733 -229 1086 l0 138 323 -303 c270 -254 322 -307 320 -328z m5277 366 c-17 -270 -58 -489 -135 -721 -38 -117 -134 -350 -140 -343 -1 2 -35 117 -75 256 l-72 253 26 25 c51 52 58 134 15 189 -21 26 -21 26 -2 48 11 12 102 120 203 240 100 120 184 216 186 214 2 -2 -1 -74 -6 -161z m-642 -487 l21 -41 -456 -782 c-251 -429 -461 -787 -467 -794 -9 -9 -19 -10 -42 -2 l-29 10 -174 676 -174 675 35 37 c20 20 40 51 45 67 l10 30 584 82 c321 44 594 82 605 82 16 1 27 -10 42 -40z m-4015 -145 c301 -109 327 -120 327 -142 0 -12 7 -39 15 -58 l15 -36 -411 -469 c-226 -259 -413 -468 -415 -466 -2 2 1 219 6 483 5 263 10 538 10 610 l0 132 29 12 c16 6 39 23 52 36 13 14 28 23 34 21 5 -2 157 -57 338 -123z m-517 -413 c-3 -262 -9 -527 -12 -589 -8 -134 -2 -135 -120 20 -93 121 -192 278 -272 428 l-61 115 215 257 c181 216 218 255 235 251 l22 -6 -7 -476z m4695 460 c3 -3 43 -133 88 -289 l82 -282 -62 -108 c-75 -130 -175 -278 -265 -392 -140 -176 -514 -528 -595 -558 -13 -5 -72 -13 -130 -17 l-105 -7 -16 40 -16 40 462 796 461 796 45 -6 c25 -4 48 -9 51 -13z m-1736 -69 c-6 -5 -361 -192 -790 -417 -429 -224 -806 -422 -838 -439 -52 -28 -59 -29 -70 -15 -17 22 -78 59 -99 59 -19 0 -16 -14 -68 300 -29 169 -38 246 -30 248 27 9 62 50 74 87 11 32 19 41 43 44 67 8 1683 139 1733 140 30 0 50 -3 45 -7z m90 -62 c10 -11 38 -26 62 -31 38 -10 44 -16 52 -48 90 -346 333 -1280 337 -1292 3 -11 -7 -23 -29 -36 -19 -11 -42 -38 -53 -60 l-19 -40 -1050 297 c-859 244 -1050 301 -1050 315 0 12 239 141 860 465 473 247 863 449 866 449 3 1 14 -8 24 -19z m-2076 -210 c13 0 21 -9 25 -27 10 -47 86 -497 86 -508 0 -5 -13 -19 -29 -29 -35 -24 -57 -59 -66 -108 -4 -22 -14 -39 -24 -42 -143 -41 -861 -236 -870 -236 -7 0 -11 5 -9 11 2 6 190 224 418 484 349 399 416 472 431 464 10 -5 27 -9 38 -9z m1376 -1065 c741 -208 1053 -300 1060 -312 6 -9 24 -32 41 -52 l31 -35 -30 -68 c-34 -77 -25 -71 -205 -139 -310 -116 -653 -180 -984 -183 -97 0 -178 1 -181 4 -89 106 -817 1053 -817 1063 0 18 9 27 23 21 7 -2 485 -137 1062 -299z m-1319 264 c31 -35 81 -51 134 -44 l46 6 380 -487 c208 -268 385 -496 392 -506 13 -17 10 -18 -45 -12 -640 65 -1267 346 -1732 776 l-61 57 42 12 c271 74 805 218 814 218 6 1 19 -9 30 -20z m2814 -563 c0 -5 -223 -138 -278 -165 -24 -13 -46 -20 -49 -18 -2 3 3 19 11 36 12 22 27 33 59 42 27 7 56 26 81 52 35 37 44 41 105 47 36 4 67 8 69 9 1 0 2 -1 2 -3z" transform="translate(0.000000,644.000000) scale(0.100000,-0.100000)"/></g></svg>
             </a>
         </div>
         <div class="copyright">
-          <p>2023 &copy; Armando Maynez</p>
+          <p>2023 &copy; DD</p>
         </div>
         <div class="footer-nav">
             <div>
