@@ -7,7 +7,7 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>CPP模板机制（1） - DD's tenique website</title>
+	<title>CPP模板机制（2） - DD's tenique website</title>
 	<link rel="canonical" href="http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html">
 	<meta name="description" content="cpp模板常见混淆点做一个自我区分">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,10 +19,10 @@
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "http://localhost:4000"},
-  "headline": "CPP模板机制（1）",
+  "headline": "CPP模板机制（2）",
   "abstract": "cpp模板常见混淆点做一个自我区分",
     "keywords": "c++, templates",
-    "wordcount": "409",
+    "wordcount": "175",
     "image": ["http://localhost:4000/assets/imgposts/20220214/corgi.jpg"],
   "datePublished": "2021-01-26 03:32:20 +0800",
   "dateModified": "2021-01-26 03:32:20 +0800",
@@ -42,27 +42,27 @@
 <!-- Open Graph data -->
 <meta property="og:url" content="http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"/>
 <meta property="og:type" content="article"/>
-<meta property="og:title" content="CPP模板机制（1）"/>
+<meta property="og:title" content="CPP模板机制（2）"/>
 <meta property="og:description" content="cpp模板常见混淆点做一个自我区分"/>
 <meta property="og:image" content="http://localhost:4000/assets/imgposts/20220214/corgi.jpg"/>
-<meta property="og:image:alt" content="CPP模板机制（1）"/>
+<meta property="og:image:alt" content="CPP模板机制（2）"/>
 <meta property="og:site_name" content="DD's tenique website" />
 <meta property="article:published_time" content="2021-01-26 03:32:20 +0800" />
 <meta property="article:modified_time" content="2021-01-26 03:32:20 +0800" />
 <meta property="article:tag" content="c++, templates" />
 <meta property="fb:admins" content="ar.maybach" />
 <!-- Schema.org markup for Google -->
-<meta itemprop="name" content="CPP模板机制（1）">
+<meta itemprop="name" content="CPP模板机制（2）">
 <meta itemprop="description" content="cpp模板常见混淆点做一个自我区分">
 <meta itemprop="image" content="http://localhost:4000/assets/imgposts/20220214/corgi.jpg">
 <!-- Twitter Card data -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@MvmThe">
-<meta name="twitter:title" content="CPP模板机制（1）">
+<meta name="twitter:title" content="CPP模板机制（2）">
 <meta name="twitter:description" content="cpp模板常见混淆点做一个自我区分">
 <meta name="twitter:creator" content="">
 <meta data-rh="true" name="twitter:label1" content="Word count"/>
-<meta data-rh="true" name="twitter:data1" content="409"/>
+<meta data-rh="true" name="twitter:data1" content="175"/>
 <meta name="twitter:image:src" content="http://localhost:4000/assets/img/posts/20220214/corgi.jpg">
 	<!-- Windows Phone -->
 	<meta name="msapplication-navbutton-color" content="#311e3e">
@@ -139,7 +139,7 @@
 
 <section class="hidden">
   <div class="post">
-      <a  class="post-list-title" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html">CPP模板机制（1）</a>
+      <a  class="post-list-title" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html">CPP模板机制（2）</a>
       
 
   <span class = "post-card-meta">
@@ -163,7 +163,7 @@
     
     <span class="page_meta-readtime">
       
-        2 minute read
+        less than 1 minute read
       
     </span>
   
@@ -171,7 +171,7 @@
   </span>
 
         <div class="post-excerpt">
-            <p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p><h2 id="模板的声明方式">模板的声明方式</h2><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// some demotemplate &lt;typename T&gt;T func(T A) { ...}templte &lt;typename T, template A&gt; T func(A a, T t) { ...}template &lt;typename T&gt;class A {};//可变参数模板template &lt;typename T, typename... Args&gt; T func(T a, Args...) {}</code></pre></div></div><h2 id="关于模板的工作机制">关于模板的工作机制</h2><ul> <li>首先我们要明确模板常常定义在头文件中，而由此也能练习到许多模板的作用机制。</li> <li>模板定义并不是真正的定义了一个函数或者类，而是编译器根据程序员缩写的模板和形参来自己写出一个对应版本的定义，这个过程叫做模板实例化。</li> <li>编译器成成的版本通常被称为模板的实例。编译器为程序员生成对应版本的具体过程。类似宏替换。模板类在没有调用之前是不会生成代码的。</li> <li>模板的实例化凭证是编译器遇到对模板的使用时才会生成相应版本的代码，这个时间是编译期</li> <li>为什么模板要放在头文件？试想当放在源文件中，当源文件中使用到模板代码，而模板定义在其他源文件中，那么此源文件无法找到函数地址，只能等待连接时刻。那如果其他源文件中不存在对模板的特定版本实例化代码怎么办呢？那么函数重定位就会失败，模板机制就会收到影响</li></ul><h2 id="非类型模板参数">非类型模板参数</h2><p>顾名思义，模板参数不是一个类型而是一个具体的值——这个值是常量表达式。</p><p>当一个模板被实例化时，，非类型参数被一个用户提供的或者编译器推断出的值所代替。正因为模板在编译阶段编译器为我们生成一个对应的版本，所以其值应该能够编译时确定，那么他应该是一个常量或者常量表达式。</p><p>有一句话说：C++的强大在于他的编译器强大，下面这个例子就是很好的说明。</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;size_t N, size_t M&gt;int str_compare(const char (&amp;str1)[N], const char (&amp;str2)[M]){ return strcmp(str1,str2);}</code></pre></div></div><h2 id="模板默认参数">模板默认参数</h2><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;typename T = int&gt;class A {};//如果像下例实例化的模板默认A&lt;int&gt;类型A&lt;&gt; a;</code></pre></div></div><h2 id="类模板已经声明而成员函数希望在模板外实现的做法">类模板已经声明，而成员函数希望在模板外实现的做法</h2><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;typename T&gt; class A { ... T func(T a) { ... } ...};//模板外实现template &lt;typename T&gt;T A::func(T a) {}</code></pre></div></div><h2 id="关于模板类的的模板成员">关于模板类的的模板成员</h2><p>我已经不知道用什么语言来下面的代码了。但是我们知道了一些事情。</p><p>无论是定义还是声明，模板语法的优先级是最高的，不同模板的优先级又根据其声明顺序来判断，其次是函数修饰，然后是返回值。根据这个原则我们可以轻松的解析这个函数。</p><div...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
+            <p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p><p><strong><em>本篇主要整理可变参数模板</em></strong></p><h3 id="sizeof-运算符">sizeof… 运算符</h3><div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span> <span class="kt">void</span> <span class="nf">var_fun</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">,</span> <span class="k">const</span> <span class="n">Args</span><span class="o">&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span><span class="p">{</span> <span class="c1">//cout &lt;&lt; t;</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"element numbers of packs is "</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">...(</span><span class="n">Args</span><span class="p">);</span> <span class="c1">//var_fun(args...);</span><span class="p">}</span></code></pre></div></div><p>能够获得包中参数的个数</p><h2 id="关于包拓展">关于包拓展</h2><p>是否对可变参数解析的省略号…用法存在疑虑？</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>拓展 packs expand包拓展简单的来说将他分解为其构成的元素，如果说将参数变为包的过成类比为压缩未见，那么包拓展就是解压文件，但包拓展不仅仅是包展开。</code></pre></div></div><p>我们知道了拓展包就是解析包内的元素，解析元素的过程在cpp的编译器处理中可以理解成对包内的元素进行分解，并且进行平行的操作。解包，就是在相应的操作后面加上…，编译器的处理逻辑就如上所述。以下引用自原文的说法。</p><ul> <li>当拓展一个包时，我们还要提供用于，每个拓展元素的模式。拓展一个包就是将它分解为构成的元素，对每个元素应用模式，获得拓展后的列表。我们通过在模式右边防一个省略号…来触发拓展操作 。</li> <li> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>什么是模式？在实际生活中，当我们说以一种模式打开某个东西，或者是什么模式打开时。指定的是固有的模式，比如说性能模式，均衡模式等。而包拓展的模式更像是对于每个元素都调用一次相应的函数，包拓展需要我们自定义模式——其实就是一个函数，返回值为包中的一个元素应用模式后的结果，所有这样的结果组合在一起，也就是包以这个模式（函数）展开。</code></pre></div> </div> </li></ul><p>以下引用自标准库的配置器展开</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>noexcept(noexcept(::new((void *)__p) _Up(std::forward&lt;_Args&gt;(__args)...)))</code></pre></div></div><p>另外，一定要注意省略号的位置，省略号的位置直接表述了对应解包的操作以及如何解包</p><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">var_func</span><span class="p">(</span><span class="n">args</span><span...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
         </div>
   </div>
 </section>
@@ -269,7 +269,7 @@
 </header> <!-- End Header -->
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="CPP模板机制（1）">
+    <meta itemprop="headline" content="CPP模板机制（2）">
 <meta itemprop="description" content="cpp模板常见混淆点做一个自我区分">
 <meta itemprop="datePublished" content="2021-01-26T03:32:20+08:00">
 
@@ -279,7 +279,7 @@
     <div class="wrapper">
       <div class="page-content">
         <div class="header-page">
-          <h1 class="page-title">CPP模板机制（1）</h1>
+          <h1 class="page-title">CPP模板机制（2）</h1>
           
 
   <span class = "post-page-meta">
@@ -303,7 +303,7 @@
     
     <span class="page_meta-readtime">
       
-        2 minute read
+        less than 1 minute read
       
     </span>
   
@@ -333,11 +333,11 @@
     <div class="share-hover side">
         <span class="share-button side"><svg fill="currentColor" width="25" height="25" class="side"><g fill-rule="evenodd"><path d="M15.6 5a.42.42 0 0 0 .17-.3.42.42 0 0 0-.12-.33l-2.8-2.79a.5.5 0 0 0-.7 0l-2.8 2.8a.4.4 0 0 0-.1.32c0 .12.07.23.16.3h.02a.45.45 0 0 0 .57-.04l2-2V10c0 .28.23.5.5.5s.5-.22.5-.5V2.93l2.02 2.02c.08.07.18.12.3.13.11.01.21-.02.3-.08v.01"></path><path d="M18 7h-1.5a.5.5 0 0 0 0 1h1.6c.5 0 .9.4.9.9v10.2c0 .5-.4.9-.9.9H6.9a.9.9 0 0 1-.9-.9V8.9c0-.5.4-.9.9-.9h1.6a.5.5 0 0 0 .35-.15A.5.5 0 0 0 9 7.5a.5.5 0 0 0-.15-.35A.5.5 0 0 0 8.5 7H7a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h11a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"></path></g></svg></span>
         <div class="share-icons side" id="sidebar-icons">
-            <a class="twitter" href="https://twitter.com/intent/tweet?text=CPP模板机制（1）&url=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" title="Share on Twitter" rel="nofollow" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+            <a class="twitter" href="https://twitter.com/intent/tweet?text=CPP模板机制（2）&url=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" title="Share on Twitter" rel="nofollow" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
             <a class="facebook" href="https://facebook.com/sharer.php?u=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" title="Share on Facebook" rel="nofollow" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-            <a class="reddit" href="http://www.reddit.com/submit?url=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html&title=CPP模板机制（1）" title="Submit to Reddit" rel="nofollow" target="_blank"><i class="fa fa-reddit" aria-hidden="true"></i></a>
-            <a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html&title=CPP模板机制（1）&summary=cpp模板常见混淆点做一个自我区分&source=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" title="Share on LinkedIn" rel="nofollow" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-            <a class="email" href="mailto:?subject=CPP模板机制（1）&body=cpp模板常见混淆点做一个自我区分%0A%0ARead more here: http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" title="Share via e-mail" rel="nofollow" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+            <a class="reddit" href="http://www.reddit.com/submit?url=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html&title=CPP模板机制（2）" title="Submit to Reddit" rel="nofollow" target="_blank"><i class="fa fa-reddit" aria-hidden="true"></i></a>
+            <a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html&title=CPP模板机制（2）&summary=cpp模板常见混淆点做一个自我区分&source=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" title="Share on LinkedIn" rel="nofollow" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+            <a class="email" href="mailto:?subject=CPP模板机制（2）&body=cpp模板常见混淆点做一个自我区分%0A%0ARead more here: http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" title="Share via e-mail" rel="nofollow" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i></a>
             <a class="copy-link" onclick="copyToClipboard()" title="Copy to clipboard" rel="nofollow" target="_blank"><svg width="20px" fill="currentColor" class="side" viewBox="0 0 18 18"><path d="M16.94 1.1A3.7 3.7 0 0 0 14.3 0c-1 0-1.94.39-2.64 1.1L7.43 5.3c-.91.92-2.09 3.2 0 5.27a.75.75 0 0 0 .82.16c.09-.03.17-.09.24-.15a.74.74 0 0 0 0-1.06c-1.16-1.15-.77-2.39-.02-3.16l4.24-4.22a2.2 2.2 0 0 1 1.58-.65c.6 0 1.16.23 1.58.65.86.87.86 2.29 0 3.16L12.7 8.47a.74.74 0 0 0 1.04 1.05l3.17-3.16a3.73 3.73 0 0 0 0-5.27h.03zM9.54 7.4a.74.74 0 0 0 0 1.06c1.16 1.15.76 2.39 0 3.16l-4.22 4.22c-.42.42-.99.65-1.59.65a2.23 2.23 0 0 1-1.58-3.82l3.17-3.16A.73.73 0 0 0 5.54 9a.78.78 0 0 0-.22-.52.77.77 0 0 0-1.05 0L1.1 11.64A3.72 3.72 0 0 0 3.74 18c1 0 1.94-.39 2.65-1.1l4.23-4.2c.21-.22.94-1.02 1.13-2.2.18-1.12-.2-2.15-1.12-3.07-.27-.27-.78-.27-1.06 0l-.02-.02z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></a>
         </div>
     </div>
@@ -349,268 +349,111 @@
         
         <p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p>
 
-<h2 id="模板的声明方式">模板的声明方式</h2>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// some demo
-template &lt;typename T&gt;
-T func(T A) {
-    ...
-}
+<p><strong><em>本篇主要整理可变参数模板</em></strong></p>
 
-templte &lt;typename T, template A&gt; 
-T func(A a, T t) {
-    ...
-}
+<h3 id="sizeof-运算符">sizeof… 运算符</h3>
 
-template &lt;typename T&gt;
-class A {
-
-};
-
-//可变参数模板
-template &lt;typename T, typename... Args&gt; 
-T func(T a, Args...) {
-
-}
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span>  
+<span class="kt">void</span> <span class="nf">var_fun</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">,</span> <span class="k">const</span> <span class="n">Args</span><span class="o">&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//cout &lt;&lt; t;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"element numbers of packs is "</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">...(</span><span class="n">Args</span><span class="p">);</span>
+    <span class="c1">//var_fun(args...);</span>
+<span class="p">}</span>
 
 </code></pre></div></div>
+<p>能够获得包中参数的个数</p>
 
-<h2 id="关于模板的工作机制">关于模板的工作机制</h2>
+<h2 id="关于包拓展">关于包拓展</h2>
+<p>是否对可变参数解析的省略号…用法存在疑虑？</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>拓展        packs expand
+
+包拓展简单的来说将他分解为其构成的元素，如果说将参数变为包的过成类比为压缩未见，那么包拓展就是解压文件，但包拓展不仅仅是包展开。
+</code></pre></div></div>
+<p>我们知道了拓展包就是解析包内的元素，解析元素的过程在cpp的编译器处理中可以理解成对包内的元素进行分解，并且进行平行的操作。解包，就是在相应的操作后面加上…，编译器的处理逻辑就如上所述。
+以下引用自原文的说法。</p>
 <ul>
-  <li>首先我们要明确模板常常定义在头文件中，而由此也能练习到许多模板的作用机制。</li>
-  <li>模板定义并不是真正的定义了一个函数或者类，而是编译器根据程序员缩写的模板和形参来自己写出一个对应版本的定义，这个过程叫做模板实例化。</li>
-  <li>编译器成成的版本通常被称为模板的实例。编译器为程序员生成对应版本的具体过程。类似宏替换。模板类在没有调用之前是不会生成代码的。</li>
-  <li>模板的实例化凭证是编译器遇到对模板的使用时才会生成相应版本的代码，这个时间是编译期</li>
-  <li>为什么模板要放在头文件？试想当放在源文件中，当源文件中使用到模板代码，而模板定义在其他源文件中，那么此源文件无法找到函数地址，只能等待连接时刻。那如果其他源文件中不存在对模板的特定版本实例化代码怎么办呢？那么函数重定位就会失败，模板机制就会收到影响</li>
+  <li>当拓展一个包时，我们还要提供用于，每个拓展元素的模式。拓展一个包就是将它分解为构成的元素，对每个元素应用模式，获得拓展后的列表。我们通过在模式右边防一个省略号…来触发拓展操作 。</li>
+  <li>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>什么是模式？
+在实际生活中，当我们说以一种模式打开某个东西，或者是什么模式打开时。指定的是固有的模式，比如说性能模式，均衡模式等。而包拓展的模式更像是对于每个元素都调用一次相应的函数，包拓展需要我们自定义模式——其实就是一个函数，返回值为包中的一个元素应用模式后的结果，所有这样的结果组合在一起，也就是包以这个模式（函数）展开。
+</code></pre></div>    </div>
+  </li>
 </ul>
 
-<h2 id="非类型模板参数">非类型模板参数</h2>
-
-<p>顾名思义，模板参数不是一个类型而是一个具体的值——这个值是常量表达式。</p>
-
-<p>当一个模板被实例化时，，非类型参数被一个用户提供的或者编译器推断出的值所代替。正因为模板在编译阶段编译器为我们生成一个对应的版本，所以其值应该能够编译时确定，那么他应该是一个常量或者常量表达式。</p>
-
-<p>有一句话说：C++的强大在于他的编译器强大，下面这个例子就是很好的说明。</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
-template &lt;size_t N, size_t M&gt;
-int str_compare(const char (&amp;str1)[N], const char (&amp;str2)[M])
-{
-    return strcmp(str1,str2);
-}
-
+<p>以下引用自标准库的配置器展开</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>noexcept(noexcept(::new((void *)__p)
+			    _Up(std::forward&lt;_Args&gt;(__args)...)))
 </code></pre></div></div>
-
-<h2 id="模板默认参数">模板默认参数</h2>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;typename T = int&gt;
-class A {
-
-};
-
-//如果像下例实例化的模板默认A&lt;int&gt;类型
-A&lt;&gt; a;
+<p>另外，一定要注意省略号的位置，省略号的位置直接表述了对应解包的操作以及如何解包</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">var_func</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>      <span class="c1">//默认的包展开</span>
+<span class="c1">//注释部分的...不为关键字，和C++语法没有任何关系</span>
+<span class="c1">//相当于这样{ele1, ele2, ele3, ... ,elen}</span>
+<span class="n">var_fun</span><span class="p">(</span><span class="n">mul</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">args</span><span class="p">)...);</span>    <span class="c1">//带有模式的包展开</span>
+<span class="c1">//第二种展开模式相当于这样</span>
+<span class="c1">//{ mul(2,ele0),mul(2,ele1),mul(2,ele2), ... mul(2,elen) }</span>
 </code></pre></div></div>
-<h2 id="类模板已经声明而成员函数希望在模板外实现的做法">类模板已经声明，而成员函数希望在模板外实现的做法</h2>
+<p>所以其实并没有说…只能用于哪些函数和操作
+在现代cpp中，…就代表了解包操作，编译器会根据…的使用来平行地应用模式</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;typename T&gt; 
-class A {
-    ...
-    T func(T a) {
-        ...
-    }
-    ...
-};
+<p><strong><em>还有个小细节，当你需要解包，…放在后面，当你为了压缩（其实可以类比一下，意思就是声明模板的传包形式时或者声明函数的可变参数传入形式时，…放在类似Args参数或者形式参数args前，注意仅仅是在参数前，在其他符号之后）</em></strong></p>
 
-//模板外实现
-template &lt;typename T&gt;
-T A::func(T a) {
-
-}
-</code></pre></div></div>
-
-<h2 id="关于模板类的的模板成员">关于模板类的的模板成员</h2>
-
-<p>我已经不知道用什么语言来下面的代码了。但是我们知道了一些事情。</p>
-
-<p>无论是定义还是声明，模板语法的优先级是最高的，不同模板的优先级又根据其声明顺序来判断，其次是函数修饰，然后是返回值。根据这个原则我们可以轻松的解析这个函数。</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;typename T&gt; class A
-{
-public:
-    template &lt;typename It&gt;  A&lt;T&gt; sum(It _begin, It _end);
-};
+<h2 id="demo">demo</h2>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">t</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span><span class="n">t</span> <span class="p">,</span><span class="k">const</span> <span class="n">Args</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">t</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+  <span class="n">print</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>
+<span class="p">}</span>
  
-template &lt;typename T&gt;        //最外层模板
-template &lt;typename It&gt;       //内层模板
-A&lt;T&gt;                         //返回值
-A&lt;T&gt;::sum(It _begin, It _end)//函数标签 
-{}                           //算法实现
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">int</span> <span class="nf">up</span><span class="p">(</span><span class="n">T</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">t</span> <span class="o">*=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">t</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">print</span><span class="p">(</span><span class="n">up</span><span class="p">(</span><span class="n">args</span><span class="p">)...);</span>
+<span class="p">}</span>
  
-//不妨写的更美观一点
-template &lt;typename T&gt;
-  template &lt;typename It&gt;
-  A&lt;T&gt; A&lt;T&gt;::sum(It _begin, It _end){
-      
-  }
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">func</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
 </code></pre></div></div>
+<h2 id="使用stdforward">使用std::forward</h2>
+<p>要说转发一定离不开std::forward</p>
 
-<h2 id="模板实例化优化">模板实例化优化</h2>
+<p>forward返回实参类型的右值引用。它和move很像，但前者是返回给定类型的右值引用，如果给定的类型是左值引用也返回其右值引用——左值引用，并且其必须显式的指定模板参数；而move无论模板参数类型是什么都返回一个右值引用（只能是右值引用），因为前面已经看到了move的实现方法。</p>
 
-<ul>
-  <li>我们知道模板的实例化通常是以头文件为凭据，生成实例化代码，类似宏定义，那么当多个文件中都用到同样实例的代码就会存在多份函数拷贝</li>
-  <li>解决这个问题，我们可以使用extern关键字,声明extern顾名思义就是告诉编译器在其他位置有相同的拷贝，请在链接阶段解决这个问题</li>
-</ul>
+<p>于是我们可以定义下面的转发函数</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//导入其他文件中的模板实例
-extern template class A&lt;T&gt;
-
-//定义具体方式
-template &lt;typename T&gt;
-class B {
-
-}
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">F</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">T1</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">T2</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">fun</span><span class="p">(</span><span class="n">F</span> <span class="n">f</span><span class="p">,</span> <span class="n">T1</span> <span class="o">&amp;&amp;</span> <span class="n">t1</span><span class="p">,</span> <span class="n">T2</span> <span class="o">&amp;&amp;</span> <span class="n">t2</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">f</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t2</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t1</span><span class="p">));</span>
+<span class="p">}</span>
 </code></pre></div></div>
+<p>使用右值引用作为模板参数——确保接受任意对象，并保证其能保持原来的性质不变（见引用折叠）。在发送参数的过程中获得对应类型的右值——确保其传递给函数的参数的性质不变（见引用折叠）。</p>
 
-<h2 id="遇到类型转换的时候会如何决策">遇到类型转换的时候会如何决策</h2>
+<h3 id="转发参数包">转发参数包</h3>
 
-<ul>
-  <li>纵眼cpp，关于类型转换，我很赞同原文结构参考作者的观点：在转换是安全的情况下更有可能发生</li>
-  <li>最经典的例子无非是 non-const 到 const 的转换</li>
-  <li>下例中参数a的int会被增提转化为 const int, T推导为int</li>
-</ul>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template&lt;typename T&gt; 
-bool func(const T t1, const T t2)
+<p>根据上面转发的关键字，我们可以知道，在进行转发的时候应该以何种模式进行包展开。</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template&lt;typename ... Args&gt;
+void buffer_fun(Args &amp;&amp;... args)
 {
-    return less&lt;T&gt;()(t1,t2);
-}
- 
-...
- 
-    int a = 10;
-    const int b = 20;
-    func&lt;int&gt;(a,b);
-</code></pre></div></div>
-
-<p>这里的int转为cosnt int是允许的，因为这是按值传递，并且non-const 转为 cosnt也不会带来什么坏处。因此，编译器会执行这样的转换。</p>
-
-<p>我们不妨修改一下这个函数</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>bool func(const T &amp; t1, const T &amp; t2);
-bool func(T &amp; t1, T &amp; t2);
-
-</code></pre></div></div>
-<p>上述第一个声明会正常调用——虽然是引用，和上面的是同样的道理。</p>
-
-<p>而第二个却不会正常调用——因为b是一个cosnt 将要转换为non-const，我中转换是不安全的，所以编译不允许这样的转换。</p>
-
-<p>假设我们这样调用两个函数</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>func&lt;int&gt;(10,20);
-</code></pre></div></div>
-
-<p>同样的，对于第一个是允许的——虽然讲右值绑定到左值引用上，但是我们用const修饰形参，保证其不会改变，所以编译器同意这样的转换。</p>
-
-<p>而对于第二个，编译器则不允许这样的转换，因为我们的形参是non-const的，不能保证不修改形参的值，形参正好又是一个引用，这样可以修改实参的值——恰好实参是一个右值——是不允许被修改的，所以编译器不允许这样的转换。</p>
-
-<p>基于上面的转换规则，我们可以知道，如果函数形参不是引用类型，则可以对数组或者函数类型的实参应用正常的指针转换。</p>
-
-<h2 id="模板实参推断">模板实参推断</h2>
-
-<p>直接上demo</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;typename T&gt; void func1(T &amp;) { }
-template &lt;typename T&gt; void func2(const T &amp;) { }
-
-void demo() {
-    int a = 1
-    const int b = 2;
-    func1(a);   //T is int 
-    func1(b);      //T is const int
-    func2(a);      //T is int
-    func2(b);      //T is int
-    func2(10);     //T is int 
+    work(std::forward&lt;Args&gt;(args)...);
 }
 </code></pre></div></div>
-<h2 id="右值引用引用折叠万能引用">右值引用，引用折叠,万能引用</h2>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 关于万能引用
-template &lt;typename T&gt;
-void func(T &amp;&amp;a) {
-    ...
-}
-int a=10;
-func(10);  //T被推导为int
-func(a);  //T被推导成int&amp; 
-
-</code></pre></div></div>
-<h3 id="关于折叠和万能引用">关于折叠和万能引用</h3>
-
-<p>众所周知在非模板函数中可以使用const &amp; 来接受任意类型参数，在模板中，也有类似这样的万能引用，就是&amp;&amp;。知道了这样的原因是有着引用折叠得的存在。</p>
-
-<p>先说结论：在传递参数的过程中，无论多么复杂的引用传参，最后都会被折叠为&amp; 或者 &amp;&amp;。</p>
-
-<p>这也就是引用折叠，引用折叠可以被概述成下列</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>如果我们间接创建了一个引用的引用，则这些引用形成折叠。除了右值引用的右值引用会被折叠为一个右值引用，剩下全部折叠为一个左值引用。即
-
-T&amp; &amp;, T&amp; &amp;&amp;， T&amp;&amp; &amp;都会折叠为T&amp;
-
-T&amp;&amp; &amp;&amp;会被折叠为&amp;&amp;
-
-这两个规则又暗示了我们——我们可以将任意类型的实参传递给参数为右值引用的函数。
-</code></pre></div></div>
-
-<p>关于模板，上述的规则可以被统一为</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>如果一个函数参数是一个指向模板类型参数的右值引用，则他可以被绑定到一个左值。
-
-如果实参是一个左值，则推断出的模板实参类型将是一个左值引用，且函数将被参数将被实例化为一个普通左值引用参数。
-</code></pre></div></div>
-
-<h2 id="stdmove">std::move</h2>
-<p>直接上std::move定义</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;typename T&gt;
-typename remove_reference&lt;T&gt;::type &amp;&amp; move(T &amp;&amp; t)
-{
-    return static_cast&lt;typename remove_reference&lt;T&gt;::type&amp;&amp;&gt;(t); 
-}
-</code></pre></div></div>
-<p>std::move通过用法我们知道它可以接受任何对象，因此他应当是一个模板。</p>
-
-<h2 id="模板特例化">模板特例化</h2>
-<p>我们编写的模板，不可能保证对于所有的类型都能适用——compare函数就是很经典的例子，对于两个指针类型，仅仅是毫无意义的比较。这时候我们用到模板特例化的技术可以很好的解决这样的问题。其实意思就是说，同一份类似宏定义的模板代码不一定能适配于所有版本的</p>
-
-<p>由于less的底层是使用&lt;来比较的，所以less并没有适配字符指针。那么，我们可以编写这样的模板特例化。</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;&gt;        //表示一个模板特例化——语法规定
-int compare(const char * const &amp; str1, const char * const &amp; str2) //具体的类型
-{
-    return strcmp(str1,str2);
-}
-</code></pre></div></div>
-
-<h2 id="特例化和重载的区别">特例化和重载的区别</h2>
-
-<p>特例化就是一个特殊的实例化——模板的实例化，所以，特例化仅仅是模板的一个实例化，不会影响函数匹配。</p>
-
-<p>并且，模板特例化一定要保证模板的之前的声明或者定义。如果不这样做——编译器不会报错，但是会有一些令人匪夷所思的地方。模板会由编译器实例化，而不是调用自己特例化版本——这种错误往往很难查找。所以，记住一个规则：特例化一个模板，一定要保证其在原模板的定义域中。</p>
-
-<h2 id="部分模板特例化">部分模板特例化</h2>
-<p>“针对模板参数更进一步的条件限制所设计出来的一个特化版本” （摘自《泛型思维》）</p>
-<ul>
-  <li>demo
-```
- //general template
-template&lt;class T1, class T2&gt; 
-class Pair { … };</li>
-</ul>
-
-<p>//specialization with T2 set to int
-template<class T1="">
-class Pair&lt;T1, int&gt;  { ... };
-```</class></p>
-
-<h2 id="下一篇聚焦可变参数模板">下一篇聚焦可变参数模板</h2>
-<p>…</p>
 
         <aside class="sidebar inline" id="post-end">
     
@@ -632,11 +475,11 @@ class Pair&lt;T1, int&gt;  { ... };
     <div class="share-hover inline">
         <span class="share-button inline"><svg fill="currentColor" width="25" height="25" class="inline"><g fill-rule="evenodd"><path d="M15.6 5a.42.42 0 0 0 .17-.3.42.42 0 0 0-.12-.33l-2.8-2.79a.5.5 0 0 0-.7 0l-2.8 2.8a.4.4 0 0 0-.1.32c0 .12.07.23.16.3h.02a.45.45 0 0 0 .57-.04l2-2V10c0 .28.23.5.5.5s.5-.22.5-.5V2.93l2.02 2.02c.08.07.18.12.3.13.11.01.21-.02.3-.08v.01"></path><path d="M18 7h-1.5a.5.5 0 0 0 0 1h1.6c.5 0 .9.4.9.9v10.2c0 .5-.4.9-.9.9H6.9a.9.9 0 0 1-.9-.9V8.9c0-.5.4-.9.9-.9h1.6a.5.5 0 0 0 .35-.15A.5.5 0 0 0 9 7.5a.5.5 0 0 0-.15-.35A.5.5 0 0 0 8.5 7H7a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h11a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"></path></g></svg></span>
         <div class="share-icons inline" id="post-end-icons">
-            <a class="twitter" href="https://twitter.com/intent/tweet?text=CPP模板机制（1）&url=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" title="Share on Twitter" rel="nofollow" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+            <a class="twitter" href="https://twitter.com/intent/tweet?text=CPP模板机制（2）&url=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" title="Share on Twitter" rel="nofollow" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
             <a class="facebook" href="https://facebook.com/sharer.php?u=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" title="Share on Facebook" rel="nofollow" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-            <a class="reddit" href="http://www.reddit.com/submit?url=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html&title=CPP模板机制（1）" title="Submit to Reddit" rel="nofollow" target="_blank"><i class="fa fa-reddit" aria-hidden="true"></i></a>
-            <a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html&title=CPP模板机制（1）&summary=cpp模板常见混淆点做一个自我区分&source=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" title="Share on LinkedIn" rel="nofollow" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-            <a class="email" href="mailto:?subject=CPP模板机制（1）&body=cpp模板常见混淆点做一个自我区分%0A%0ARead more here: http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" title="Share via e-mail" rel="nofollow" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+            <a class="reddit" href="http://www.reddit.com/submit?url=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html&title=CPP模板机制（2）" title="Submit to Reddit" rel="nofollow" target="_blank"><i class="fa fa-reddit" aria-hidden="true"></i></a>
+            <a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html&title=CPP模板机制（2）&summary=cpp模板常见混淆点做一个自我区分&source=http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" title="Share on LinkedIn" rel="nofollow" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+            <a class="email" href="mailto:?subject=CPP模板机制（2）&body=cpp模板常见混淆点做一个自我区分%0A%0ARead more here: http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" title="Share via e-mail" rel="nofollow" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i></a>
             <a class="copy-link" onclick="copyToClipboard()" title="Copy to clipboard" rel="nofollow" target="_blank"><svg width="20px" fill="currentColor" class="inline" viewBox="0 0 18 18"><path d="M16.94 1.1A3.7 3.7 0 0 0 14.3 0c-1 0-1.94.39-2.64 1.1L7.43 5.3c-.91.92-2.09 3.2 0 5.27a.75.75 0 0 0 .82.16c.09-.03.17-.09.24-.15a.74.74 0 0 0 0-1.06c-1.16-1.15-.77-2.39-.02-3.16l4.24-4.22a2.2 2.2 0 0 1 1.58-.65c.6 0 1.16.23 1.58.65.86.87.86 2.29 0 3.16L12.7 8.47a.74.74 0 0 0 1.04 1.05l3.17-3.16a3.73 3.73 0 0 0 0-5.27h.03zM9.54 7.4a.74.74 0 0 0 0 1.06c1.16 1.15.76 2.39 0 3.16l-4.22 4.22c-.42.42-.99.65-1.59.65a2.23 2.23 0 0 1-1.58-3.82l3.17-3.16A.73.73 0 0 0 5.54 9a.78.78 0 0 0-.22-.52.77.77 0 0 0-1.05 0L1.1 11.64A3.72 3.72 0 0 0 3.74 18c1 0 1.94-.39 2.65-1.1l4.23-4.2c.21-.22.94-1.02 1.13-2.2.18-1.12-.2-2.15-1.12-3.07-.27-.27-.78-.27-1.06 0l-.02-.02z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></a>
         </div>
     </div>
@@ -683,6 +526,37 @@ class Pair&lt;T1, int&gt;  { ... };
 <div class="recent-box">
   <h2 class="page-subtitle">Recent posts</h2>
   <div class="recent-list">
+    
+      
+        <div class="recent-item">
+          
+          
+
+          <a href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" class="recent-item-img" style="background: url('./assets/img/posts/20220214/corgi.jpg') center no-repeat; background-size: cover;">
+            <div class="recent-item-title">
+              <span>CPP模板机制（2）</span>
+              
+
+  <span class = "recent-item-meta">
+  
+  
+  
+  
+    
+    
+    <p class="page_meta-readtime">
+      
+        less than 1 minute read
+      
+    </p>
+  
+  
+  </span>
+
+            </div>
+          </a>
+        </div>
+      
     
       
         <div class="recent-item">
@@ -754,37 +628,6 @@ class Pair&lt;T1, int&gt;  { ... };
           <a href="./STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html" class="recent-item-img" style="background: url('./assets/img/posts/20220214/seagull.jpg') center no-repeat; background-size: cover;">
             <div class="recent-item-title">
               <span>STL相关的一些面试遭遇</span>
-              
-
-  <span class = "recent-item-meta">
-  
-  
-  
-  
-    
-    
-    <p class="page_meta-readtime">
-      
-        less than 1 minute read
-      
-    </p>
-  
-  
-  </span>
-
-            </div>
-          </a>
-        </div>
-      
-    
-      
-        <div class="recent-item">
-          
-          
-
-          <a href="./CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html" class="recent-item-img" style="background: url('./assets/img/posts/20220214/leaves.png') center no-repeat; background-size: cover;">
-            <div class="recent-item-title">
-              <span>CPP异常知识碎片</span>
               
 
   <span class = "recent-item-meta">

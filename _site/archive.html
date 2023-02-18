@@ -240,6 +240,45 @@
 		<div class="post">
 			
 
+			<a class="post-list-title" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html">CPP模板机制（2）</a>
+			
+
+  <span class = "post-card-meta">
+  
+  
+    <span class="meta-pre"></span>
+  
+  
+    
+      
+      <span class="page_meta-date">
+        <time datetime="2021-01-26T03:32:20+08:00">January 26, 2021</time>
+      </span>
+    
+    
+      <span class="meta-sep"></span>
+    
+  
+  
+    
+    
+    <span class="page_meta-readtime">
+      
+        less than 1 minute read
+      
+    </span>
+  
+  
+  </span>
+
+			<div class="post-excerpt">
+				<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p><p><strong><em>本篇主要整理可变参数模板</em></strong></p><h3 id="sizeof-运算符">sizeof… 运算符</h3><div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span> <span class="kt">void</span> <span class="nf">var_fun</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">,</span> <span class="k">const</span> <span class="n">Args</span><span class="o">&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span><span class="p">{</span> <span class="c1">//cout &lt;&lt; t;</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"element numbers of packs is "</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">...(</span><span class="n">Args</span><span class="p">);</span> <span class="c1">//var_fun(args...);</span><span class="p">}</span></code></pre></div></div><p>能够获得包中参数的个数</p><h2 id="关于包拓展">关于包拓展</h2><p>是否对可变参数解析的省略号…用法存在疑虑？</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>拓展 packs expand包拓展简单的来说将他分解为其构成的元素，如果说将参数变为包的过成类比为压缩未见，那么包拓展就是解压文件，但包拓展不仅仅是包展开。</code></pre></div></div><p>我们知道了拓展包就是解析包内的元素，解析元素的过程在cpp的编译器处理中可以理解成对包内的元素进行分解，并且进行平行的操作。解包，就是在相应的操作后面加上…，编译器的处理逻辑就如上所述。以下引用自原文的说法。</p><ul> <li>当拓展一个包时，我们还要提供用于，每个拓展元素的模式。拓展一个包就是将它分解为构成的元素，对每个元素应用模式，获得拓展后的列表。我们通过在模式右边防一个省略号…来触发拓展操作 。</li> <li> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>什么是模式？在实际生活中，当我们说以一种模式打开某个东西，或者是什么模式打开时。指定的是固有的模式，比如说性能模式，均衡模式等。而包拓展的模式更像是对于每个元素都调用一次相应的函数，包拓展需要我们自定义模式——其实就是一个函数，返回值为包中的一个元素应用模式后的结果，所有这样的结果组合在一起，也就是包以这个模式（函数）展开。</code></pre></div> </div> </li></ul><p>以下引用自标准库的配置器展开</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>noexcept(noexcept(::new((void *)__p) _Up(std::forward&lt;_Args&gt;(__args)...)))</code></pre></div></div><p>另外，一定要注意省略号的位置，省略号的位置直接表述了对应解包的操作以及如何解包</p><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">var_func</span><span class="p">(</span><span class="n">args</span><span...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
+			</div>
+		</div>
+	
+		<div class="post">
+			
+
 			<a class="post-list-title" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html">CPP模板机制（1）</a>
 			
 
@@ -272,7 +311,7 @@
   </span>
 
 			<div class="post-excerpt">
-				<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p><h2 id="模板的声明方式">模板的声明方式</h2><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// some demotemplate &lt;typename T&gt;T func(T A) { ...}templte &lt;typename T, template A&gt; T func(A a, T t) { ...}template &lt;typename T&gt;class A {};//可变参数模板template &lt;typename T, typename... Args&gt; T func(T a, Args...) {}</code></pre></div></div><h2 id="关于模板的工作机制">关于模板的工作机制</h2><ul> <li>首先我们要明确模板常常定义在头文件中，而由此也能练习到许多模板的作用机制。</li> <li>模板定义并不是真正的定义了一个函数或者类，而是编译器根据程序员缩写的模板和形参来自己写出一个对应版本的定义，这个过程叫做模板实例化。</li> <li>编译器成成的版本通常被称为模板的实例。编译器为程序员生成对应版本的具体过程。类似宏替换。模板类在没有调用之前是不会生成代码的。</li> <li>模板的实例化凭证是编译器遇到对模板的使用时才会生成相应版本的代码，这个时间是编译期</li> <li>为什么模板要放在头文件？试想当放在源文件中，当源文件中使用到模板代码，而模板定义在其他源文件中，那么此源文件无法找到函数地址，只能等待连接时刻。那如果其他源文件中不存在对模板的特定版本实例化代码怎么办呢？那么函数重定位就会失败，模板机制就会收到影响</li></ul><h2 id="非类型模板参数">非类型模板参数</h2><p>顾名思义，模板参数不是一个类型而是一个具体的值——这个值是常量表达式。</p><p>当一个模板被实例化时，，非类型参数被一个用户提供的或者编译器推断出的值所代替。正因为模板在编译阶段编译器为我们生成一个对应的版本，所以其值应该能够编译时确定，那么他应该是一个常量或者常量表达式。</p><p>有一句话说：C++的强大在于他的编译器强大，下面这个例子就是很好的说明。</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;size_t N, size_t M&gt;int str_compare(const char (&amp;str1)[N], const char (&amp;str2)[M]){ return strcmp(str1,str2);}</code></pre></div></div><h2 id="模板默认参数">模板默认参数</h2><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;typename T = int&gt;class A {};//如果像下例实例化的模板默认A&lt;int&gt;类型A&lt;&gt; a;</code></pre></div></div><h2 id="类模板已经声明而成员函数希望在模板外实现的做法">类模板已经声明，而成员函数希望在模板外实现的做法</h2><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;typename T&gt; class A { ... T func(T a) { ... } ...};//模板外实现template &lt;typename T&gt;T A::func(T a) {}</code></pre></div></div><h2 id="关于模板类的的模板成员">关于模板类的的模板成员</h2><p>我已经不知道用什么语言来下面的代码了。但是我们知道了一些事情。</p><p>无论是定义还是声明，模板语法的优先级是最高的，不同模板的优先级又根据其声明顺序来判断，其次是函数修饰，然后是返回值。根据这个原则我们可以轻松的解析这个函数。</p><div...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
+				<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p><h2 id="模板的声明方式">模板的声明方式</h2><div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// some demo</span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span><span class="n">T</span> <span class="nf">func</span><span class="p">(</span><span class="n">T</span> <span class="n">A</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span><span class="p">}</span><span class="n">templte</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">template</span> <span class="n">A</span><span class="p">&gt;</span> <span class="n">T</span> <span class="nf">func</span><span class="p">(</span><span class="n">A</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">t</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span><span class="p">}</span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span><span class="p">};</span><span class="c1">//可变参数模板</span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span> <span class="n">T</span> <span class="nf">func</span><span class="p">(</span><span class="n">T</span> <span class="n">a</span><span class="p">,</span> <span...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
 			</div>
 		</div>
 	
@@ -312,45 +351,6 @@
 
 			<div class="post-excerpt">
 				<ul>  <li>虚函数表是类的</li>  <li>类的每个对象前四个字节就是指向虚函数表的指针</li>  <li>虚函数表的内容是指向函数的指针</li></ul><p>父类指针指向子类对象。运行时动态多态机制。指针指向的内存地址是派生类，根据派生类对象前四个字节找到虚函数表指针，根据虚函数表指针找到虚函数表从而调用函数</p><h3 id="哪些函数不能被声明为虚函数">哪些函数不能被声明为虚函数</h3><p>常见的不不能声明为虚函数的有：普通函数（非成员函数），静态成员函数，内联成员函数，构造函数，友元函数。</p><h3 id="为什么c不支持普通函数为虚函数">为什么C++不支持普通函数为虚函数？</h3><p>普通函数（非成员函数）只能被overload，不能被override，声明为虚函数也没有什么意思，因此编译器会在编译时绑定函数。</p><h3 id="为什么c不支持构造函数为虚函数">为什么C++不支持构造函数为虚函数？</h3><p>这个原因很简单，主要是从语义上考虑，所以不支持。因为构造函数本来就是为了明确初始化对象成员才产生的，然而virtual function主要是为了再不完全了解细节的情况下也能正确处理对象。另外，virtual函数是在不同类型的对象产生不同的动作，现在对象还没有产生，如何使用virtual函数来完成你想完成的动作。 构造函数用来创建一个新的对象,而虚函数的运行是建立在对象的基础上,在构造函数执行时,对象尚未形成，所以不能将构造函数定义为虚函数。</p><h3 id="为什么c不支持内联成员函数为虚函数">为什么C++不支持内联成员函数为虚函数？</h3><p>其实很简单，那内联函数就是为了在代码中直接展开，减少函数调用花费的代价，虚函数是为了在继承后对象能够准确的执行自己的动作，这是不可能统一的。（再说了，inline函数在编译时被展开，虚函数在运行时才能动态的绑定函数） 内联函数是在编译时期展开,而虚函数的特性是运行时才动态联编,所以两者矛盾,不能定义内联函数为虚函数。</p><h3 id="为什么c不支持静态成员函数为虚函数">为什么C++不支持静态成员函数为虚函数？</h3><p>这也很简单，静态成员函数对于每个类来说只有一份代码，所有的对象都共享这一份代码，他也没有要动态绑定的必要性。 静态成员函数属于一个类而非某一对象，没有this指针，它无法进行对象的判别。  为什么C++不支持友元函数为虚函数？ 因为C++不支持友元函数的继承，对于没有继承特性的函数没有虚函数的说法。</p><a class="read-more" href="./%E5%8A%A8%E6%80%81%E5%A4%9A%E6%80%81%E7%90%86%E8%A7%A3.html"> read more</a>
-			</div>
-		</div>
-	
-		<div class="post">
-			
-
-			<a class="post-list-title" href="./STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html">STL相关的一些面试遭遇</a>
-			
-
-  <span class = "post-card-meta">
-  
-  
-    <span class="meta-pre"></span>
-  
-  
-    
-      
-      <span class="page_meta-date">
-        <time datetime="2021-01-26T03:32:20+08:00">January 26, 2021</time>
-      </span>
-    
-    
-      <span class="meta-sep"></span>
-    
-  
-  
-    
-    
-    <span class="page_meta-readtime">
-      
-        less than 1 minute read
-      
-    </span>
-  
-  
-  </span>
-
-			<div class="post-excerpt">
-				<h2 id="stl的主要组成">STL的主要组成</h2><p>容器、算法、迭代器</p><h2 id="resize和reverse的区别">resize和reverse的区别</h2><ul>  <li>改变的容器度量不一样。</li>  <li>resize改变的是容器的size, 如果size大于容器原来的size，则扩大容器空间（size）并且将扩大的空间初始化</li>  <li>reverse改变的是容器的capacity，要知道cap和size不是一个概念，cap表征容器已经开辟的空间，size代表元素的数量。cap理论上是大于等于size的，reverse的传参小于size的时候不会有事情发生，大于size的时候将capacity变化到传入参数指定的大小</li>  <li>两者的形参个数不一样。 resize带两个参数，一个表示容器大小，一个表示初始值（默认为0）；reserve只带一个参数，表示容器预留的大小。</li></ul><h2 id="vector中at和访问区别">vector中at()和【】访问区别</h2><p>at会检查下标范围，【】访问如果下表越界会造成对内存的非法访问，at()更加安全。at() 函数抛出的应当是std::out_of_range错误</p><a class="read-more" href="./STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html"> read more</a>
 			</div>
 		</div>
 	

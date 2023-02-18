@@ -306,6 +306,45 @@ at() 函数抛出的应当是std::out_of_range错误</p>
 			
 
 				<div class="post">
+					<a class="post-list-title" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html">CPP模板机制（2）</a>
+					
+
+  <span class = "post-card-meta">
+  
+  
+    <span class="meta-pre"></span>
+  
+  
+    
+      
+      <span class="page_meta-date">
+        <time datetime="2021-01-26T03:32:20+08:00">January 26, 2021</time>
+      </span>
+    
+    
+      <span class="meta-sep"></span>
+    
+  
+  
+    
+    
+    <span class="page_meta-readtime">
+      
+        less than 1 minute read
+      
+    </span>
+  
+  
+  </span>
+
+					<div class="post-excerpt">
+						<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p> <p><strong><em>本篇主要整理可变参数模板</em></strong></p> <h3 id="sizeof-运算符">sizeof… 运算符</h3> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span> <span class="kt">void</span> <span class="nf">var_fun</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">,</span> <span class="k">const</span> <span class="n">Args</span><span class="o">&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//cout &lt;&lt; t;</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"element numbers of packs is "</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">...(</span><span class="n">Args</span><span class="p">);</span> <span class="c1">//var_fun(args...);</span> <span class="p">}</span> </code></pre></div></div> <p>能够获得包中参数的个数</p> <h2 id="关于包拓展">关于包拓展</h2> <p>是否对可变参数解析的省略号…用法存在疑虑？</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>拓展 packs expand 包拓展简单的来说将他分解为其构成的元素，如果说将参数变为包的过成类比为压缩未见，那么包拓展就是解压文件，但包拓展不仅仅是包展开。 </code></pre></div></div> <p>我们知道了拓展包就是解析包内的元素，解析元素的过程在cpp的编译器处理中可以理解成对包内的元素进行分解，并且进行平行的操作。解包，就是在相应的操作后面加上…，编译器的处理逻辑就如上所述。 以下引用自原文的说法。</p> <ul> <li>当拓展一个包时，我们还要提供用于，每个拓展元素的模式。拓展一个包就是将它分解为构成的元素，对每个元素应用模式，获得拓展后的列表。我们通过在模式右边防一个省略号…来触发拓展操作 。</li> <li> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>什么是模式？...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
+					</div>
+				</div>
+			
+			
+
+				<div class="post">
 					<a class="post-list-title" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html">CPP模板机制（1）</a>
 					
 
@@ -338,7 +377,7 @@ at() 函数抛出的应当是std::out_of_range错误</p>
   </span>
 
 					<div class="post-excerpt">
-						<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p> <h2 id="模板的声明方式">模板的声明方式</h2> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// some demo template &lt;typename T&gt; T func(T A) { ... } templte &lt;typename T, template A&gt; T func(A a, T t) { ... } template &lt;typename T&gt; class A { }; //可变参数模板 template &lt;typename T, typename... Args&gt; T func(T a, Args...) { } </code></pre></div></div> <h2 id="关于模板的工作机制">关于模板的工作机制</h2> <ul> <li>首先我们要明确模板常常定义在头文件中，而由此也能练习到许多模板的作用机制。</li> <li>模板定义并不是真正的定义了一个函数或者类，而是编译器根据程序员缩写的模板和形参来自己写出一个对应版本的定义，这个过程叫做模板实例化。</li> <li>编译器成成的版本通常被称为模板的实例。编译器为程序员生成对应版本的具体过程。类似宏替换。模板类在没有调用之前是不会生成代码的。</li> <li>模板的实例化凭证是编译器遇到对模板的使用时才会生成相应版本的代码，这个时间是编译期</li> <li>为什么模板要放在头文件？试想当放在源文件中，当源文件中使用到模板代码，而模板定义在其他源文件中，那么此源文件无法找到函数地址，只能等待连接时刻。那如果其他源文件中不存在对模板的特定版本实例化代码怎么办呢？那么函数重定位就会失败，模板机制就会收到影响</li> </ul> <h2 id="非类型模板参数">非类型模板参数</h2> <p>顾名思义，模板参数不是一个类型而是一个具体的值——这个值是常量表达式。</p> <p>当一个模板被实例化时，，非类型参数被一个用户提供的或者编译器推断出的值所代替。正因为模板在编译阶段编译器为我们生成一个对应的版本，所以其值应该能够编译时确定，那么他应该是一个常量或者常量表达式。</p> <p>有一句话说：C++的强大在于他的编译器强大，下面这个例子就是很好的说明。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> template &lt;size_t N, size_t M&gt; int str_compare(const char (&amp;str1)[N], const char (&amp;str2)[M]) { return strcmp(str1,str2); } </code></pre></div></div> <h2 id="模板默认参数">模板默认参数</h2> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;typename T...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
+						<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p> <h2 id="模板的声明方式">模板的声明方式</h2> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// some demo</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span> <span class="n">T</span> <span class="nf">func</span><span class="p">(</span><span class="n">T</span> <span class="n">A</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span> <span class="n">templte</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">template</span> <span class="n">A</span><span class="p">&gt;</span> <span class="n">T</span> <span class="nf">func</span><span class="p">(</span><span class="n">A</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">t</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span> <span class="k">class</span> <span class="nc">A</span> <span class="p">{</span> <span class="p">};</span> <span class="c1">//可变参数模板</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
 					</div>
 				</div>
 			
@@ -400,62 +439,6 @@ at() 函数抛出的应当是std::out_of_range错误</p>
 <h3 id="为什么c不支持静态成员函数为虚函数">为什么C++不支持静态成员函数为虚函数？</h3>
 <p>这也很简单，静态成员函数对于每个类来说只有一份代码，所有的对象都共享这一份代码，他也没有要动态绑定的必要性。 静态成员函数属于一个类而非某一对象，没有this指针，它无法进行对象的判别。  为什么C++不支持友元函数为虚函数？ 因为C++不支持友元函数的继承，对于没有继承特性的函数没有虚函数的说法。</p>
 <a class="read-more" href="./%E5%8A%A8%E6%80%81%E5%A4%9A%E6%80%81%E7%90%86%E8%A7%A3.html"> read more</a>
-					</div>
-				</div>
-			
-			
-
-				<div class="post">
-					<a class="post-list-title" href="./STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html">STL相关的一些面试遭遇</a>
-					
-
-  <span class = "post-card-meta">
-  
-  
-    <span class="meta-pre"></span>
-  
-  
-    
-      
-      <span class="page_meta-date">
-        <time datetime="2021-01-26T03:32:20+08:00">January 26, 2021</time>
-      </span>
-    
-    
-      <span class="meta-sep"></span>
-    
-  
-  
-    
-    
-    <span class="page_meta-readtime">
-      
-        less than 1 minute read
-      
-    </span>
-  
-  
-  </span>
-
-					<div class="post-excerpt">
-						<h2 id="stl的主要组成">STL的主要组成</h2>
-
-<p>容器、算法、迭代器</p>
-
-<h2 id="resize和reverse的区别">resize和reverse的区别</h2>
-
-<ul>
-  <li>改变的容器度量不一样。</li>
-  <li>resize改变的是容器的size, 如果size大于容器原来的size，则扩大容器空间（size）并且将扩大的空间初始化</li>
-  <li>reverse改变的是容器的capacity，要知道cap和size不是一个概念，cap表征容器已经开辟的空间，size代表元素的数量。cap理论上是大于等于size的，reverse的传参小于size的时候不会有事情发生，大于size的时候将capacity变化到传入参数指定的大小</li>
-  <li>两者的形参个数不一样。 resize带两个参数，一个表示容器大小，一个表示初始值（默认为0）；reserve只带一个参数，表示容器预留的大小。</li>
-</ul>
-
-<h2 id="vector中at和访问区别">vector中at()和【】访问区别</h2>
-
-<p>at会检查下标范围，【】访问如果下表越界会造成对内存的非法访问，at()更加安全。
-at() 函数抛出的应当是std::out_of_range错误</p>
-<a class="read-more" href="./STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html"> read more</a>
 					</div>
 				</div>
 			
@@ -709,6 +692,45 @@ void* operator new (std::size_t size) throw (std::bad_alloc);
 			
 
 				<div class="post">
+					<a class="post-list-title" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html">CPP模板机制（2）</a>
+					
+
+  <span class = "post-card-meta">
+  
+  
+    <span class="meta-pre"></span>
+  
+  
+    
+      
+      <span class="page_meta-date">
+        <time datetime="2021-01-26T03:32:20+08:00">January 26, 2021</time>
+      </span>
+    
+    
+      <span class="meta-sep"></span>
+    
+  
+  
+    
+    
+    <span class="page_meta-readtime">
+      
+        less than 1 minute read
+      
+    </span>
+  
+  
+  </span>
+
+					<div class="post-excerpt">
+						<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p> <p><strong><em>本篇主要整理可变参数模板</em></strong></p> <h3 id="sizeof-运算符">sizeof… 运算符</h3> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span> <span class="kt">void</span> <span class="nf">var_fun</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">,</span> <span class="k">const</span> <span class="n">Args</span><span class="o">&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span> <span class="c1">//cout &lt;&lt; t;</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"element numbers of packs is "</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">...(</span><span class="n">Args</span><span class="p">);</span> <span class="c1">//var_fun(args...);</span> <span class="p">}</span> </code></pre></div></div> <p>能够获得包中参数的个数</p> <h2 id="关于包拓展">关于包拓展</h2> <p>是否对可变参数解析的省略号…用法存在疑虑？</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>拓展 packs expand 包拓展简单的来说将他分解为其构成的元素，如果说将参数变为包的过成类比为压缩未见，那么包拓展就是解压文件，但包拓展不仅仅是包展开。 </code></pre></div></div> <p>我们知道了拓展包就是解析包内的元素，解析元素的过程在cpp的编译器处理中可以理解成对包内的元素进行分解，并且进行平行的操作。解包，就是在相应的操作后面加上…，编译器的处理逻辑就如上所述。 以下引用自原文的说法。</p> <ul> <li>当拓展一个包时，我们还要提供用于，每个拓展元素的模式。拓展一个包就是将它分解为构成的元素，对每个元素应用模式，获得拓展后的列表。我们通过在模式右边防一个省略号…来触发拓展操作 。</li> <li> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>什么是模式？...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
+					</div>
+				</div>
+			
+			
+
+				<div class="post">
 					<a class="post-list-title" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html">CPP模板机制（1）</a>
 					
 
@@ -741,7 +763,7 @@ void* operator new (std::size_t size) throw (std::bad_alloc);
   </span>
 
 					<div class="post-excerpt">
-						<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p> <h2 id="模板的声明方式">模板的声明方式</h2> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// some demo template &lt;typename T&gt; T func(T A) { ... } templte &lt;typename T, template A&gt; T func(A a, T t) { ... } template &lt;typename T&gt; class A { }; //可变参数模板 template &lt;typename T, typename... Args&gt; T func(T a, Args...) { } </code></pre></div></div> <h2 id="关于模板的工作机制">关于模板的工作机制</h2> <ul> <li>首先我们要明确模板常常定义在头文件中，而由此也能练习到许多模板的作用机制。</li> <li>模板定义并不是真正的定义了一个函数或者类，而是编译器根据程序员缩写的模板和形参来自己写出一个对应版本的定义，这个过程叫做模板实例化。</li> <li>编译器成成的版本通常被称为模板的实例。编译器为程序员生成对应版本的具体过程。类似宏替换。模板类在没有调用之前是不会生成代码的。</li> <li>模板的实例化凭证是编译器遇到对模板的使用时才会生成相应版本的代码，这个时间是编译期</li> <li>为什么模板要放在头文件？试想当放在源文件中，当源文件中使用到模板代码，而模板定义在其他源文件中，那么此源文件无法找到函数地址，只能等待连接时刻。那如果其他源文件中不存在对模板的特定版本实例化代码怎么办呢？那么函数重定位就会失败，模板机制就会收到影响</li> </ul> <h2 id="非类型模板参数">非类型模板参数</h2> <p>顾名思义，模板参数不是一个类型而是一个具体的值——这个值是常量表达式。</p> <p>当一个模板被实例化时，，非类型参数被一个用户提供的或者编译器推断出的值所代替。正因为模板在编译阶段编译器为我们生成一个对应的版本，所以其值应该能够编译时确定，那么他应该是一个常量或者常量表达式。</p> <p>有一句话说：C++的强大在于他的编译器强大，下面这个例子就是很好的说明。</p> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code> template &lt;size_t N, size_t M&gt; int str_compare(const char (&amp;str1)[N], const char (&amp;str2)[M]) { return strcmp(str1,str2); } </code></pre></div></div> <h2 id="模板默认参数">模板默认参数</h2> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template &lt;typename T...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
+						<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p> <h2 id="模板的声明方式">模板的声明方式</h2> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// some demo</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span> <span class="n">T</span> <span class="nf">func</span><span class="p">(</span><span class="n">T</span> <span class="n">A</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span> <span class="n">templte</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">template</span> <span class="n">A</span><span class="p">&gt;</span> <span class="n">T</span> <span class="nf">func</span><span class="p">(</span><span class="n">A</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">t</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span> <span class="k">class</span> <span class="nc">A</span> <span class="p">{</span> <span class="p">};</span> <span class="c1">//可变参数模板</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
 					</div>
 				</div>
 			
@@ -822,7 +844,7 @@ void* operator new (std::size_t size) throw (std::bad_alloc);
                 <li><a href="./tag.html?tag=STL" class="tag">STL <span>(1)</span></a></li>
             
                 
-                <li><a href="./tag.html?tag=c%2B%2B" class="tag">c++ <span>(4)</span></a></li>
+                <li><a href="./tag.html?tag=c%2B%2B" class="tag">c++ <span>(5)</span></a></li>
             
                 
                 <li><a href="./tag.html?tag=coding" class="tag">coding <span>(2)</span></a></li>
@@ -831,7 +853,7 @@ void* operator new (std::size_t size) throw (std::bad_alloc);
                 <li><a href="./tag.html?tag=exeption" class="tag">exeption <span>(1)</span></a></li>
             
                 
-                <li><a href="./tag.html?tag=templates" class="tag">templates <span>(1)</span></a></li>
+                <li><a href="./tag.html?tag=templates" class="tag">templates <span>(2)</span></a></li>
             
     
         </ul>
