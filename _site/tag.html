@@ -232,6 +232,104 @@
 
 
 	
+	<div id="Concurrent" class="hidden tag-master">
+		<h1>Concurrent</h1>
+		<div class="archive">
+			<div class="post-list">
+		    
+			
+
+				<div class="post">
+					<a class="post-list-title" href="./CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86.html">CPP并发编程整理(1)</a>
+					
+
+  <span class = "post-card-meta">
+  
+  
+    <span class="meta-pre"></span>
+  
+  
+    
+      
+      <span class="page_meta-date">
+        <time datetime="2021-01-26T03:32:20+08:00">January 26, 2021</time>
+      </span>
+    
+    
+      <span class="meta-sep"></span>
+    
+  
+  
+    
+    
+    <span class="page_meta-readtime">
+      
+        1 minute read
+      
+    </span>
+  
+  
+  </span>
+
+					<div class="post-excerpt">
+						<p>文章主要内容摘自： https://paul.pub/cpp-concurrency/</p> <h1 id="why-并发编程">Why 并发编程</h1> <ul> <li>所有任务串行处理效率低下</li> <li>虽然CPU处理频率在增长，但是终究会遇到突破的瓶颈。大家会发现曾经有过一段时间CPU的频率从3G到达4G，但在这之后就停滞不前了。因此最近的新款CPU也基本上都是3G左右的频率。相应的，CPU以更多核的形式在增长。目前的Intel i7有8核的版本，Xeon处理器达到了28核。并且，最近几年手机上使用的CPU也基本上是4核或者8核的了。掌握并发编程，可以真正地使处理器协调工作，并行完成任务，提高效率。</li> </ul> <h2 id="关于并发和并行">关于并发和并行</h2> <ul> <li>并发concurrent，一段时间内执行多段任务，从宏观上来看是多任务同时完成的</li> <li>并行parallel，在某一个时刻，有多个任务在实际上同时执行</li> </ul> <p>更严格的来说：如果一个系统支持多个动作同时存在，那么这个系统就是一个并发系统。如果这个系统还支持多个动作（物理时间上）同时执行，那么这个系统就是一个并行系统。</p> <p>你可能已经看出，“并行”其实是“并发”的子集。它们的区别在于是否具有多个处理器。如果存在多个处理器同时执行多个线程，就是并行。</p> <p>在不考虑处理器数量的情况下，我们统称之为“并发”。</p> <h3 id="多线程一定能提升效率么">多线程一定能提升效率么？</h3> <p>但我们需要知道，单纯的使用多线程并不一定能提升系统性能（当然，也并非线程越多系统的性能就越好）。从上面的两幅图我们就可以直观的感受到：线程（任务）的数量要根据具体的处理器数量来决定。假设只有一个处理器，那么划分太多线程可能会适得其反。因为很多时间都花在任务切换上了。</p> <h2 id="cpp的并发编程">CPP的并发编程</h2> <p>知道cpp 11标准之前，c++标准库都没有对多线程编程的明确支持，如果在linux系统中需要使用linux的系统的api类似pthread_create来创建多线程环境，线程库叫POXIS THREAD</p> <center><img src="./assets/img/posts/20230222/cpp_history.jpg" width="480px" /></center> <h2 id="编译器与c标准">编译器与C++标准</h2> <p>编译器对于语言特性的支持是逐步完成的。想要使用特定的特性你需要相应版本的编译器。</p> <p>GCC对于C++特性的支持请参见这里：<a href="https://www.gnu.org/software/gcc/projects/cxx-status.html">C++ Standards Support in GCC</a>。 Clang对于C++特性的支持请参见这里：<a href="https://clang.llvm.org/cxx_status.html">C++ Support in Clang</a>。</p> <p>关于cpp和gcc的版本对应关系，因为有线程库这样的类似的标志性变化，所以gcc的标志版本可以浅浅记一下</p> <table> <thead> <tr> <th>cpp</th> <th>gcc</th> </tr> </thead> <tbody> <tr> <td>c++11</td> <td>4.8</td> </tr> <tr> <td>c++17</td> <td>5.0</td> </tr> <tr> <td>c++20</td> <td>7.0</td> </tr> </tbody> </table> <p>默认情况下编译器是以较低的标准来进行编译的，如果希望使用新的标准，你需要通过编译参数-std=c++xx告知编译器，例如：</p> <blockquote> <p>g++ -std=c++17 your_file.cpp -o your_program</p> </blockquote> <h1 id="线程">线程</h1> <h3 id="创建线程">创建线程</h3> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 01_hello_thread.cpp</span> <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"> #include</span> <span class="cpf">&lt;thread&gt;</span><span class="c1"> // ①</span><span class="cp"> </span>...<a class="read-more" href="./CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86.html"> read more</a>
+					</div>
+				</div>
+			
+			</div>
+		</div>
+	</div>
+
+	
+	<div id="Parallel" class="hidden tag-master">
+		<h1>Parallel</h1>
+		<div class="archive">
+			<div class="post-list">
+		    
+			
+
+				<div class="post">
+					<a class="post-list-title" href="./CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86.html">CPP并发编程整理(1)</a>
+					
+
+  <span class = "post-card-meta">
+  
+  
+    <span class="meta-pre"></span>
+  
+  
+    
+      
+      <span class="page_meta-date">
+        <time datetime="2021-01-26T03:32:20+08:00">January 26, 2021</time>
+      </span>
+    
+    
+      <span class="meta-sep"></span>
+    
+  
+  
+    
+    
+    <span class="page_meta-readtime">
+      
+        1 minute read
+      
+    </span>
+  
+  
+  </span>
+
+					<div class="post-excerpt">
+						<p>文章主要内容摘自： https://paul.pub/cpp-concurrency/</p> <h1 id="why-并发编程">Why 并发编程</h1> <ul> <li>所有任务串行处理效率低下</li> <li>虽然CPU处理频率在增长，但是终究会遇到突破的瓶颈。大家会发现曾经有过一段时间CPU的频率从3G到达4G，但在这之后就停滞不前了。因此最近的新款CPU也基本上都是3G左右的频率。相应的，CPU以更多核的形式在增长。目前的Intel i7有8核的版本，Xeon处理器达到了28核。并且，最近几年手机上使用的CPU也基本上是4核或者8核的了。掌握并发编程，可以真正地使处理器协调工作，并行完成任务，提高效率。</li> </ul> <h2 id="关于并发和并行">关于并发和并行</h2> <ul> <li>并发concurrent，一段时间内执行多段任务，从宏观上来看是多任务同时完成的</li> <li>并行parallel，在某一个时刻，有多个任务在实际上同时执行</li> </ul> <p>更严格的来说：如果一个系统支持多个动作同时存在，那么这个系统就是一个并发系统。如果这个系统还支持多个动作（物理时间上）同时执行，那么这个系统就是一个并行系统。</p> <p>你可能已经看出，“并行”其实是“并发”的子集。它们的区别在于是否具有多个处理器。如果存在多个处理器同时执行多个线程，就是并行。</p> <p>在不考虑处理器数量的情况下，我们统称之为“并发”。</p> <h3 id="多线程一定能提升效率么">多线程一定能提升效率么？</h3> <p>但我们需要知道，单纯的使用多线程并不一定能提升系统性能（当然，也并非线程越多系统的性能就越好）。从上面的两幅图我们就可以直观的感受到：线程（任务）的数量要根据具体的处理器数量来决定。假设只有一个处理器，那么划分太多线程可能会适得其反。因为很多时间都花在任务切换上了。</p> <h2 id="cpp的并发编程">CPP的并发编程</h2> <p>知道cpp 11标准之前，c++标准库都没有对多线程编程的明确支持，如果在linux系统中需要使用linux的系统的api类似pthread_create来创建多线程环境，线程库叫POXIS THREAD</p> <center><img src="./assets/img/posts/20230222/cpp_history.jpg" width="480px" /></center> <h2 id="编译器与c标准">编译器与C++标准</h2> <p>编译器对于语言特性的支持是逐步完成的。想要使用特定的特性你需要相应版本的编译器。</p> <p>GCC对于C++特性的支持请参见这里：<a href="https://www.gnu.org/software/gcc/projects/cxx-status.html">C++ Standards Support in GCC</a>。 Clang对于C++特性的支持请参见这里：<a href="https://clang.llvm.org/cxx_status.html">C++ Support in Clang</a>。</p> <p>关于cpp和gcc的版本对应关系，因为有线程库这样的类似的标志性变化，所以gcc的标志版本可以浅浅记一下</p> <table> <thead> <tr> <th>cpp</th> <th>gcc</th> </tr> </thead> <tbody> <tr> <td>c++11</td> <td>4.8</td> </tr> <tr> <td>c++17</td> <td>5.0</td> </tr> <tr> <td>c++20</td> <td>7.0</td> </tr> </tbody> </table> <p>默认情况下编译器是以较低的标准来进行编译的，如果希望使用新的标准，你需要通过编译参数-std=c++xx告知编译器，例如：</p> <blockquote> <p>g++ -std=c++17 your_file.cpp -o your_program</p> </blockquote> <h1 id="线程">线程</h1> <h3 id="创建线程">创建线程</h3> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 01_hello_thread.cpp</span> <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"> #include</span> <span class="cpf">&lt;thread&gt;</span><span class="c1"> // ①</span><span class="cp"> </span>...<a class="read-more" href="./CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86.html"> read more</a>
+					</div>
+				</div>
+			
+			</div>
+		</div>
+	</div>
+
+	
 	<div id="STL" class="hidden tag-master">
 		<h1>STL</h1>
 		<div class="archive">
@@ -303,6 +401,45 @@ at() 函数抛出的应当是std::out_of_range错误</p>
 		<div class="archive">
 			<div class="post-list">
 		    
+			
+
+				<div class="post">
+					<a class="post-list-title" href="./CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86.html">CPP并发编程整理(1)</a>
+					
+
+  <span class = "post-card-meta">
+  
+  
+    <span class="meta-pre"></span>
+  
+  
+    
+      
+      <span class="page_meta-date">
+        <time datetime="2021-01-26T03:32:20+08:00">January 26, 2021</time>
+      </span>
+    
+    
+      <span class="meta-sep"></span>
+    
+  
+  
+    
+    
+    <span class="page_meta-readtime">
+      
+        1 minute read
+      
+    </span>
+  
+  
+  </span>
+
+					<div class="post-excerpt">
+						<p>文章主要内容摘自： https://paul.pub/cpp-concurrency/</p> <h1 id="why-并发编程">Why 并发编程</h1> <ul> <li>所有任务串行处理效率低下</li> <li>虽然CPU处理频率在增长，但是终究会遇到突破的瓶颈。大家会发现曾经有过一段时间CPU的频率从3G到达4G，但在这之后就停滞不前了。因此最近的新款CPU也基本上都是3G左右的频率。相应的，CPU以更多核的形式在增长。目前的Intel i7有8核的版本，Xeon处理器达到了28核。并且，最近几年手机上使用的CPU也基本上是4核或者8核的了。掌握并发编程，可以真正地使处理器协调工作，并行完成任务，提高效率。</li> </ul> <h2 id="关于并发和并行">关于并发和并行</h2> <ul> <li>并发concurrent，一段时间内执行多段任务，从宏观上来看是多任务同时完成的</li> <li>并行parallel，在某一个时刻，有多个任务在实际上同时执行</li> </ul> <p>更严格的来说：如果一个系统支持多个动作同时存在，那么这个系统就是一个并发系统。如果这个系统还支持多个动作（物理时间上）同时执行，那么这个系统就是一个并行系统。</p> <p>你可能已经看出，“并行”其实是“并发”的子集。它们的区别在于是否具有多个处理器。如果存在多个处理器同时执行多个线程，就是并行。</p> <p>在不考虑处理器数量的情况下，我们统称之为“并发”。</p> <h3 id="多线程一定能提升效率么">多线程一定能提升效率么？</h3> <p>但我们需要知道，单纯的使用多线程并不一定能提升系统性能（当然，也并非线程越多系统的性能就越好）。从上面的两幅图我们就可以直观的感受到：线程（任务）的数量要根据具体的处理器数量来决定。假设只有一个处理器，那么划分太多线程可能会适得其反。因为很多时间都花在任务切换上了。</p> <h2 id="cpp的并发编程">CPP的并发编程</h2> <p>知道cpp 11标准之前，c++标准库都没有对多线程编程的明确支持，如果在linux系统中需要使用linux的系统的api类似pthread_create来创建多线程环境，线程库叫POXIS THREAD</p> <center><img src="./assets/img/posts/20230222/cpp_history.jpg" width="480px" /></center> <h2 id="编译器与c标准">编译器与C++标准</h2> <p>编译器对于语言特性的支持是逐步完成的。想要使用特定的特性你需要相应版本的编译器。</p> <p>GCC对于C++特性的支持请参见这里：<a href="https://www.gnu.org/software/gcc/projects/cxx-status.html">C++ Standards Support in GCC</a>。 Clang对于C++特性的支持请参见这里：<a href="https://clang.llvm.org/cxx_status.html">C++ Support in Clang</a>。</p> <p>关于cpp和gcc的版本对应关系，因为有线程库这样的类似的标志性变化，所以gcc的标志版本可以浅浅记一下</p> <table> <thead> <tr> <th>cpp</th> <th>gcc</th> </tr> </thead> <tbody> <tr> <td>c++11</td> <td>4.8</td> </tr> <tr> <td>c++17</td> <td>5.0</td> </tr> <tr> <td>c++20</td> <td>7.0</td> </tr> </tbody> </table> <p>默认情况下编译器是以较低的标准来进行编译的，如果希望使用新的标准，你需要通过编译参数-std=c++xx告知编译器，例如：</p> <blockquote> <p>g++ -std=c++17 your_file.cpp -o your_program</p> </blockquote> <h1 id="线程">线程</h1> <h3 id="创建线程">创建线程</h3> <div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 01_hello_thread.cpp</span> <span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"> #include</span> <span class="cpf">&lt;thread&gt;</span><span class="c1"> // ①</span><span class="cp"> </span>...<a class="read-more" href="./CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86.html"> read more</a>
+					</div>
+				</div>
+			
 			
 
 				<div class="post">
@@ -378,67 +515,6 @@ at() 函数抛出的应当是std::out_of_range错误</p>
 
 					<div class="post-excerpt">
 						<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p> <h2 id="模板的声明方式">模板的声明方式</h2> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// some demo</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span> <span class="n">T</span> <span class="nf">func</span><span class="p">(</span><span class="n">T</span> <span class="n">A</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span> <span class="n">templte</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">template</span> <span class="n">A</span><span class="p">&gt;</span> <span class="n">T</span> <span class="nf">func</span><span class="p">(</span><span class="n">A</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">t</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span> <span class="k">class</span> <span class="nc">A</span> <span class="p">{</span> <span class="p">};</span> <span class="c1">//可变参数模板</span> <span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
-					</div>
-				</div>
-			
-			
-
-				<div class="post">
-					<a class="post-list-title" href="./%E5%8A%A8%E6%80%81%E5%A4%9A%E6%80%81%E7%90%86%E8%A7%A3.html">关于虚函数的一些再确认</a>
-					
-
-  <span class = "post-card-meta">
-  
-  
-    <span class="meta-pre"></span>
-  
-  
-    
-      
-      <span class="page_meta-date">
-        <time datetime="2021-01-26T03:32:20+08:00">January 26, 2021</time>
-      </span>
-    
-    
-      <span class="meta-sep"></span>
-    
-  
-  
-    
-    
-    <span class="page_meta-readtime">
-      
-        less than 1 minute read
-      
-    </span>
-  
-  
-  </span>
-
-					<div class="post-excerpt">
-						<ul>
-  <li>虚函数表是类的</li>
-  <li>类的每个对象前四个字节就是指向虚函数表的指针</li>
-  <li>虚函数表的内容是指向函数的指针</li>
-</ul>
-
-<p>父类指针指向子类对象。运行时动态多态机制。指针指向的内存地址是派生类，根据派生类对象前四个字节找到虚函数表指针，根据虚函数表指针找到虚函数表从而调用函数</p>
-
-<h3 id="哪些函数不能被声明为虚函数">哪些函数不能被声明为虚函数</h3>
-<p>常见的不不能声明为虚函数的有：普通函数（非成员函数），静态成员函数，内联成员函数，构造函数，友元函数。</p>
-
-<h3 id="为什么c不支持普通函数为虚函数">为什么C++不支持普通函数为虚函数？</h3>
-<p>普通函数（非成员函数）只能被overload，不能被override，声明为虚函数也没有什么意思，因此编译器会在编译时绑定函数。</p>
-
-<h3 id="为什么c不支持构造函数为虚函数">为什么C++不支持构造函数为虚函数？</h3>
-<p>这个原因很简单，主要是从语义上考虑，所以不支持。因为构造函数本来就是为了明确初始化对象成员才产生的，然而virtual function主要是为了再不完全了解细节的情况下也能正确处理对象。另外，virtual函数是在不同类型的对象产生不同的动作，现在对象还没有产生，如何使用virtual函数来完成你想完成的动作。 构造函数用来创建一个新的对象,而虚函数的运行是建立在对象的基础上,在构造函数执行时,对象尚未形成，所以不能将构造函数定义为虚函数。</p>
-
-<h3 id="为什么c不支持内联成员函数为虚函数">为什么C++不支持内联成员函数为虚函数？</h3>
-<p>其实很简单，那内联函数就是为了在代码中直接展开，减少函数调用花费的代价，虚函数是为了在继承后对象能够准确的执行自己的动作，这是不可能统一的。（再说了，inline函数在编译时被展开，虚函数在运行时才能动态的绑定函数） 内联函数是在编译时期展开,而虚函数的特性是运行时才动态联编,所以两者矛盾,不能定义内联函数为虚函数。</p>
-
-<h3 id="为什么c不支持静态成员函数为虚函数">为什么C++不支持静态成员函数为虚函数？</h3>
-<p>这也很简单，静态成员函数对于每个类来说只有一份代码，所有的对象都共享这一份代码，他也没有要动态绑定的必要性。 静态成员函数属于一个类而非某一对象，没有this指针，它无法进行对象的判别。  为什么C++不支持友元函数为虚函数？ 因为C++不支持友元函数的继承，对于没有继承特性的函数没有虚函数的说法。</p>
-<a class="read-more" href="./%E5%8A%A8%E6%80%81%E5%A4%9A%E6%80%81%E7%90%86%E8%A7%A3.html"> read more</a>
 					</div>
 				</div>
 			
@@ -614,68 +690,7 @@ at() 函数抛出的应当是std::out_of_range错误</p>
   </span>
 
 					<div class="post-excerpt">
-						<center><img src="./assets/img/posts/20220214/exception_list.png" width="480px" /></center>
-
-<p>图片取自csdn @任我驰骋</p>
-
-<p>首先异常全部继承自std::exception类
-抓几个重要的来说，
-std::bad_alloc在表征内存开辟错误
-std::bad_cast 主要是dynamic_cast过程中抛出的错误。
-logic_error 溢出、语义错误等
-std::runtime_error 运行时错误，溢出错误</p>
-
-<ul>
-  <li>std::overflow_over</li>
-  <li>std::range_error</li>
-  <li>…</li>
-</ul>
-
-<p>异常捕捉的标准凭证是throw()</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//异常处理标准流程
-
-try {
-} catch (Exception &amp;) {
-
-}
-</code></pre></div></div>
-
-<p>关于异常处理的标准流程：</p>
-
-<ul>
-  <li>首先检查throw是否本身在try语句块内</li>
-  <li>如果在则选择匹配的catch进行处理，如果没有找到匹配的catch或者本函数调用没有存在异常处理，递归地退出当前函数帧栈寻找catch解决，</li>
-  <li>直到退出到main函数层面，如果依然没有匹配的处理模块那么就终止程序</li>
-</ul>
-
-<p><strong>异常安全</strong></p>
-
-<p>构造函数完成对象的构造和初始化，最好不要在构造函数中抛出异常，否则可能导致对象不完整或没有完全初始化</p>
-
-<p>析构函数主要完成资源的清理，最好不要在析构函数内抛出异常，否则<strong>可能导致资源泄漏(</strong>内存泄漏、句柄未关闭等)</p>
-
-<p>C++中异常经常会导致资源泄漏的问题，比如在new和del
-ete中抛出了异常，导致内存泄漏，在lock和unlock之间抛出了异常导致死锁，C++经常使用RAII来解决以上问题。</p>
-
-<p>异常抛出规范</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 这里表示这个函数会抛出A/B/C/D中的某种类型的异常
-void fun() throw(A，B，C，D);
-// 这里表示这个函数只会抛出bad_alloc的异常
-void* operator new (std::size_t size) throw (std::bad_alloc);
-</code></pre></div></div>
-
-<p>更详细的观点链接： https://blog.csdn.net/mz474920631/article/details/125019151</p>
-
-<p>异常的几个缺点记一下：比较重要的</p>
-<ul>
-  <li>程序乱跳</li>
-  <li>C++没有垃圾回收，异常中没有正确处理申请的内存会很危险</li>
-  <li>C++标准库的异常体系其实有点乱</li>
-  <li>异常尽量规范使用，否则后果不堪设想，随意抛异常，外层捕获的用户苦不堪言。所以异常规范有两点：一、抛出异常类型都继承自一个基类。二、函数是否抛异常、抛什么异常，都使用 func（）throw();的方式规范化。</li>
-</ul>
-<a class="read-more" href="./CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html"> read more</a>
+						<center><img src="./assets/img/posts/20220214/exception_list.png" width="480px" /></center> <p>图片取自csdn @任我驰骋</p> <p>首先异常全部继承自std::exception类 抓几个重要的来说， std::bad_alloc在表征内存开辟错误 std::bad_cast 主要是dynamic_cast过程中抛出的错误。 logic_error 溢出、语义错误等 std::runtime_error 运行时错误，溢出错误</p> <ul> <li>std::overflow_over</li> <li>std::range_error</li> <li>…</li> </ul> <p>异常捕捉的标准凭证是throw()</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//异常处理标准流程</span> <span class="k">try</span> <span class="p">{</span> <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span> </code></pre></div></div> <p>关于异常处理的标准流程：</p> <ul> <li>首先检查throw是否本身在try语句块内</li> <li>如果在则选择匹配的catch进行处理，如果没有找到匹配的catch或者本函数调用没有存在异常处理，递归地退出当前函数帧栈寻找catch解决，</li> <li>直到退出到main函数层面，如果依然没有匹配的处理模块那么就终止程序</li> </ul> <p><strong>异常安全</strong></p> <p>构造函数完成对象的构造和初始化，最好不要在构造函数中抛出异常，否则可能导致对象不完整或没有完全初始化</p> <p>析构函数主要完成资源的清理，最好不要在析构函数内抛出异常，否则<strong>可能导致资源泄漏(</strong>内存泄漏、句柄未关闭等)</p> <p>C++中异常经常会导致资源泄漏的问题，比如在new和del ete中抛出了异常，导致内存泄漏，在lock和unlock之间抛出了异常导致死锁，C++经常使用RAII来解决以上问题。</p> <p>异常抛出规范</p> <div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 这里表示这个函数会抛出A/B/C/D中的某种类型的异常</span> <span class="kt">void</span> <span class="nf">fun</span><span class="p">()</span> <span class="k">throw</span><span class="p">(</span><span class="n">A</span><span class="err">，</span><span class="n">B</span><span class="err">，</span><span class="n">C</span><span class="err">，</span><span class="n">D</span><span class="p">);</span> <span class="c1">// 这里表示这个函数只会抛出bad_alloc的异常</span> <span class="kt">void</span><span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span> <span...<a class="read-more" href="./CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html"> read more</a>
 					</div>
 				</div>
 			
@@ -841,10 +856,16 @@ void* operator new (std::size_t size) throw (std::bad_alloc);
         <ul class="tags">
             
                 
+                <li><a href="./tag.html?tag=Concurrent" class="tag">Concurrent <span>(1)</span></a></li>
+            
+                
+                <li><a href="./tag.html?tag=Parallel" class="tag">Parallel <span>(1)</span></a></li>
+            
+                
                 <li><a href="./tag.html?tag=STL" class="tag">STL <span>(1)</span></a></li>
             
                 
-                <li><a href="./tag.html?tag=c%2B%2B" class="tag">c++ <span>(5)</span></a></li>
+                <li><a href="./tag.html?tag=c%2B%2B" class="tag">c++ <span>(6)</span></a></li>
             
                 
                 <li><a href="./tag.html?tag=coding" class="tag">coding <span>(2)</span></a></li>

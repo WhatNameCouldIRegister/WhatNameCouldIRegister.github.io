@@ -1,110 +1,201 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-02-18T19:17:10+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">DD’s tenique website</title><subtitle>Artificial Intelligence trends and concepts made easy.</subtitle><author><name>DD</name></author><entry><title type="html">CPP模板机制（2）</title><link href="http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" rel="alternate" type="text/html" title="CPP模板机制（2）" /><published>2021-01-26T03:32:20+08:00</published><updated>2021-01-26T03:32:20+08:00</updated><id>http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6</id><content type="html" xml:base="http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"><![CDATA[<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-02-22T21:38:40+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">DD’s tenique website</title><subtitle>Artificial Intelligence trends and concepts made easy.</subtitle><author><name>DD</name></author><entry><title type="html">CPP并发编程整理(1)</title><link href="http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86.html" rel="alternate" type="text/html" title="CPP并发编程整理(1)" /><published>2021-01-26T03:32:20+08:00</published><updated>2021-01-26T03:32:20+08:00</updated><id>http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86</id><content type="html" xml:base="http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86.html"><![CDATA[<p>文章主要内容摘自： https://paul.pub/cpp-concurrency/</p>
 
-<p><strong><em>本篇主要整理可变参数模板</em></strong></p>
+<h1 id="why-并发编程">Why 并发编程</h1>
 
-<h3 id="sizeof-运算符">sizeof… 运算符</h3>
-
-<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span>  
-<span class="kt">void</span> <span class="nf">var_fun</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">,</span> <span class="k">const</span> <span class="n">Args</span><span class="o">&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="c1">//cout &lt;&lt; t;</span>
-    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"element numbers of packs is "</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">...(</span><span class="n">Args</span><span class="p">);</span>
-    <span class="c1">//var_fun(args...);</span>
-<span class="p">}</span>
-
-</code></pre></div></div>
-<p>能够获得包中参数的个数</p>
-
-<h2 id="关于包拓展">关于包拓展</h2>
-<p>是否对可变参数解析的省略号…用法存在疑虑？</p>
-
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>拓展        packs expand
-
-包拓展简单的来说将他分解为其构成的元素，如果说将参数变为包的过成类比为压缩未见，那么包拓展就是解压文件，但包拓展不仅仅是包展开。
-</code></pre></div></div>
-<p>我们知道了拓展包就是解析包内的元素，解析元素的过程在cpp的编译器处理中可以理解成对包内的元素进行分解，并且进行平行的操作。解包，就是在相应的操作后面加上…，编译器的处理逻辑就如上所述。
-以下引用自原文的说法。</p>
 <ul>
-  <li>当拓展一个包时，我们还要提供用于，每个拓展元素的模式。拓展一个包就是将它分解为构成的元素，对每个元素应用模式，获得拓展后的列表。我们通过在模式右边防一个省略号…来触发拓展操作 。</li>
-  <li>
-    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>什么是模式？
-在实际生活中，当我们说以一种模式打开某个东西，或者是什么模式打开时。指定的是固有的模式，比如说性能模式，均衡模式等。而包拓展的模式更像是对于每个元素都调用一次相应的函数，包拓展需要我们自定义模式——其实就是一个函数，返回值为包中的一个元素应用模式后的结果，所有这样的结果组合在一起，也就是包以这个模式（函数）展开。
-</code></pre></div>    </div>
-  </li>
+  <li>所有任务串行处理效率低下</li>
+  <li>虽然CPU处理频率在增长，但是终究会遇到突破的瓶颈。大家会发现曾经有过一段时间CPU的频率从3G到达4G，但在这之后就停滞不前了。因此最近的新款CPU也基本上都是3G左右的频率。相应的，CPU以更多核的形式在增长。目前的Intel i7有8核的版本，Xeon处理器达到了28核。并且，最近几年手机上使用的CPU也基本上是4核或者8核的了。掌握并发编程，可以真正地使处理器协调工作，并行完成任务，提高效率。</li>
 </ul>
 
-<p>以下引用自标准库的配置器展开</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>noexcept(noexcept(::new((void *)__p)
-			    _Up(std::forward&lt;_Args&gt;(__args)...)))
-</code></pre></div></div>
-<p>另外，一定要注意省略号的位置，省略号的位置直接表述了对应解包的操作以及如何解包</p>
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">var_func</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>      <span class="c1">//默认的包展开</span>
-<span class="c1">//注释部分的...不为关键字，和C++语法没有任何关系</span>
-<span class="c1">//相当于这样{ele1, ele2, ele3, ... ,elen}</span>
-<span class="n">var_fun</span><span class="p">(</span><span class="n">mul</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">args</span><span class="p">)...);</span>    <span class="c1">//带有模式的包展开</span>
-<span class="c1">//第二种展开模式相当于这样</span>
-<span class="c1">//{ mul(2,ele0),mul(2,ele1),mul(2,ele2), ... mul(2,elen) }</span>
-</code></pre></div></div>
-<p>所以其实并没有说…只能用于哪些函数和操作
-在现代cpp中，…就代表了解包操作，编译器会根据…的使用来平行地应用模式</p>
+<h2 id="关于并发和并行">关于并发和并行</h2>
 
-<p><strong><em>还有个小细节，当你需要解包，…放在后面，当你为了压缩（其实可以类比一下，意思就是声明模板的传包形式时或者声明函数的可变参数传入形式时，…放在类似Args参数或者形式参数args前，注意仅仅是在参数前，在其他符号之后）</em></strong></p>
+<ul>
+  <li>并发concurrent，一段时间内执行多段任务，从宏观上来看是多任务同时完成的</li>
+  <li>并行parallel，在某一个时刻，有多个任务在实际上同时执行</li>
+</ul>
 
-<h2 id="demo">demo</h2>
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
-<span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">t</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<p>更严格的来说：如果一个系统支持多个动作同时存在，那么这个系统就是一个并发系统。如果这个系统还支持多个动作（物理时间上）同时执行，那么这个系统就是一个并行系统。</p>
+
+<p>你可能已经看出，“并行”其实是“并发”的子集。它们的区别在于是否具有多个处理器。如果存在多个处理器同时执行多个线程，就是并行。</p>
+
+<p>在不考虑处理器数量的情况下，我们统称之为“并发”。</p>
+
+<h3 id="多线程一定能提升效率么">多线程一定能提升效率么？</h3>
+<p>但我们需要知道，单纯的使用多线程并不一定能提升系统性能（当然，也并非线程越多系统的性能就越好）。从上面的两幅图我们就可以直观的感受到：线程（任务）的数量要根据具体的处理器数量来决定。假设只有一个处理器，那么划分太多线程可能会适得其反。因为很多时间都花在任务切换上了。</p>
+
+<h2 id="cpp的并发编程">CPP的并发编程</h2>
+
+<p>知道cpp 11标准之前，c++标准库都没有对多线程编程的明确支持，如果在linux系统中需要使用linux的系统的api类似pthread_create来创建多线程环境，线程库叫POXIS THREAD</p>
+
+<center><img src="./assets/img/posts/20230222/cpp_history.jpg" width="480px" /></center>
+
+<h2 id="编译器与c标准">编译器与C++标准</h2>
+<p>编译器对于语言特性的支持是逐步完成的。想要使用特定的特性你需要相应版本的编译器。</p>
+
+<p>GCC对于C++特性的支持请参见这里：<a href="https://www.gnu.org/software/gcc/projects/cxx-status.html">C++ Standards Support in GCC</a>。
+Clang对于C++特性的支持请参见这里：<a href="https://clang.llvm.org/cxx_status.html">C++ Support in Clang</a>。</p>
+
+<p>关于cpp和gcc的版本对应关系，因为有线程库这样的类似的标志性变化，所以gcc的标志版本可以浅浅记一下</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>cpp</th>
+      <th>gcc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>c++11</td>
+      <td>4.8</td>
+    </tr>
+    <tr>
+      <td>c++17</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <td>c++20</td>
+      <td>7.0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>默认情况下编译器是以较低的标准来进行编译的，如果希望使用新的标准，你需要通过编译参数-std=c++xx告知编译器，例如：</p>
+<blockquote>
+  <p>g++ -std=c++17 your_file.cpp -o your_program</p>
+</blockquote>
+
+<h1 id="线程">线程</h1>
+
+<h3 id="创建线程">创建线程</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 01_hello_thread.cpp</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;thread&gt;</span><span class="c1"> // ①</span><span class="cp">
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span> <span class="c1">// ②</span>
+
+<span class="kt">void</span> <span class="nf">hello</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// ③</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Hello World from new thread."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
 <span class="p">}</span>
-<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span>
-<span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span><span class="n">t</span> <span class="p">,</span><span class="k">const</span> <span class="n">Args</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">t</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-  <span class="n">print</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>
-<span class="p">}</span>
- 
-<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
-<span class="kt">int</span> <span class="nf">up</span><span class="p">(</span><span class="n">T</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="n">t</span> <span class="o">*=</span> <span class="mi">2</span><span class="p">;</span>
-  <span class="k">return</span> <span class="n">t</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span>
-<span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="n">print</span><span class="p">(</span><span class="n">up</span><span class="p">(</span><span class="n">args</span><span class="p">)...);</span>
-<span class="p">}</span>
- 
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
-<span class="p">{</span>
-  <span class="n">func</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kr">thread</span> <span class="n">t</span><span class="p">(</span><span class="n">hello</span><span class="p">);</span> <span class="c1">// ④</span>
+  <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span> <span class="c1">// ⑤</span>
+
   <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
-<h2 id="使用stdforward">使用std::forward</h2>
-<p>要说转发一定离不开std::forward</p>
+<p>thread可以和callable类型一起工作，因此如果你熟悉lambda表达式，你可以直接用它来写线程的逻辑，像这样：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 02_lambda_thread.cpp
 
-<p>forward返回实参类型的右值引用。它和move很像，但前者是返回给定类型的右值引用，如果给定的类型是左值引用也返回其右值引用——左值引用，并且其必须显式的指定模板参数；而move无论模板参数类型是什么都返回一个右值引用（只能是右值引用），因为前面已经看到了move的实现方法。</p>
+#include &lt;iostream&gt;
+#include &lt;thread&gt;
 
-<p>于是我们可以定义下面的转发函数</p>
+using namespace std;
 
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">F</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">T1</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">T2</span><span class="p">&gt;</span>
-<span class="kt">void</span> <span class="nf">fun</span><span class="p">(</span><span class="n">F</span> <span class="n">f</span><span class="p">,</span> <span class="n">T1</span> <span class="o">&amp;&amp;</span> <span class="n">t1</span><span class="p">,</span> <span class="n">T2</span> <span class="o">&amp;&amp;</span> <span class="n">t2</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="n">f</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t2</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t1</span><span class="p">));</span>
+int main() {
+  thread t([] {
+    cout &lt;&lt; "Hello World from lambda thread." &lt;&lt; endl;
+  });
+
+  t.join();
+
+  return 0;
+}
+
+//传递参数给入口函数
+// 03_thread_argument.cpp
+
+void hello(string name) {
+  cout &lt;&lt; "Welcome to " &lt;&lt; name &lt;&lt; endl;
+}
+
+int main() {
+  thread t(hello, "https://paul.pub");
+  t.join();
+
+  return 0;
+}
+</code></pre></div></div>
+
+<ul>
+  <li>要注意参数是拷贝构造传入的，对于拷贝十分复杂的对象需要传指针引用，但是要注意对象的生存周期</li>
+</ul>
+
+<h2 id="join-与-detach">join 与 detach</h2>
+
+<ul>
+  <li>join：调用此接口时，当前线程会一直阻塞，直到目标线程执行完成（当然，很可能目标线程在此处调用之前就已经执行完成了，不过这不要紧）。因此，如果目标线程的任务非常耗时，你就要考虑好是否需要在主线程上等待它了，因此这很可能会导致主线程卡住。</li>
+  <li>detach：detach是让目标线程成为守护线程（daemon threads）。一旦detach之后，目标线程将独立执行，即便其对应的thread对象销毁也不影响线程的执行。并且，你无法再与之通信。其实意思应当是让其父进程成为0号的init进程，子进程的线程执行资源和状态由init负责释放</li>
+  <li>对于这两个接口，都必须是可执行的线程才有意义。你可以通过joinable()接口、查询是否可以对它们进行join或者detach。</li>
+</ul>
+
+<h2 id="线程管理常用api">线程管理常用api</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>api</th>
+      <th>作用</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>yield</td>
+      <td>任务快结束的时候希望出让处理器</td>
+    </tr>
+    <tr>
+      <td>get_id</td>
+      <td>返回当前线程id</td>
+    </tr>
+    <tr>
+      <td>sleep_for</td>
+      <td>睡眠一定是时间</td>
+    </tr>
+    <tr>
+      <td>sleep_until</td>
+      <td>睡眠到指定时间</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="一次调用">一次调用</h2>
+<p>主要API
+|API|主要作用|
+|—|—|
+| call_once | 即便在多线程环境下，也能保证只调用某个函数一次 |
+| once_flag |与call_once配合使用 |
+在一些情况下，我们有些任务需要执行一次，并且我们只希望它执行一次，例如资源的初始化任务。这个时候就可以用到上面的接口。这个接口会保证，即便在多线程的环境下，相应的函数也只会调用一次。</p>
+
+<p>下面就是一个示例：有三个线程都会使用init函数，但是只会有一个线程真正执行它。</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 05_call_once.cpp</span>
+
+<span class="kt">void</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Initialing..."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+  <span class="c1">// Do something...</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">worker</span><span class="p">(</span><span class="n">once_flag</span><span class="o">*</span> <span class="n">flag</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">call_once</span><span class="p">(</span><span class="o">*</span><span class="n">flag</span><span class="p">,</span> <span class="n">init</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">once_flag</span> <span class="n">flag</span><span class="p">;</span>
+
+  <span class="kr">thread</span> <span class="n">t1</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flag</span><span class="p">);</span>
+  <span class="kr">thread</span> <span class="n">t2</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flag</span><span class="p">);</span>
+  <span class="kr">thread</span> <span class="n">t3</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flag</span><span class="p">);</span>
+
+  <span class="n">t1</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+  <span class="n">t2</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+  <span class="n">t3</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="p">}</span>
 </code></pre></div></div>
-<p>使用右值引用作为模板参数——确保接受任意对象，并保证其能保持原来的性质不变（见引用折叠）。在发送参数的过程中获得对应类型的右值——确保其传递给函数的参数的性质不变（见引用折叠）。</p>
-
-<h3 id="转发参数包">转发参数包</h3>
-
-<p>根据上面转发的关键字，我们可以知道，在进行转发的时候应该以何种模式进行包展开。</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template&lt;typename ... Args&gt;
-void buffer_fun(Args &amp;&amp;... args)
-{
-    work(std::forward&lt;Args&gt;(args)...);
-}
-</code></pre></div></div>]]></content><author><name>DD</name></author><category term="c++" /><category term="templates" /><summary type="html"><![CDATA[cpp模板常见混淆点做一个自我区分]]></summary></entry><entry><title type="html">CPP异常知识碎片</title><link href="http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html" rel="alternate" type="text/html" title="CPP异常知识碎片" /><published>2021-01-26T03:32:20+08:00</published><updated>2021-01-26T03:32:20+08:00</updated><id>http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87</id><content type="html" xml:base="http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html"><![CDATA[<center><img src="./assets/img/posts/20220214/exception_list.png" width="480px" /></center>
+<p>我们无法确定具体是哪一个线程会执行init。而事实上，我们也不关心，因为只要有某个线程完成这个初始化工作就可以了。</p>]]></content><author><name>DD</name></author><category term="c++" /><category term="Parallel" /><category term="Concurrent" /><summary type="html"><![CDATA[cpp模板常见混淆点做一个自我区分]]></summary></entry><entry><title type="html">CPP异常知识碎片</title><link href="http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html" rel="alternate" type="text/html" title="CPP异常知识碎片" /><published>2021-01-26T03:32:20+08:00</published><updated>2021-01-26T03:32:20+08:00</updated><id>http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87</id><content type="html" xml:base="http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html"><![CDATA[<center><img src="./assets/img/posts/20220214/exception_list.png" width="480px" /></center>
 
 <p>图片取自csdn @任我驰骋</p>
 
@@ -123,12 +214,12 @@ std::runtime_error 运行时错误，溢出错误</p>
 
 <p>异常捕捉的标准凭证是throw()</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>//异常处理标准流程
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//异常处理标准流程</span>
 
-try {
-} catch (Exception &amp;) {
+<span class="k">try</span> <span class="p">{</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">Exception</span> <span class="o">&amp;</span><span class="p">)</span> <span class="p">{</span>
 
-}
+<span class="p">}</span>
 </code></pre></div></div>
 
 <p>关于异常处理的标准流程：</p>
@@ -150,10 +241,10 @@ ete中抛出了异常，导致内存泄漏，在lock和unlock之间抛出了异�
 
 <p>异常抛出规范</p>
 
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 这里表示这个函数会抛出A/B/C/D中的某种类型的异常
-void fun() throw(A，B，C，D);
-// 这里表示这个函数只会抛出bad_alloc的异常
-void* operator new (std::size_t size) throw (std::bad_alloc);
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 这里表示这个函数会抛出A/B/C/D中的某种类型的异常</span>
+<span class="kt">void</span> <span class="nf">fun</span><span class="p">()</span> <span class="k">throw</span><span class="p">(</span><span class="n">A</span><span class="err">，</span><span class="n">B</span><span class="err">，</span><span class="n">C</span><span class="err">，</span><span class="n">D</span><span class="p">);</span>
+<span class="c1">// 这里表示这个函数只会抛出bad_alloc的异常</span>
+<span class="kt">void</span><span class="o">*</span> <span class="k">operator</span> <span class="nf">new</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span> <span class="k">throw</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">bad_alloc</span><span class="p">);</span>
 </code></pre></div></div>
 
 <p>更详细的观点链接： https://blog.csdn.net/mz474920631/article/details/125019151</p>
@@ -465,4 +556,110 @@ T&amp;&amp; &amp;&amp;会被折叠为&amp;&amp;
 </code></pre></div></div>
 
 <h2 id="下一篇聚焦可变参数模板">下一篇聚焦可变参数模板</h2>
-<p>…</p>]]></content><author><name>DD</name></author><category term="c++" /><category term="templates" /><summary type="html"><![CDATA[cpp模板常见混淆点做一个自我区分]]></summary></entry></feed>
+<p>…</p>]]></content><author><name>DD</name></author><category term="c++" /><category term="templates" /><summary type="html"><![CDATA[cpp模板常见混淆点做一个自我区分]]></summary></entry><entry><title type="html">CPP模板机制（2）</title><link href="http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html" rel="alternate" type="text/html" title="CPP模板机制（2）" /><published>2021-01-26T03:32:20+08:00</published><updated>2021-01-26T03:32:20+08:00</updated><id>http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6</id><content type="html" xml:base="http://localhost:4000/CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"><![CDATA[<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p>
+
+<p><strong><em>本篇主要整理可变参数模板</em></strong></p>
+
+<h3 id="sizeof-运算符">sizeof… 运算符</h3>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span>  
+<span class="kt">void</span> <span class="nf">var_fun</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">,</span> <span class="k">const</span> <span class="n">Args</span><span class="o">&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">//cout &lt;&lt; t;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"element numbers of packs is "</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">...(</span><span class="n">Args</span><span class="p">);</span>
+    <span class="c1">//var_fun(args...);</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>能够获得包中参数的个数</p>
+
+<h2 id="关于包拓展">关于包拓展</h2>
+<p>是否对可变参数解析的省略号…用法存在疑虑？</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>拓展        packs expand
+
+包拓展简单的来说将他分解为其构成的元素，如果说将参数变为包的过成类比为压缩未见，那么包拓展就是解压文件，但包拓展不仅仅是包展开。
+</code></pre></div></div>
+<p>我们知道了拓展包就是解析包内的元素，解析元素的过程在cpp的编译器处理中可以理解成对包内的元素进行分解，并且进行平行的操作。解包，就是在相应的操作后面加上…，编译器的处理逻辑就如上所述。
+以下引用自原文的说法。</p>
+<ul>
+  <li>当拓展一个包时，我们还要提供用于，每个拓展元素的模式。拓展一个包就是将它分解为构成的元素，对每个元素应用模式，获得拓展后的列表。我们通过在模式右边防一个省略号…来触发拓展操作 。</li>
+  <li>
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>什么是模式？
+在实际生活中，当我们说以一种模式打开某个东西，或者是什么模式打开时。指定的是固有的模式，比如说性能模式，均衡模式等。而包拓展的模式更像是对于每个元素都调用一次相应的函数，包拓展需要我们自定义模式——其实就是一个函数，返回值为包中的一个元素应用模式后的结果，所有这样的结果组合在一起，也就是包以这个模式（函数）展开。
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<p>以下引用自标准库的配置器展开</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>noexcept(noexcept(::new((void *)__p)
+			    _Up(std::forward&lt;_Args&gt;(__args)...)))
+</code></pre></div></div>
+<p>另外，一定要注意省略号的位置，省略号的位置直接表述了对应解包的操作以及如何解包</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">var_func</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>      <span class="c1">//默认的包展开</span>
+<span class="c1">//注释部分的...不为关键字，和C++语法没有任何关系</span>
+<span class="c1">//相当于这样{ele1, ele2, ele3, ... ,elen}</span>
+<span class="n">var_fun</span><span class="p">(</span><span class="n">mul</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="n">args</span><span class="p">)...);</span>    <span class="c1">//带有模式的包展开</span>
+<span class="c1">//第二种展开模式相当于这样</span>
+<span class="c1">//{ mul(2,ele0),mul(2,ele1),mul(2,ele2), ... mul(2,elen) }</span>
+</code></pre></div></div>
+<p>所以其实并没有说…只能用于哪些函数和操作
+在现代cpp中，…就代表了解包操作，编译器会根据…的使用来平行地应用模式</p>
+
+<p><strong><em>还有个小细节，当你需要解包，…放在后面，当你为了压缩（其实可以类比一下，意思就是声明模板的传包形式时或者声明函数的可变参数传入形式时，…放在类似Args参数或者形式参数args前，注意仅仅是在参数前，在其他符号之后）</em></strong></p>
+
+<h2 id="demo">demo</h2>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">t</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">print</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span><span class="n">t</span> <span class="p">,</span><span class="k">const</span> <span class="n">Args</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">t</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+  <span class="n">print</span><span class="p">(</span><span class="n">args</span><span class="p">...);</span>
+<span class="p">}</span>
+ 
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="kt">int</span> <span class="nf">up</span><span class="p">(</span><span class="n">T</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">t</span> <span class="o">*=</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="k">return</span> <span class="n">t</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">func</span><span class="p">(</span><span class="n">Args</span><span class="o">&amp;&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="n">print</span><span class="p">(</span><span class="n">up</span><span class="p">(</span><span class="n">args</span><span class="p">)...);</span>
+<span class="p">}</span>
+ 
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+  <span class="n">func</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">);</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h2 id="使用stdforward">使用std::forward</h2>
+<p>要说转发一定离不开std::forward</p>
+
+<p>forward返回实参类型的右值引用。它和move很像，但前者是返回给定类型的右值引用，如果给定的类型是左值引用也返回其右值引用——左值引用，并且其必须显式的指定模板参数；而move无论模板参数类型是什么都返回一个右值引用（只能是右值引用），因为前面已经看到了move的实现方法。</p>
+
+<p>于是我们可以定义下面的转发函数</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">F</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">T1</span><span class="p">,</span> <span class="k">typename</span> <span class="nc">T2</span><span class="p">&gt;</span>
+<span class="kt">void</span> <span class="nf">fun</span><span class="p">(</span><span class="n">F</span> <span class="n">f</span><span class="p">,</span> <span class="n">T1</span> <span class="o">&amp;&amp;</span> <span class="n">t1</span><span class="p">,</span> <span class="n">T2</span> <span class="o">&amp;&amp;</span> <span class="n">t2</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">f</span><span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T2</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t2</span><span class="p">),</span> <span class="n">std</span><span class="o">::</span><span class="n">forward</span><span class="o">&lt;</span><span class="n">T1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">t1</span><span class="p">));</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>使用右值引用作为模板参数——确保接受任意对象，并保证其能保持原来的性质不变（见引用折叠）。在发送参数的过程中获得对应类型的右值——确保其传递给函数的参数的性质不变（见引用折叠）。</p>
+
+<h3 id="转发参数包">转发参数包</h3>
+
+<p>根据上面转发的关键字，我们可以知道，在进行转发的时候应该以何种模式进行包展开。</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>template&lt;typename ... Args&gt;
+void buffer_fun(Args &amp;&amp;... args)
+{
+    work(std::forward&lt;Args&gt;(args)...);
+}
+</code></pre></div></div>]]></content><author><name>DD</name></author><category term="c++" /><category term="templates" /><summary type="html"><![CDATA[cpp模板常见混淆点做一个自我区分]]></summary></entry></feed>
