@@ -1,201 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-02-22T21:38:40+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">DD’s tenique website</title><subtitle>Artificial Intelligence trends and concepts made easy.</subtitle><author><name>DD</name></author><entry><title type="html">CPP并发编程整理(1)</title><link href="http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86.html" rel="alternate" type="text/html" title="CPP并发编程整理(1)" /><published>2021-01-26T03:32:20+08:00</published><updated>2021-01-26T03:32:20+08:00</updated><id>http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86</id><content type="html" xml:base="http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86.html"><![CDATA[<p>文章主要内容摘自： https://paul.pub/cpp-concurrency/</p>
-
-<h1 id="why-并发编程">Why 并发编程</h1>
-
-<ul>
-  <li>所有任务串行处理效率低下</li>
-  <li>虽然CPU处理频率在增长，但是终究会遇到突破的瓶颈。大家会发现曾经有过一段时间CPU的频率从3G到达4G，但在这之后就停滞不前了。因此最近的新款CPU也基本上都是3G左右的频率。相应的，CPU以更多核的形式在增长。目前的Intel i7有8核的版本，Xeon处理器达到了28核。并且，最近几年手机上使用的CPU也基本上是4核或者8核的了。掌握并发编程，可以真正地使处理器协调工作，并行完成任务，提高效率。</li>
-</ul>
-
-<h2 id="关于并发和并行">关于并发和并行</h2>
-
-<ul>
-  <li>并发concurrent，一段时间内执行多段任务，从宏观上来看是多任务同时完成的</li>
-  <li>并行parallel，在某一个时刻，有多个任务在实际上同时执行</li>
-</ul>
-
-<p>更严格的来说：如果一个系统支持多个动作同时存在，那么这个系统就是一个并发系统。如果这个系统还支持多个动作（物理时间上）同时执行，那么这个系统就是一个并行系统。</p>
-
-<p>你可能已经看出，“并行”其实是“并发”的子集。它们的区别在于是否具有多个处理器。如果存在多个处理器同时执行多个线程，就是并行。</p>
-
-<p>在不考虑处理器数量的情况下，我们统称之为“并发”。</p>
-
-<h3 id="多线程一定能提升效率么">多线程一定能提升效率么？</h3>
-<p>但我们需要知道，单纯的使用多线程并不一定能提升系统性能（当然，也并非线程越多系统的性能就越好）。从上面的两幅图我们就可以直观的感受到：线程（任务）的数量要根据具体的处理器数量来决定。假设只有一个处理器，那么划分太多线程可能会适得其反。因为很多时间都花在任务切换上了。</p>
-
-<h2 id="cpp的并发编程">CPP的并发编程</h2>
-
-<p>知道cpp 11标准之前，c++标准库都没有对多线程编程的明确支持，如果在linux系统中需要使用linux的系统的api类似pthread_create来创建多线程环境，线程库叫POXIS THREAD</p>
-
-<center><img src="./assets/img/posts/20230222/cpp_history.jpg" width="480px" /></center>
-
-<h2 id="编译器与c标准">编译器与C++标准</h2>
-<p>编译器对于语言特性的支持是逐步完成的。想要使用特定的特性你需要相应版本的编译器。</p>
-
-<p>GCC对于C++特性的支持请参见这里：<a href="https://www.gnu.org/software/gcc/projects/cxx-status.html">C++ Standards Support in GCC</a>。
-Clang对于C++特性的支持请参见这里：<a href="https://clang.llvm.org/cxx_status.html">C++ Support in Clang</a>。</p>
-
-<p>关于cpp和gcc的版本对应关系，因为有线程库这样的类似的标志性变化，所以gcc的标志版本可以浅浅记一下</p>
-
-<table>
-  <thead>
-    <tr>
-      <th>cpp</th>
-      <th>gcc</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>c++11</td>
-      <td>4.8</td>
-    </tr>
-    <tr>
-      <td>c++17</td>
-      <td>5.0</td>
-    </tr>
-    <tr>
-      <td>c++20</td>
-      <td>7.0</td>
-    </tr>
-  </tbody>
-</table>
-
-<p>默认情况下编译器是以较低的标准来进行编译的，如果希望使用新的标准，你需要通过编译参数-std=c++xx告知编译器，例如：</p>
-<blockquote>
-  <p>g++ -std=c++17 your_file.cpp -o your_program</p>
-</blockquote>
-
-<h1 id="线程">线程</h1>
-
-<h3 id="创建线程">创建线程</h3>
-
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 01_hello_thread.cpp</span>
-
-<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
-#include</span> <span class="cpf">&lt;thread&gt;</span><span class="c1"> // ①</span><span class="cp">
-</span>
-<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span> <span class="c1">// ②</span>
-
-<span class="kt">void</span> <span class="nf">hello</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// ③</span>
-  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Hello World from new thread."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-  <span class="kr">thread</span> <span class="n">t</span><span class="p">(</span><span class="n">hello</span><span class="p">);</span> <span class="c1">// ④</span>
-  <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span> <span class="c1">// ⑤</span>
-
-  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
-<p>thread可以和callable类型一起工作，因此如果你熟悉lambda表达式，你可以直接用它来写线程的逻辑，像这样：</p>
-<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 02_lambda_thread.cpp
-
-#include &lt;iostream&gt;
-#include &lt;thread&gt;
-
-using namespace std;
-
-int main() {
-  thread t([] {
-    cout &lt;&lt; "Hello World from lambda thread." &lt;&lt; endl;
-  });
-
-  t.join();
-
-  return 0;
-}
-
-//传递参数给入口函数
-// 03_thread_argument.cpp
-
-void hello(string name) {
-  cout &lt;&lt; "Welcome to " &lt;&lt; name &lt;&lt; endl;
-}
-
-int main() {
-  thread t(hello, "https://paul.pub");
-  t.join();
-
-  return 0;
-}
-</code></pre></div></div>
-
-<ul>
-  <li>要注意参数是拷贝构造传入的，对于拷贝十分复杂的对象需要传指针引用，但是要注意对象的生存周期</li>
-</ul>
-
-<h2 id="join-与-detach">join 与 detach</h2>
-
-<ul>
-  <li>join：调用此接口时，当前线程会一直阻塞，直到目标线程执行完成（当然，很可能目标线程在此处调用之前就已经执行完成了，不过这不要紧）。因此，如果目标线程的任务非常耗时，你就要考虑好是否需要在主线程上等待它了，因此这很可能会导致主线程卡住。</li>
-  <li>detach：detach是让目标线程成为守护线程（daemon threads）。一旦detach之后，目标线程将独立执行，即便其对应的thread对象销毁也不影响线程的执行。并且，你无法再与之通信。其实意思应当是让其父进程成为0号的init进程，子进程的线程执行资源和状态由init负责释放</li>
-  <li>对于这两个接口，都必须是可执行的线程才有意义。你可以通过joinable()接口、查询是否可以对它们进行join或者detach。</li>
-</ul>
-
-<h2 id="线程管理常用api">线程管理常用api</h2>
-
-<table>
-  <thead>
-    <tr>
-      <th>api</th>
-      <th>作用</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>yield</td>
-      <td>任务快结束的时候希望出让处理器</td>
-    </tr>
-    <tr>
-      <td>get_id</td>
-      <td>返回当前线程id</td>
-    </tr>
-    <tr>
-      <td>sleep_for</td>
-      <td>睡眠一定是时间</td>
-    </tr>
-    <tr>
-      <td>sleep_until</td>
-      <td>睡眠到指定时间</td>
-    </tr>
-  </tbody>
-</table>
-
-<h2 id="一次调用">一次调用</h2>
-<p>主要API
-|API|主要作用|
-|—|—|
-| call_once | 即便在多线程环境下，也能保证只调用某个函数一次 |
-| once_flag |与call_once配合使用 |
-在一些情况下，我们有些任务需要执行一次，并且我们只希望它执行一次，例如资源的初始化任务。这个时候就可以用到上面的接口。这个接口会保证，即便在多线程的环境下，相应的函数也只会调用一次。</p>
-
-<p>下面就是一个示例：有三个线程都会使用init函数，但是只会有一个线程真正执行它。</p>
-<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 05_call_once.cpp</span>
-
-<span class="kt">void</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
-  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Initialing..."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
-  <span class="c1">// Do something...</span>
-<span class="p">}</span>
-
-<span class="kt">void</span> <span class="nf">worker</span><span class="p">(</span><span class="n">once_flag</span><span class="o">*</span> <span class="n">flag</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">call_once</span><span class="p">(</span><span class="o">*</span><span class="n">flag</span><span class="p">,</span> <span class="n">init</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
-  <span class="n">once_flag</span> <span class="n">flag</span><span class="p">;</span>
-
-  <span class="kr">thread</span> <span class="n">t1</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flag</span><span class="p">);</span>
-  <span class="kr">thread</span> <span class="n">t2</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flag</span><span class="p">);</span>
-  <span class="kr">thread</span> <span class="n">t3</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flag</span><span class="p">);</span>
-
-  <span class="n">t1</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
-  <span class="n">t2</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
-  <span class="n">t3</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
-
-  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="p">}</span>
-</code></pre></div></div>
-<p>我们无法确定具体是哪一个线程会执行init。而事实上，我们也不关心，因为只要有某个线程完成这个初始化工作就可以了。</p>]]></content><author><name>DD</name></author><category term="c++" /><category term="Parallel" /><category term="Concurrent" /><summary type="html"><![CDATA[cpp模板常见混淆点做一个自我区分]]></summary></entry><entry><title type="html">CPP异常知识碎片</title><link href="http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html" rel="alternate" type="text/html" title="CPP异常知识碎片" /><published>2021-01-26T03:32:20+08:00</published><updated>2021-01-26T03:32:20+08:00</updated><id>http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87</id><content type="html" xml:base="http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html"><![CDATA[<center><img src="./assets/img/posts/20220214/exception_list.png" width="480px" /></center>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-03-14T09:55:04+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">DD’s tenique website</title><subtitle>Artificial Intelligence trends and concepts made easy.</subtitle><author><name>DD</name></author><entry><title type="html">CPP异常知识碎片</title><link href="http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html" rel="alternate" type="text/html" title="CPP异常知识碎片" /><published>2021-01-26T03:32:20+08:00</published><updated>2021-01-26T03:32:20+08:00</updated><id>http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87</id><content type="html" xml:base="http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html"><![CDATA[<center><img src="./assets/img/posts/20220214/exception_list.png" width="480px" /></center>
 
 <p>图片取自csdn @任我驰骋</p>
 
@@ -662,4 +465,350 @@ void buffer_fun(Args &amp;&amp;... args)
 {
     work(std::forward&lt;Args&gt;(args)...);
 }
-</code></pre></div></div>]]></content><author><name>DD</name></author><category term="c++" /><category term="templates" /><summary type="html"><![CDATA[cpp模板常见混淆点做一个自我区分]]></summary></entry></feed>
+</code></pre></div></div>]]></content><author><name>DD</name></author><category term="c++" /><category term="templates" /><summary type="html"><![CDATA[cpp模板常见混淆点做一个自我区分]]></summary></entry><entry><title type="html">CPP并发编程整理(1)</title><link href="http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html" rel="alternate" type="text/html" title="CPP并发编程整理(1)" /><published>2021-01-26T03:32:20+08:00</published><updated>2021-01-26T03:32:20+08:00</updated><id>http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1</id><content type="html" xml:base="http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html"><![CDATA[<p>文章主要内容摘自： https://paul.pub/cpp-concurrency/</p>
+
+<h1 id="why-并发编程">Why 并发编程</h1>
+
+<ul>
+  <li>所有任务串行处理效率低下</li>
+  <li>虽然CPU处理频率在增长，但是终究会遇到突破的瓶颈。大家会发现曾经有过一段时间CPU的频率从3G到达4G，但在这之后就停滞不前了。因此最近的新款CPU也基本上都是3G左右的频率。相应的，CPU以更多核的形式在增长。目前的Intel i7有8核的版本，Xeon处理器达到了28核。并且，最近几年手机上使用的CPU也基本上是4核或者8核的了。掌握并发编程，可以真正地使处理器协调工作，并行完成任务，提高效率。</li>
+</ul>
+
+<h2 id="关于并发和并行">关于并发和并行</h2>
+
+<ul>
+  <li>并发concurrent，一段时间内执行多段任务，从宏观上来看是多任务同时完成的</li>
+  <li>并行parallel，在某一个时刻，有多个任务在实际上同时执行</li>
+</ul>
+
+<p>更严格的来说：如果一个系统支持多个动作同时存在，那么这个系统就是一个并发系统。如果这个系统还支持多个动作（物理时间上）同时执行，那么这个系统就是一个并行系统。</p>
+
+<p>你可能已经看出，“并行”其实是“并发”的子集。它们的区别在于是否具有多个处理器。如果存在多个处理器同时执行多个线程，就是并行。</p>
+
+<p>在不考虑处理器数量的情况下，我们统称之为“并发”。</p>
+
+<h3 id="多线程一定能提升效率么">多线程一定能提升效率么？</h3>
+<p>但我们需要知道，单纯的使用多线程并不一定能提升系统性能（当然，也并非线程越多系统的性能就越好）。从上面的两幅图我们就可以直观的感受到：线程（任务）的数量要根据具体的处理器数量来决定。假设只有一个处理器，那么划分太多线程可能会适得其反。因为很多时间都花在任务切换上了。</p>
+
+<h2 id="cpp的并发编程">CPP的并发编程</h2>
+
+<p>知道cpp 11标准之前，c++标准库都没有对多线程编程的明确支持，如果在linux系统中需要使用linux的系统的api类似pthread_create来创建多线程环境，线程库叫POXIS THREAD</p>
+
+<center><img src="./assets/img/posts/20230222/cpp_history.jpg" width="480px" /></center>
+
+<h2 id="编译器与c标准">编译器与C++标准</h2>
+<p>编译器对于语言特性的支持是逐步完成的。想要使用特定的特性你需要相应版本的编译器。</p>
+
+<p>GCC对于C++特性的支持请参见这里：<a href="https://www.gnu.org/software/gcc/projects/cxx-status.html">C++ Standards Support in GCC</a>。
+Clang对于C++特性的支持请参见这里：<a href="https://clang.llvm.org/cxx_status.html">C++ Support in Clang</a>。</p>
+
+<p>关于cpp和gcc的版本对应关系，因为有线程库这样的类似的标志性变化，所以gcc的标志版本可以浅浅记一下</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>cpp</th>
+      <th>gcc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>c++11</td>
+      <td>4.8</td>
+    </tr>
+    <tr>
+      <td>c++17</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <td>c++20</td>
+      <td>7.0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>默认情况下编译器是以较低的标准来进行编译的，如果希望使用新的标准，你需要通过编译参数-std=c++xx告知编译器，例如：</p>
+<blockquote>
+  <p>g++ -std=c++17 your_file.cpp -o your_program</p>
+</blockquote>
+
+<h1 id="线程">线程</h1>
+
+<h3 id="创建线程">创建线程</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 01_hello_thread.cpp</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;thread&gt;</span><span class="c1"> // ①</span><span class="cp">
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span> <span class="c1">// ②</span>
+
+<span class="kt">void</span> <span class="nf">hello</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// ③</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Hello World from new thread."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kr">thread</span> <span class="n">t</span><span class="p">(</span><span class="n">hello</span><span class="p">);</span> <span class="c1">// ④</span>
+  <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span> <span class="c1">// ⑤</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>thread可以和callable类型一起工作，因此如果你熟悉lambda表达式，你可以直接用它来写线程的逻辑，像这样：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 02_lambda_thread.cpp
+
+#include &lt;iostream&gt;
+#include &lt;thread&gt;
+
+using namespace std;
+
+int main() {
+  thread t([] {
+    cout &lt;&lt; "Hello World from lambda thread." &lt;&lt; endl;
+  });
+
+  t.join();
+
+  return 0;
+}
+
+//传递参数给入口函数
+// 03_thread_argument.cpp
+
+void hello(string name) {
+  cout &lt;&lt; "Welcome to " &lt;&lt; name &lt;&lt; endl;
+}
+
+int main() {
+  thread t(hello, "https://paul.pub");
+  t.join();
+
+  return 0;
+}
+</code></pre></div></div>
+
+<ul>
+  <li>要注意参数是拷贝构造传入的，对于拷贝十分复杂的对象需要传指针引用，但是要注意对象的生存周期</li>
+</ul>
+
+<h2 id="join-与-detach">join 与 detach</h2>
+
+<ul>
+  <li>join：调用此接口时，当前线程会一直阻塞，直到目标线程执行完成（当然，很可能目标线程在此处调用之前就已经执行完成了，不过这不要紧）。因此，如果目标线程的任务非常耗时，你就要考虑好是否需要在主线程上等待它了，因此这很可能会导致主线程卡住。</li>
+  <li>detach：detach是让目标线程成为守护线程（daemon threads）。一旦detach之后，目标线程将独立执行，即便其对应的thread对象销毁也不影响线程的执行。并且，你无法再与之通信。其实意思应当是让其父进程成为0号的init进程，子进程的线程执行资源和状态由init负责释放</li>
+  <li>对于这两个接口，都必须是可执行的线程才有意义。你可以通过joinable()接口、查询是否可以对它们进行join或者detach。</li>
+</ul>
+
+<h2 id="线程管理常用api">线程管理常用api</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>api</th>
+      <th>作用</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>yield</td>
+      <td>任务快结束的时候希望出让处理器</td>
+    </tr>
+    <tr>
+      <td>get_id</td>
+      <td>返回当前线程id</td>
+    </tr>
+    <tr>
+      <td>sleep_for</td>
+      <td>睡眠一定是时间</td>
+    </tr>
+    <tr>
+      <td>sleep_until</td>
+      <td>睡眠到指定时间</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="一次调用">一次调用</h2>
+<p>主要API
+|API|主要作用|
+|—|—|
+| call_once | 即便在多线程环境下，也能保证只调用某个函数一次 |
+| once_flag |与call_once配合使用 |
+在一些情况下，我们有些任务需要执行一次，并且我们只希望它执行一次，例如资源的初始化任务。这个时候就可以用到上面的接口。这个接口会保证，即便在多线程的环境下，相应的函数也只会调用一次。</p>
+
+<p>下面就是一个示例：有三个线程都会使用init函数，但是只会有一个线程真正执行它。</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 05_call_once.cpp</span>
+
+<span class="kt">void</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Initialing..."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+  <span class="c1">// Do something...</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">worker</span><span class="p">(</span><span class="n">once_flag</span><span class="o">*</span> <span class="n">flag</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">call_once</span><span class="p">(</span><span class="o">*</span><span class="n">flag</span><span class="p">,</span> <span class="n">init</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">once_flag</span> <span class="n">flag</span><span class="p">;</span>
+
+  <span class="kr">thread</span> <span class="n">t1</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flag</span><span class="p">);</span>
+  <span class="kr">thread</span> <span class="n">t2</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flag</span><span class="p">);</span>
+  <span class="kr">thread</span> <span class="n">t3</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flag</span><span class="p">);</span>
+
+  <span class="n">t1</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+  <span class="n">t2</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+  <span class="n">t3</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>我们无法确定具体是哪一个线程会执行init。而事实上，我们也不关心，因为只要有某个线程完成这个初始化工作就可以了。</p>]]></content><author><name>DD</name></author><category term="c++" /><category term="Parallel" /><category term="Concurrent" /><summary type="html"><![CDATA[cpp模板常见混淆点做一个自我区分]]></summary></entry><entry><title type="html">cmake\make\makefile 整理</title><link href="http://localhost:4000/cmake%E5%92%8Cmake.html" rel="alternate" type="text/html" title="cmake\make\makefile 整理" /><published>2021-01-26T03:32:20+08:00</published><updated>2021-01-26T03:32:20+08:00</updated><id>http://localhost:4000/cmake%E5%92%8Cmake</id><content type="html" xml:base="http://localhost:4000/cmake%E5%92%8Cmake.html"><![CDATA[<p>文章结构参考自： https://zhuanlan.zhihu.com/p/111110992</p>
+<h2 id="gcc">gcc</h2>
+
+<ul>
+  <li>GNU Compiler Collection (GNU编译套件)，可以直接理解成编译器，他可以编译的语言包括C、C++、Objective-C、Fortran、Java等等</li>
+  <li>如果编译少数文件时，可以利用gcc编译器的传入规则，传参规则直接进行编译选项、依赖项的配置、或者进行链接指示，编译器可以正常工作生成目标文件。</li>
+  <li>如果工程变的复杂，编译指南可能同时变得复杂，直接向compiler传参变得不现实。这个时候可以引入make工具</li>
+</ul>
+
+<h2 id="makemakefile">make、makefile</h2>
+
+<ul>
+  <li>make 的凭证是makefile, 根据编写的makefile指引编译流程和依赖关系。make工具可以看成是一个智能的批处理工具，它本身并没有编译和链接的功能，而是用类似于批处理的方式—通过调用makefile文件中用户指定的命令来进行编译和链接的。</li>
+  <li>makefile就是编译指引，在里面可以对需要使用的编译器进行指定，make命令按照makefile的指示逐步协调文件与依赖的关系，指引编译器编译</li>
+  <li>makefile在一些简单的工程完全可以人工拿下，但是当工程非常大的时候，手写makefile也是非常麻烦的，如果换了个平台makefile又要重新修改，这时候就出现了下面的Cmake这个工具。</li>
+</ul>
+
+<h2 id="cmake">cmake</h2>
+<ul>
+  <li>cmake生成 makefile给make用，就这么简单</li>
+  <li>why cmake?更直白的语法，跨平台的兼容、更多样的编译指示，在实际工程中，我甚至在编译前先利用cmake运行准备工作的脚本</li>
+  <li>cmake更支持分支结构的导入，变量的设置与沿用，总之让编译工程的方式变得更加灵活。</li>
+  <li>cmake凭证式CmakeList.txt</li>
+</ul>
+
+<h2 id="总结一下大体流程">总结一下大体流程</h2>
+<p>1.用编辑器编写源代码，如.c文件。</p>
+
+<p>2.用编译器编译代码生成目标文件，如.o。</p>
+
+<p>3.用链接器连接目标代码生成可执行文件，如.exe。</p>
+
+<p>但如果源文件太多，一个一个编译那得多麻烦啊？于是人们想到，为啥不设计一种类似批处理的程序，来批处理编译源文件呢？</p>
+
+<p>于是就有了make工具，它是一个自动化编译工具，你可以使用一条命令实现完全编译。但是你需要编写一个规则文件，make依据它来批处理编译，这个文件就是makefile，所以编写makefile文件也是一个程序员所必备的技能。</p>
+
+<p>对于一个大工程，编写makefile实在是件复杂的事，于是人们又想，为什么不设计一个工具，读入所有源文件之后，自动生成makefile呢，于是就出现了cmake工具，它能够输出各种各样的makefile或者project文件,从而帮助程序员减轻负担。但是随之而来也就是编写cmakelist文件，它是cmake所依据的规则。（cmake中有很多设置库的，此时还不是可执行文件，而make生成后才是二进制可执行文件。）</p>
+
+<p>所以在编程的世界里没有捷径可走，还是要脚踏实地的。</p>]]></content><author><name>DD</name></author><category term="cmake" /><summary type="html"><![CDATA[cpp模板常见混淆点做一个自我区分]]></summary></entry><entry><title type="html">毕业设计整理-1</title><link href="http://localhost:4000/%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E6%95%B4%E7%90%86-1.html" rel="alternate" type="text/html" title="毕业设计整理-1" /><published>2021-01-26T03:32:20+08:00</published><updated>2021-01-26T03:32:20+08:00</updated><id>http://localhost:4000/%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E6%95%B4%E7%90%86-1</id><content type="html" xml:base="http://localhost:4000/%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E6%95%B4%E7%90%86-1.html"><![CDATA[<p><em>** 本篇进行视频处理脚本开发的逻辑疏导，以及附上关键代码 **</em>
+<em>** 本篇并不涉及神经网络训练部分，涉及部分是网络成型后的视频处理步骤 **</em></p>
+
+<h2 id="准备使用的库">准备使用的库</h2>
+<ul>
+  <li>moviepy
+    <ul>
+      <li>鉴于视频的风格化的需求是含有两个主题，需要python库处理视频的裁剪和音频分离拼接</li>
+      <li>需要注意的是MoviePy常常用在比较复杂的视频处理操作上，包括音频视频分离、音频视频镶嵌、旋转拼接、音视频叠加等等。根据网上的建议，如果仅仅是简单的图像裁剪等等，不需要导入庞大的moviepy，用现有cv库的基本函数都能搞定</li>
+    </ul>
+  </li>
+  <li>argparse
+    <ul>
+      <li>可以通过command line传入定制的参数，第一份脚本版本也许不会激活这个功能。现在目前的想法是通过命令行传入model_path\input_image_path\input_video_path</li>
+    </ul>
+  </li>
+  <li>concurrent
+    <ul>
+      <li>出于工程化目的，我决定使用多线程逻辑，采用该库的线程池：cocurrent.futures.ThreadPoolExecutor</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="脚本相关">脚本相关</h2>
+<h4 id="切割">切割</h4>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="n">sub_clip1</span> <span class="o">=</span> <span class="n">video</span><span class="p">.</span><span class="nf">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">time_len</span><span class="p">)</span>
+    <span class="n">sub_clip2</span> <span class="o">=</span> <span class="n">video</span><span class="p">.</span><span class="nf">subclip</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">time_len</span><span class="p">,</span> <span class="n">time_len</span><span class="p">)</span>
+
+    <span class="n">sub_clip1</span><span class="p">.</span><span class="nf">write_videofile</span><span class="p">(</span><span class="n">temp_path1</span><span class="p">,</span> <span class="n">fps</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+    <span class="n">sub_clip2</span><span class="p">.</span><span class="nf">write_videofile</span><span class="p">(</span><span class="n">temp_path2</span><span class="p">,</span> <span class="n">fps</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span>
+
+</code></pre></div></div>
+<h4 id="转换">转换</h4>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">.</span><span class="nf">tqdm</span><span class="p">(</span><span class="nf">extract_frames</span><span class="p">(</span><span class="n">video_path</span><span class="p">),</span> <span class="n">desc</span><span class="o">=</span><span class="s">"Processing frames"</span><span class="p">):</span>
+        <span class="c1"># Prepare input frame
+</span>        <span class="n">image_tensor</span> <span class="o">=</span> <span class="nc">Variable</span><span class="p">(</span><span class="nf">transform</span><span class="p">(</span><span class="n">frame</span><span class="p">)).</span><span class="nf">to</span><span class="p">(</span><span class="n">device</span><span class="p">).</span><span class="nf">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># Stylize image
+</span>        <span class="k">with</span> <span class="n">torch</span><span class="p">.</span><span class="nf">no_grad</span><span class="p">():</span>
+            <span class="n">stylized_image</span> <span class="o">=</span> <span class="nf">transformer</span><span class="p">(</span><span class="n">image_tensor</span><span class="p">)</span>
+        <span class="c1"># Add to frames
+</span>        <span class="n">stylized_frames</span> <span class="o">+=</span> <span class="p">[</span><span class="nf">deprocess</span><span class="p">(</span><span class="n">stylized_image</span><span class="p">)]</span>
+
+</code></pre></div></div>
+
+<h4 id="帧处理">帧处理</h4>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Create video from frames
+</span>    <span class="n">video_name</span> <span class="o">=</span> <span class="n">video_path</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="s">"/"</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nf">split</span><span class="p">(</span><span class="s">"."</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">skvideo</span><span class="p">.</span><span class="n">io</span><span class="p">.</span><span class="nc">FFmpegWriter</span><span class="p">(</span><span class="sa">f</span><span class="s">"images/outputs/stylized-</span><span class="si">{</span><span class="n">video_name</span><span class="si">}</span><span class="s">.mp4"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">.</span><span class="nf">tqdm</span><span class="p">(</span><span class="n">stylized_frames</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="s">"Writing to video"</span><span class="p">):</span>
+        <span class="n">writer</span><span class="p">.</span><span class="nf">writeFrame</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+    <span class="n">writer</span><span class="p">.</span><span class="nf">close</span><span class="p">()</span>
+    <span class="n">output_style_file_list</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="sa">f</span><span class="s">"images/outputs/stylized-</span><span class="si">{</span><span class="n">video_name</span><span class="si">}</span><span class="s">.mp4"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="日志示范">日志示范</h2>
+<center><img src="./assets/img/posts/20230304/logs1.png" width="480px" /></center>
+<center><img src="./assets/img/posts/20230304/logs2.png" width="480px" /></center>
+
+<h2 id="暂时进展">暂时进展</h2>
+<center><img src="./assets/img/posts/20230304/rowtaro1.png" width="480px" /></center>
+<center><img src="./assets/img/posts/20230304/rowtaro2.png" width="480px" /></center>
+
+<ul>
+  <li>能够实现输入拍摄好的完整视频，脚本经过视频切割、通过读取不同模型路径，对视频风格进行转化，生成不同风格的视频片段然后进行合并，输出完整的、风格不同的视频</li>
+</ul>
+
+<h2 id="to-do--改进点">TO DO &amp; 改进点</h2>
+
+<ul>
+  <li>找到合适的数据集训练自己的模型</li>
+  <li>temp文件命名应该更灵活，不要固化</li>
+  <li>temp文件用完删除逻辑</li>
+</ul>]]></content><author><name>DD</name></author><category term="c++" /><category term="Parallel" /><category term="Concurrent" /><summary type="html"><![CDATA[cpp模板常见混淆点做一个自我区分]]></summary></entry><entry><title type="html">毕业设计整理-1</title><link href="http://localhost:4000/%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E6%95%B4%E7%90%86-2.html" rel="alternate" type="text/html" title="毕业设计整理-1" /><published>2021-01-26T03:32:20+08:00</published><updated>2021-01-26T03:32:20+08:00</updated><id>http://localhost:4000/%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E6%95%B4%E7%90%86-2</id><content type="html" xml:base="http://localhost:4000/%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E6%95%B4%E7%90%86-2.html"><![CDATA[<p><strong>鉴于视频处理脚本开发已经基本完成</strong>
+<strong>本文专注于style-transfer网络训练部分</strong></p>
+
+<h2 id="基本概念">基本概念</h2>
+
+<p>以下内容转载自 https://blog.csdn.net/m0_54028213/article/details/127125842</p>
+
+<ul>
+  <li>输入中有一张内容图片（Content Image）和一张样式视频（Style Video）</li>
+  <li>模型所要训练的不是卷积神经网络的权重，而是合成图片，它是样式迁移过程中唯一需要更新的变量，即样式迁移所需迭代的参数模型
+深度神经网络凭借多个层逐级抽取图像的特征，因此可以选择其中某些层的输出作为内容特征或者样式特征（上图中的卷积神经网络第二层输出内容特征，第一层和第三层输出样式特征）</li>
+</ul>
+
+<h4 id="选择其中某些层的输出作为内容特征或者样式特征上图中的卷积神经网络第二层输出内容特征第一层和第三层输出样式特征">选择其中某些层的输出作为内容特征或者样式特征（上图中的卷积神经网络第二层输出内容特征，第一层和第三层输出样式特征）</h4>
+<ul>
+  <li>对于一张输入图片来讲，每一层的卷积神经网络都会有一个输出（特征），整个基于 CNN 的样式迁移的目的是训练出一张合成图片，使得合成图片和内容图片放进同样一个卷积神经网络的时候，合成图片在某一层的输出能够匹配上内容图片在某一层的损失（内容损失，Content Loss），即它们在内容上是相近的；同理，合成图片和内容图片所使用的是同一个卷积神经网络，在某些层的输出（特征）在样式上能够匹配的上。如果训练出一张合成图片同时满足以上需求的话，就可以认为它既保留了内容图片的内容，又保留了样式图片的样式
+一般来说，越靠近输入层，越容易抽取图片的细节信息；反之，越容易抽取图片的全局信息</li>
+  <li>为了避免合成图片过多地保留内容图片的细节，选择靠近输出的层（即内容层）来输出图片的内容特征</li>
+  <li>选择不同层的输出（即风格层）来匹配局部和全局的样式
+在使用卷积神经网络抽取特征时，只需要用到从输入层到最靠近输出层的内容层或者样式层之间的所有层</li>
+  <li>因为在训练的时候无需改变预训练的卷积神经网络的模型参数，所以可以在训练开始之前就提取出内容特征和风格特征</li>
+</ul>
+
+<h4 id="通过前向传播实线箭头方向计算样式迁移的损失函数并通过反向传播虚线箭头方向迭代模型参数即不断更新合成图片">通过前向传播（实线箭头方向）计算样式迁移的损失函数，并通过反向传播（虚线箭头方向）迭代模型参数，即不断更新合成图片</h4>
+
+<h4 id="关键点总结">关键点总结</h4>
+
+<p>1、样式迁移常用的损失函数由 3 部分组成：内容损失、样式损失和全变分损失</p>
+
+<p>内容损失使合成图片与内容图片在内容特征上接近
+样式损失使合成图片与样式图片在样式特征上接近
+全变分损失有助于减少合成图片中的噪点
+2、可以通过预训练好的卷积神经网络来抽取图像的特征，并通过最小化损失函数来不断更新合成图片来作为模型参数</p>
+
+<p>3、使用格拉姆矩阵表达样式层输出的样式</p>
+
+<h2 id="关于数据集">关于数据集</h2>
+
+<p>MSCOCO数据集是微软开发维护的大型图像数据集，数据集标注类型对应任务包括物体检测、关键点检测、实例分割、 stuff分割 （没有特定形状的物体） ，全景分割人体关键点， 人体密度检测 等等。</p>]]></content><author><name>DD</name></author><category term="c++" /><category term="Parallel" /><category term="Concurrent" /><summary type="html"><![CDATA[cpp模板常见混淆点做一个自我区分]]></summary></entry></feed>

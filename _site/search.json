@@ -1,10 +1,40 @@
 [
   
     {
+      "title"       : "毕业设计整理-1",
+      "category"    : "",
+      "tags"        : "c++, Parallel, Concurrent",
+      "url"         : "./%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E6%95%B4%E7%90%86-2.html",
+      "date"        : "2021-01-26 03:32:20 +0800",
+      "description" : "cpp模板常见混淆点做一个自我区分",
+      "content"     : "鉴于视频处理脚本开发已经基本完成本文专注于style-transfer网络训练部分基本概念以下内容转载自 https://blog.csdn.net/m0_54028213/article/details/127125842 输入中有一张内容图片（Content Image）和一张样式视频（Style Video） 模型所要训练的不是卷积神经网络的权重，而是合成图片，它是样式迁移过程中唯一需要更新的变量，即样式迁移所需迭代的参数模型深度神经网络凭借多个层逐级抽取图像的特征，因此可以选择其中某些层的输出作为内容特征或者样式特征（上图中的卷积神经网络第二层输出内容特征，第一层和第三层输出样式特征）选择其中某些层的输出作为内容特征或者样式特征（上图中的卷积神经网络第二层输出内容特征，第一层和第三层输出样式特征） 对于一张输入图片来讲，每一层的卷积神经网络都会有一个输出（特征），整个基于 CNN 的样式迁移的目的是训练出一张合成图片，使得合成图片和内容图片放进同样一个卷积神经网络的时候，合成图片在某一层的输出能够匹配上内容图片在某一层的损失（内容损失，Content Loss），即它们在内容上是相近的；同理，合成图片和内容图片所使用的是同一个卷积神经网络，在某些层的输出（特征）在样式上能够匹配的上。如果训练出一张合成图片同时满足以上需求的话，就可以认为它既保留了内容图片的内容，又保留了样式图片的样式一般来说，越靠近输入层，越容易抽取图片的细节信息；反之，越容易抽取图片的全局信息 为了避免合成图片过多地保留内容图片的细节，选择靠近输出的层（即内容层）来输出图片的内容特征 选择不同层的输出（即风格层）来匹配局部和全局的样式在使用卷积神经网络抽取特征时，只需要用到从输入层到最靠近输出层的内容层或者样式层之间的所有层 因为在训练的时候无需改变预训练的卷积神经网络的模型参数，所以可以在训练开始之前就提取出内容特征和风格特征通过前向传播（实线箭头方向）计算样式迁移的损失函数，并通过反向传播（虚线箭头方向）迭代模型参数，即不断更新合成图片关键点总结1、样式迁移常用的损失函数由 3 部分组成：内容损失、样式损失和全变分损失内容损失使合成图片与内容图片在内容特征上接近样式损失使合成图片与样式图片在样式特征上接近全变分损失有助于减少合成图片中的噪点2、可以通过预训练好的卷积神经网络来抽取图像的特征，并通过最小化损失函数来不断更新合成图片来作为模型参数3、使用格拉姆矩阵表达样式层输出的样式关于数据集MSCOCO数据集是微软开发维护的大型图像数据集，数据集标注类型对应任务包括物体检测、关键点检测、实例分割、 stuff分割 （没有特定形状的物体） ，全景分割人体关键点， 人体密度检测 等等。"
+    } ,
+  
+    {
+      "title"       : "毕业设计整理-1",
+      "category"    : "",
+      "tags"        : "c++, Parallel, Concurrent",
+      "url"         : "./%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E6%95%B4%E7%90%86-1.html",
+      "date"        : "2021-01-26 03:32:20 +0800",
+      "description" : "cpp模板常见混淆点做一个自我区分",
+      "content"     : "** 本篇进行视频处理脚本开发的逻辑疏导，以及附上关键代码 **** 本篇并不涉及神经网络训练部分，涉及部分是网络成型后的视频处理步骤 **准备使用的库 moviepy 鉴于视频的风格化的需求是含有两个主题，需要python库处理视频的裁剪和音频分离拼接 需要注意的是MoviePy常常用在比较复杂的视频处理操作上，包括音频视频分离、音频视频镶嵌、旋转拼接、音视频叠加等等。根据网上的建议，如果仅仅是简单的图像裁剪等等，不需要导入庞大的moviepy，用现有cv库的基本函数都能搞定 argparse 可以通过command line传入定制的参数，第一份脚本版本也许不会激活这个功能。现在目前的想法是通过命令行传入model_path\\input_image_path\\input_video_path concurrent 出于工程化目的，我决定使用多线程逻辑，采用该库的线程池：cocurrent.futures.ThreadPoolExecutor 脚本相关切割 sub_clip1 = video.subclip(0, 1/2 * time_len) sub_clip2 = video.subclip(1/2 * time_len, time_len) sub_clip1.write_videofile(temp_path1, fps = 30) sub_clip2.write_videofile(temp_path2, fps = 30)转换for frame in tqdm.tqdm(extract_frames(video_path), desc=\"Processing frames\"): # Prepare input frame image_tensor = Variable(transform(frame)).to(device).unsqueeze(0) # Stylize image with torch.no_grad(): stylized_image = transformer(image_tensor) # Add to frames stylized_frames += [deprocess(stylized_image)]帧处理# Create video from frames video_name = video_path.split(\"/\")[-1].split(\".\")[0] writer = skvideo.io.FFmpegWriter(f\"images/outputs/stylized-{video_name}.mp4\") for frame in tqdm.tqdm(stylized_frames, desc=\"Writing to video\"): writer.writeFrame(frame) writer.close() output_style_file_list.append(f\"images/outputs/stylized-{video_name}.mp4\")日志示范暂时进展 能够实现输入拍摄好的完整视频，脚本经过视频切割、通过读取不同模型路径，对视频风格进行转化，生成不同风格的视频片段然后进行合并，输出完整的、风格不同的视频TO DO &amp; 改进点 找到合适的数据集训练自己的模型 temp文件命名应该更灵活，不要固化 temp文件用完删除逻辑"
+    } ,
+  
+    {
+      "title"       : "cmake\make\makefile 整理",
+      "category"    : "",
+      "tags"        : "cmake",
+      "url"         : "./cmake%E5%92%8Cmake.html",
+      "date"        : "2021-01-26 03:32:20 +0800",
+      "description" : "cpp模板常见混淆点做一个自我区分",
+      "content"     : "文章结构参考自： https://zhuanlan.zhihu.com/p/111110992gcc GNU Compiler Collection (GNU编译套件)，可以直接理解成编译器，他可以编译的语言包括C、C++、Objective-C、Fortran、Java等等 如果编译少数文件时，可以利用gcc编译器的传入规则，传参规则直接进行编译选项、依赖项的配置、或者进行链接指示，编译器可以正常工作生成目标文件。 如果工程变的复杂，编译指南可能同时变得复杂，直接向compiler传参变得不现实。这个时候可以引入make工具make、makefile make 的凭证是makefile, 根据编写的makefile指引编译流程和依赖关系。make工具可以看成是一个智能的批处理工具，它本身并没有编译和链接的功能，而是用类似于批处理的方式—通过调用makefile文件中用户指定的命令来进行编译和链接的。 makefile就是编译指引，在里面可以对需要使用的编译器进行指定，make命令按照makefile的指示逐步协调文件与依赖的关系，指引编译器编译 makefile在一些简单的工程完全可以人工拿下，但是当工程非常大的时候，手写makefile也是非常麻烦的，如果换了个平台makefile又要重新修改，这时候就出现了下面的Cmake这个工具。cmake cmake生成 makefile给make用，就这么简单 why cmake?更直白的语法，跨平台的兼容、更多样的编译指示，在实际工程中，我甚至在编译前先利用cmake运行准备工作的脚本 cmake更支持分支结构的导入，变量的设置与沿用，总之让编译工程的方式变得更加灵活。 cmake凭证式CmakeList.txt总结一下大体流程1.用编辑器编写源代码，如.c文件。2.用编译器编译代码生成目标文件，如.o。3.用链接器连接目标代码生成可执行文件，如.exe。但如果源文件太多，一个一个编译那得多麻烦啊？于是人们想到，为啥不设计一种类似批处理的程序，来批处理编译源文件呢？于是就有了make工具，它是一个自动化编译工具，你可以使用一条命令实现完全编译。但是你需要编写一个规则文件，make依据它来批处理编译，这个文件就是makefile，所以编写makefile文件也是一个程序员所必备的技能。对于一个大工程，编写makefile实在是件复杂的事，于是人们又想，为什么不设计一个工具，读入所有源文件之后，自动生成makefile呢，于是就出现了cmake工具，它能够输出各种各样的makefile或者project文件,从而帮助程序员减轻负担。但是随之而来也就是编写cmakelist文件，它是cmake所依据的规则。（cmake中有很多设置库的，此时还不是可执行文件，而make生成后才是二进制可执行文件。）所以在编程的世界里没有捷径可走，还是要脚踏实地的。"
+    } ,
+  
+    {
       "title"       : "CPP并发编程整理(1)",
       "category"    : "",
       "tags"        : "c++, Parallel, Concurrent",
-      "url"         : "./CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86.html",
+      "url"         : "./CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html",
       "date"        : "2021-01-26 03:32:20 +0800",
       "description" : "cpp模板常见混淆点做一个自我区分",
       "content"     : "文章主要内容摘自： https://paul.pub/cpp-concurrency/Why 并发编程 所有任务串行处理效率低下 虽然CPU处理频率在增长，但是终究会遇到突破的瓶颈。大家会发现曾经有过一段时间CPU的频率从3G到达4G，但在这之后就停滞不前了。因此最近的新款CPU也基本上都是3G左右的频率。相应的，CPU以更多核的形式在增长。目前的Intel i7有8核的版本，Xeon处理器达到了28核。并且，最近几年手机上使用的CPU也基本上是4核或者8核的了。掌握并发编程，可以真正地使处理器协调工作，并行完成任务，提高效率。关于并发和并行 并发concurrent，一段时间内执行多段任务，从宏观上来看是多任务同时完成的 并行parallel，在某一个时刻，有多个任务在实际上同时执行更严格的来说：如果一个系统支持多个动作同时存在，那么这个系统就是一个并发系统。如果这个系统还支持多个动作（物理时间上）同时执行，那么这个系统就是一个并行系统。你可能已经看出，“并行”其实是“并发”的子集。它们的区别在于是否具有多个处理器。如果存在多个处理器同时执行多个线程，就是并行。在不考虑处理器数量的情况下，我们统称之为“并发”。多线程一定能提升效率么？但我们需要知道，单纯的使用多线程并不一定能提升系统性能（当然，也并非线程越多系统的性能就越好）。从上面的两幅图我们就可以直观的感受到：线程（任务）的数量要根据具体的处理器数量来决定。假设只有一个处理器，那么划分太多线程可能会适得其反。因为很多时间都花在任务切换上了。CPP的并发编程知道cpp 11标准之前，c++标准库都没有对多线程编程的明确支持，如果在linux系统中需要使用linux的系统的api类似pthread_create来创建多线程环境，线程库叫POXIS THREAD编译器与C++标准编译器对于语言特性的支持是逐步完成的。想要使用特定的特性你需要相应版本的编译器。GCC对于C++特性的支持请参见这里：C++ Standards Support in GCC。Clang对于C++特性的支持请参见这里：C++ Support in Clang。关于cpp和gcc的版本对应关系，因为有线程库这样的类似的标志性变化，所以gcc的标志版本可以浅浅记一下 cpp gcc c++11 4.8 c++17 5.0 c++20 7.0 默认情况下编译器是以较低的标准来进行编译的，如果希望使用新的标准，你需要通过编译参数-std=c++xx告知编译器，例如： g++ -std=c++17 your_file.cpp -o your_program线程创建线程// 01_hello_thread.cpp#include &lt;iostream&gt;#include &lt;thread&gt; // ①using namespace std; // ②void hello() { // ③ cout &lt;&lt; \"Hello World from new thread.\" &lt;&lt; endl;}int main() { thread t(hello); // ④ t.join(); // ⑤ return 0;}thread可以和callable类型一起工作，因此如果你熟悉lambda表达式，你可以直接用它来写线程的逻辑，像这样：// 02_lambda_thread.cpp#include &lt;iostream&gt;#include &lt;thread&gt;using namespace std;int main() { thread t([] { cout &lt;&lt; \"Hello World from lambda thread.\" &lt;&lt; endl; }); t.join(); return 0;}//传递参数给入口函数// 03_thread_argument.cppvoid hello(string name) { cout &lt;&lt; \"Welcome to \" &lt;&lt; name &lt;&lt; endl;}int main() { thread t(hello, \"https://paul.pub\"); t.join(); return 0;} 要注意参数是拷贝构造传入的，对于拷贝十分复杂的对象需要传指针引用，但是要注意对象的生存周期join 与 detach join：调用此接口时，当前线程会一直阻塞，直到目标线程执行完成（当然，很可能目标线程在此处调用之前就已经执行完成了，不过这不要紧）。因此，如果目标线程的任务非常耗时，你就要考虑好是否需要在主线程上等待它了，因此这很可能会导致主线程卡住。 detach：detach是让目标线程成为守护线程（daemon threads）。一旦detach之后，目标线程将独立执行，即便其对应的thread对象销毁也不影响线程的执行。并且，你无法再与之通信。其实意思应当是让其父进程成为0号的init进程，子进程的线程执行资源和状态由init负责释放 对于这两个接口，都必须是可执行的线程才有意义。你可以通过joinable()接口、查询是否可以对它们进行join或者detach。线程管理常用api api 作用 yield 任务快结束的时候希望出让处理器 get_id 返回当前线程id sleep_for 睡眠一定是时间 sleep_until 睡眠到指定时间 一次调用主要API|API|主要作用||—|—|| call_once | 即便在多线程环境下，也能保证只调用某个函数一次 || once_flag |与call_once配合使用 |在一些情况下，我们有些任务需要执行一次，并且我们只希望它执行一次，例如资源的初始化任务。这个时候就可以用到上面的接口。这个接口会保证，即便在多线程的环境下，相应的函数也只会调用一次。下面就是一个示例：有三个线程都会使用init函数，但是只会有一个线程真正执行它。// 05_call_once.cppvoid init() { cout &lt;&lt; \"Initialing...\" &lt;&lt; endl; // Do something...}void worker(once_flag* flag) { call_once(*flag, init);}int main() { once_flag flag; thread t1(worker, &amp;flag); thread t2(worker, &amp;flag); thread t3(worker, &amp;flag); t1.join(); t2.join(); t3.join(); return 0;}我们无法确定具体是哪一个线程会执行init。而事实上，我们也不关心，因为只要有某个线程完成这个初始化工作就可以了。"

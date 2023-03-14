@@ -7,9 +7,9 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>STL相关的一些面试遭遇 - DD's tenique website</title>
-	<link rel="canonical" href="http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html">
-	<meta name="description" content="面试遇到的一些容器库的问题，持续更新">
+	<title>CPP并发编程整理(1) - DD's tenique website</title>
+	<link rel="canonical" href="http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html">
+	<meta name="description" content="cpp模板常见混淆点做一个自我区分">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 <script type="application/ld+json">
@@ -19,11 +19,11 @@
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "http://localhost:4000"},
-  "headline": "STL相关的一些面试遭遇",
-  "abstract": "面试遇到的一些容器库的问题，持续更新",
-    "keywords": "c++, STL, coding",
-    "wordcount": "13",
-    "image": ["http://localhost:4000/assets/imgposts/20220214/seagull.jpg"],
+  "headline": "CPP并发编程整理(1)",
+  "abstract": "cpp模板常见混淆点做一个自我区分",
+    "keywords": "c++, Parallel, Concurrent",
+    "wordcount": "221",
+    "image": ["http://localhost:4000/assets/imgposts/20220214/corgi.jpg"],
   "datePublished": "2021-01-26 03:32:20 +0800",
   "dateModified": "2021-01-26 03:32:20 +0800",
   "author": {
@@ -40,30 +40,30 @@
 }
 </script>
 <!-- Open Graph data -->
-<meta property="og:url" content="http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html"/>
+<meta property="og:url" content="http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html"/>
 <meta property="og:type" content="article"/>
-<meta property="og:title" content="STL相关的一些面试遭遇"/>
-<meta property="og:description" content="面试遇到的一些容器库的问题，持续更新"/>
-<meta property="og:image" content="http://localhost:4000/assets/imgposts/20220214/seagull.jpg"/>
-<meta property="og:image:alt" content="STL相关的一些面试遭遇"/>
+<meta property="og:title" content="CPP并发编程整理(1)"/>
+<meta property="og:description" content="cpp模板常见混淆点做一个自我区分"/>
+<meta property="og:image" content="http://localhost:4000/assets/imgposts/20220214/corgi.jpg"/>
+<meta property="og:image:alt" content="CPP并发编程整理(1)"/>
 <meta property="og:site_name" content="DD's tenique website" />
 <meta property="article:published_time" content="2021-01-26 03:32:20 +0800" />
 <meta property="article:modified_time" content="2021-01-26 03:32:20 +0800" />
-<meta property="article:tag" content="c++, STL, coding" />
+<meta property="article:tag" content="c++, Parallel, Concurrent" />
 <meta property="fb:admins" content="ar.maybach" />
 <!-- Schema.org markup for Google -->
-<meta itemprop="name" content="STL相关的一些面试遭遇">
-<meta itemprop="description" content="面试遇到的一些容器库的问题，持续更新">
-<meta itemprop="image" content="http://localhost:4000/assets/imgposts/20220214/seagull.jpg">
+<meta itemprop="name" content="CPP并发编程整理(1)">
+<meta itemprop="description" content="cpp模板常见混淆点做一个自我区分">
+<meta itemprop="image" content="http://localhost:4000/assets/imgposts/20220214/corgi.jpg">
 <!-- Twitter Card data -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@MvmThe">
-<meta name="twitter:title" content="STL相关的一些面试遭遇">
-<meta name="twitter:description" content="面试遇到的一些容器库的问题，持续更新">
+<meta name="twitter:title" content="CPP并发编程整理(1)">
+<meta name="twitter:description" content="cpp模板常见混淆点做一个自我区分">
 <meta name="twitter:creator" content="">
 <meta data-rh="true" name="twitter:label1" content="Word count"/>
-<meta data-rh="true" name="twitter:data1" content="13"/>
-<meta name="twitter:image:src" content="http://localhost:4000/assets/img/posts/20220214/seagull.jpg">
+<meta data-rh="true" name="twitter:data1" content="221"/>
+<meta name="twitter:image:src" content="http://localhost:4000/assets/img/posts/20220214/corgi.jpg">
 	<!-- Windows Phone -->
 	<meta name="msapplication-navbutton-color" content="#311e3e">
 	<!-- iOS Safari -->
@@ -139,7 +139,7 @@
 
 <section class="hidden">
   <div class="post">
-      <a  class="post-list-title" href="./STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html">STL相关的一些面试遭遇</a>
+      <a  class="post-list-title" href="./CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html">CPP并发编程整理(1)</a>
       
 
   <span class = "post-card-meta">
@@ -163,7 +163,7 @@
     
     <span class="page_meta-readtime">
       
-        less than 1 minute read
+        1 minute read
       
     </span>
   
@@ -171,7 +171,7 @@
   </span>
 
         <div class="post-excerpt">
-            <h2 id="stl的主要组成">STL的主要组成</h2><p>容器、算法、迭代器</p><h2 id="resize和reverse的区别">resize和reverse的区别</h2><ul>  <li>改变的容器度量不一样。</li>  <li>resize改变的是容器的size, 如果size大于容器原来的size，则扩大容器空间（size）并且将扩大的空间初始化</li>  <li>reverse改变的是容器的capacity，要知道cap和size不是一个概念，cap表征容器已经开辟的空间，size代表元素的数量。cap理论上是大于等于size的，reverse的传参小于size的时候不会有事情发生，大于size的时候将capacity变化到传入参数指定的大小</li>  <li>两者的形参个数不一样。 resize带两个参数，一个表示容器大小，一个表示初始值（默认为0）；reserve只带一个参数，表示容器预留的大小。</li></ul><h2 id="vector中at和访问区别">vector中at()和【】访问区别</h2><p>at会检查下标范围，【】访问如果下表越界会造成对内存的非法访问，at()更加安全。at() 函数抛出的应当是std::out_of_range错误</p><a class="read-more" href="./STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html"> read more</a>
+            <p>文章主要内容摘自： https://paul.pub/cpp-concurrency/</p><h1 id="why-并发编程">Why 并发编程</h1><ul> <li>所有任务串行处理效率低下</li> <li>虽然CPU处理频率在增长，但是终究会遇到突破的瓶颈。大家会发现曾经有过一段时间CPU的频率从3G到达4G，但在这之后就停滞不前了。因此最近的新款CPU也基本上都是3G左右的频率。相应的，CPU以更多核的形式在增长。目前的Intel i7有8核的版本，Xeon处理器达到了28核。并且，最近几年手机上使用的CPU也基本上是4核或者8核的了。掌握并发编程，可以真正地使处理器协调工作，并行完成任务，提高效率。</li></ul><h2 id="关于并发和并行">关于并发和并行</h2><ul> <li>并发concurrent，一段时间内执行多段任务，从宏观上来看是多任务同时完成的</li> <li>并行parallel，在某一个时刻，有多个任务在实际上同时执行</li></ul><p>更严格的来说：如果一个系统支持多个动作同时存在，那么这个系统就是一个并发系统。如果这个系统还支持多个动作（物理时间上）同时执行，那么这个系统就是一个并行系统。</p><p>你可能已经看出，“并行”其实是“并发”的子集。它们的区别在于是否具有多个处理器。如果存在多个处理器同时执行多个线程，就是并行。</p><p>在不考虑处理器数量的情况下，我们统称之为“并发”。</p><h3 id="多线程一定能提升效率么">多线程一定能提升效率么？</h3><p>但我们需要知道，单纯的使用多线程并不一定能提升系统性能（当然，也并非线程越多系统的性能就越好）。从上面的两幅图我们就可以直观的感受到：线程（任务）的数量要根据具体的处理器数量来决定。假设只有一个处理器，那么划分太多线程可能会适得其反。因为很多时间都花在任务切换上了。</p><h2 id="cpp的并发编程">CPP的并发编程</h2><p>知道cpp 11标准之前，c++标准库都没有对多线程编程的明确支持，如果在linux系统中需要使用linux的系统的api类似pthread_create来创建多线程环境，线程库叫POXIS THREAD</p><center><img src="./assets/img/posts/20230222/cpp_history.jpg" width="480px" /></center><h2 id="编译器与c标准">编译器与C++标准</h2><p>编译器对于语言特性的支持是逐步完成的。想要使用特定的特性你需要相应版本的编译器。</p><p>GCC对于C++特性的支持请参见这里：<a href="https://www.gnu.org/software/gcc/projects/cxx-status.html">C++ Standards Support in GCC</a>。Clang对于C++特性的支持请参见这里：<a href="https://clang.llvm.org/cxx_status.html">C++ Support in Clang</a>。</p><p>关于cpp和gcc的版本对应关系，因为有线程库这样的类似的标志性变化，所以gcc的标志版本可以浅浅记一下</p><table> <thead> <tr> <th>cpp</th> <th>gcc</th> </tr> </thead> <tbody> <tr> <td>c++11</td> <td>4.8</td> </tr> <tr> <td>c++17</td> <td>5.0</td> </tr> <tr> <td>c++20</td> <td>7.0</td> </tr> </tbody></table><p>默认情况下编译器是以较低的标准来进行编译的，如果希望使用新的标准，你需要通过编译参数-std=c++xx告知编译器，例如：</p><blockquote> <p>g++ -std=c++17 your_file.cpp -o your_program</p></blockquote><h1 id="线程">线程</h1><h3 id="创建线程">创建线程</h3><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 01_hello_thread.cpp</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="c1"> // ①</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span> <span class="c1">// ②</span><span class="kt">void</span> <span class="nf">hello</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// ③</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Hello World from new thread."</span> <span class="o">&lt;&lt;</span>...<a class="read-more" href="./CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html"> read more</a>
         </div>
   </div>
 </section>
@@ -269,17 +269,17 @@
 </header> <!-- End Header -->
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
-    <meta itemprop="headline" content="STL相关的一些面试遭遇">
-<meta itemprop="description" content="面试遇到的一些容器库的问题，持续更新">
+    <meta itemprop="headline" content="CPP并发编程整理(1)">
+<meta itemprop="description" content="cpp模板常见混淆点做一个自我区分">
 <meta itemprop="datePublished" content="2021-01-26T03:32:20+08:00">
 
     <div class="page-image">
-      <div class="cover-image" style="background: url('./assets/img/posts/20220214/seagull.jpg') center no-repeat; background-size: cover;"></div>
+      <div class="cover-image" style="background: url('./assets/img/posts/20220214/corgi.jpg') center no-repeat; background-size: cover;"></div>
     </div>
     <div class="wrapper">
       <div class="page-content">
         <div class="header-page">
-          <h1 class="page-title">STL相关的一些面试遭遇</h1>
+          <h1 class="page-title">CPP并发编程整理(1)</h1>
           
 
   <span class = "post-page-meta">
@@ -303,7 +303,7 @@
     
     <span class="page_meta-readtime">
       
-        less than 1 minute read
+        1 minute read
       
     </span>
   
@@ -324,9 +324,9 @@
             
                 <li><a href="./tag.html?tag=c%2B%2B" class="tag side">c++</a></li>
             
-                <li><a href="./tag.html?tag=STL" class="tag side">STL</a></li>
+                <li><a href="./tag.html?tag=Parallel" class="tag side">Parallel</a></li>
             
-                <li><a href="./tag.html?tag=coding" class="tag side">coding</a></li>
+                <li><a href="./tag.html?tag=Concurrent" class="tag side">Concurrent</a></li>
             
     
         </ul>
@@ -335,11 +335,11 @@
     <div class="share-hover side">
         <span class="share-button side"><svg fill="currentColor" width="25" height="25" class="side"><g fill-rule="evenodd"><path d="M15.6 5a.42.42 0 0 0 .17-.3.42.42 0 0 0-.12-.33l-2.8-2.79a.5.5 0 0 0-.7 0l-2.8 2.8a.4.4 0 0 0-.1.32c0 .12.07.23.16.3h.02a.45.45 0 0 0 .57-.04l2-2V10c0 .28.23.5.5.5s.5-.22.5-.5V2.93l2.02 2.02c.08.07.18.12.3.13.11.01.21-.02.3-.08v.01"></path><path d="M18 7h-1.5a.5.5 0 0 0 0 1h1.6c.5 0 .9.4.9.9v10.2c0 .5-.4.9-.9.9H6.9a.9.9 0 0 1-.9-.9V8.9c0-.5.4-.9.9-.9h1.6a.5.5 0 0 0 .35-.15A.5.5 0 0 0 9 7.5a.5.5 0 0 0-.15-.35A.5.5 0 0 0 8.5 7H7a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h11a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"></path></g></svg></span>
         <div class="share-icons side" id="sidebar-icons">
-            <a class="twitter" href="https://twitter.com/intent/tweet?text=STL相关的一些面试遭遇&url=http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html" title="Share on Twitter" rel="nofollow" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-            <a class="facebook" href="https://facebook.com/sharer.php?u=http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html" title="Share on Facebook" rel="nofollow" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-            <a class="reddit" href="http://www.reddit.com/submit?url=http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html&title=STL相关的一些面试遭遇" title="Submit to Reddit" rel="nofollow" target="_blank"><i class="fa fa-reddit" aria-hidden="true"></i></a>
-            <a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html&title=STL相关的一些面试遭遇&summary=面试遇到的一些容器库的问题，持续更新&source=http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html" title="Share on LinkedIn" rel="nofollow" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-            <a class="email" href="mailto:?subject=STL相关的一些面试遭遇&body=面试遇到的一些容器库的问题，持续更新%0A%0ARead more here: http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html" title="Share via e-mail" rel="nofollow" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+            <a class="twitter" href="https://twitter.com/intent/tweet?text=CPP并发编程整理(1)&url=http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html" title="Share on Twitter" rel="nofollow" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+            <a class="facebook" href="https://facebook.com/sharer.php?u=http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html" title="Share on Facebook" rel="nofollow" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+            <a class="reddit" href="http://www.reddit.com/submit?url=http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html&title=CPP并发编程整理(1)" title="Submit to Reddit" rel="nofollow" target="_blank"><i class="fa fa-reddit" aria-hidden="true"></i></a>
+            <a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html&title=CPP并发编程整理(1)&summary=cpp模板常见混淆点做一个自我区分&source=http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html" title="Share on LinkedIn" rel="nofollow" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+            <a class="email" href="mailto:?subject=CPP并发编程整理(1)&body=cpp模板常见混淆点做一个自我区分%0A%0ARead more here: http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html" title="Share via e-mail" rel="nofollow" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i></a>
             <a class="copy-link" onclick="copyToClipboard()" title="Copy to clipboard" rel="nofollow" target="_blank"><svg width="20px" fill="currentColor" class="side" viewBox="0 0 18 18"><path d="M16.94 1.1A3.7 3.7 0 0 0 14.3 0c-1 0-1.94.39-2.64 1.1L7.43 5.3c-.91.92-2.09 3.2 0 5.27a.75.75 0 0 0 .82.16c.09-.03.17-.09.24-.15a.74.74 0 0 0 0-1.06c-1.16-1.15-.77-2.39-.02-3.16l4.24-4.22a2.2 2.2 0 0 1 1.58-.65c.6 0 1.16.23 1.58.65.86.87.86 2.29 0 3.16L12.7 8.47a.74.74 0 0 0 1.04 1.05l3.17-3.16a3.73 3.73 0 0 0 0-5.27h.03zM9.54 7.4a.74.74 0 0 0 0 1.06c1.16 1.15.76 2.39 0 3.16l-4.22 4.22c-.42.42-.99.65-1.59.65a2.23 2.23 0 0 1-1.58-3.82l3.17-3.16A.73.73 0 0 0 5.54 9a.78.78 0 0 0-.22-.52.77.77 0 0 0-1.05 0L1.1 11.64A3.72 3.72 0 0 0 3.74 18c1 0 1.94-.39 2.65-1.1l4.23-4.2c.21-.22.94-1.02 1.13-2.2.18-1.12-.2-2.15-1.12-3.07-.27-.27-.78-.27-1.06 0l-.02-.02z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></a>
         </div>
     </div>
@@ -349,23 +349,204 @@
 
         
         
-        <h2 id="stl的主要组成">STL的主要组成</h2>
+        <p>文章主要内容摘自： https://paul.pub/cpp-concurrency/</p>
 
-<p>容器、算法、迭代器</p>
-
-<h2 id="resize和reverse的区别">resize和reverse的区别</h2>
+<h1 id="why-并发编程">Why 并发编程</h1>
 
 <ul>
-  <li>改变的容器度量不一样。</li>
-  <li>resize改变的是容器的size, 如果size大于容器原来的size，则扩大容器空间（size）并且将扩大的空间初始化</li>
-  <li>reverse改变的是容器的capacity，要知道cap和size不是一个概念，cap表征容器已经开辟的空间，size代表元素的数量。cap理论上是大于等于size的，reverse的传参小于size的时候不会有事情发生，大于size的时候将capacity变化到传入参数指定的大小</li>
-  <li>两者的形参个数不一样。 resize带两个参数，一个表示容器大小，一个表示初始值（默认为0）；reserve只带一个参数，表示容器预留的大小。</li>
+  <li>所有任务串行处理效率低下</li>
+  <li>虽然CPU处理频率在增长，但是终究会遇到突破的瓶颈。大家会发现曾经有过一段时间CPU的频率从3G到达4G，但在这之后就停滞不前了。因此最近的新款CPU也基本上都是3G左右的频率。相应的，CPU以更多核的形式在增长。目前的Intel i7有8核的版本，Xeon处理器达到了28核。并且，最近几年手机上使用的CPU也基本上是4核或者8核的了。掌握并发编程，可以真正地使处理器协调工作，并行完成任务，提高效率。</li>
 </ul>
 
-<h2 id="vector中at和访问区别">vector中at()和【】访问区别</h2>
+<h2 id="关于并发和并行">关于并发和并行</h2>
 
-<p>at会检查下标范围，【】访问如果下表越界会造成对内存的非法访问，at()更加安全。
-at() 函数抛出的应当是std::out_of_range错误</p>
+<ul>
+  <li>并发concurrent，一段时间内执行多段任务，从宏观上来看是多任务同时完成的</li>
+  <li>并行parallel，在某一个时刻，有多个任务在实际上同时执行</li>
+</ul>
+
+<p>更严格的来说：如果一个系统支持多个动作同时存在，那么这个系统就是一个并发系统。如果这个系统还支持多个动作（物理时间上）同时执行，那么这个系统就是一个并行系统。</p>
+
+<p>你可能已经看出，“并行”其实是“并发”的子集。它们的区别在于是否具有多个处理器。如果存在多个处理器同时执行多个线程，就是并行。</p>
+
+<p>在不考虑处理器数量的情况下，我们统称之为“并发”。</p>
+
+<h3 id="多线程一定能提升效率么">多线程一定能提升效率么？</h3>
+<p>但我们需要知道，单纯的使用多线程并不一定能提升系统性能（当然，也并非线程越多系统的性能就越好）。从上面的两幅图我们就可以直观的感受到：线程（任务）的数量要根据具体的处理器数量来决定。假设只有一个处理器，那么划分太多线程可能会适得其反。因为很多时间都花在任务切换上了。</p>
+
+<h2 id="cpp的并发编程">CPP的并发编程</h2>
+
+<p>知道cpp 11标准之前，c++标准库都没有对多线程编程的明确支持，如果在linux系统中需要使用linux的系统的api类似pthread_create来创建多线程环境，线程库叫POXIS THREAD</p>
+
+<center><img src="./assets/img/posts/20230222/cpp_history.jpg" width="480px" /></center>
+
+<h2 id="编译器与c标准">编译器与C++标准</h2>
+<p>编译器对于语言特性的支持是逐步完成的。想要使用特定的特性你需要相应版本的编译器。</p>
+
+<p>GCC对于C++特性的支持请参见这里：<a href="https://www.gnu.org/software/gcc/projects/cxx-status.html">C++ Standards Support in GCC</a>。
+Clang对于C++特性的支持请参见这里：<a href="https://clang.llvm.org/cxx_status.html">C++ Support in Clang</a>。</p>
+
+<p>关于cpp和gcc的版本对应关系，因为有线程库这样的类似的标志性变化，所以gcc的标志版本可以浅浅记一下</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>cpp</th>
+      <th>gcc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>c++11</td>
+      <td>4.8</td>
+    </tr>
+    <tr>
+      <td>c++17</td>
+      <td>5.0</td>
+    </tr>
+    <tr>
+      <td>c++20</td>
+      <td>7.0</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>默认情况下编译器是以较低的标准来进行编译的，如果希望使用新的标准，你需要通过编译参数-std=c++xx告知编译器，例如：</p>
+<blockquote>
+  <p>g++ -std=c++17 your_file.cpp -o your_program</p>
+</blockquote>
+
+<h1 id="线程">线程</h1>
+
+<h3 id="创建线程">创建线程</h3>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 01_hello_thread.cpp</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;thread&gt;</span><span class="c1"> // ①</span><span class="cp">
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span> <span class="c1">// ②</span>
+
+<span class="kt">void</span> <span class="nf">hello</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// ③</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Hello World from new thread."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kr">thread</span> <span class="n">t</span><span class="p">(</span><span class="n">hello</span><span class="p">);</span> <span class="c1">// ④</span>
+  <span class="n">t</span><span class="p">.</span><span class="n">join</span><span class="p">();</span> <span class="c1">// ⑤</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>thread可以和callable类型一起工作，因此如果你熟悉lambda表达式，你可以直接用它来写线程的逻辑，像这样：</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 02_lambda_thread.cpp
+
+#include &lt;iostream&gt;
+#include &lt;thread&gt;
+
+using namespace std;
+
+int main() {
+  thread t([] {
+    cout &lt;&lt; "Hello World from lambda thread." &lt;&lt; endl;
+  });
+
+  t.join();
+
+  return 0;
+}
+
+//传递参数给入口函数
+// 03_thread_argument.cpp
+
+void hello(string name) {
+  cout &lt;&lt; "Welcome to " &lt;&lt; name &lt;&lt; endl;
+}
+
+int main() {
+  thread t(hello, "https://paul.pub");
+  t.join();
+
+  return 0;
+}
+</code></pre></div></div>
+
+<ul>
+  <li>要注意参数是拷贝构造传入的，对于拷贝十分复杂的对象需要传指针引用，但是要注意对象的生存周期</li>
+</ul>
+
+<h2 id="join-与-detach">join 与 detach</h2>
+
+<ul>
+  <li>join：调用此接口时，当前线程会一直阻塞，直到目标线程执行完成（当然，很可能目标线程在此处调用之前就已经执行完成了，不过这不要紧）。因此，如果目标线程的任务非常耗时，你就要考虑好是否需要在主线程上等待它了，因此这很可能会导致主线程卡住。</li>
+  <li>detach：detach是让目标线程成为守护线程（daemon threads）。一旦detach之后，目标线程将独立执行，即便其对应的thread对象销毁也不影响线程的执行。并且，你无法再与之通信。其实意思应当是让其父进程成为0号的init进程，子进程的线程执行资源和状态由init负责释放</li>
+  <li>对于这两个接口，都必须是可执行的线程才有意义。你可以通过joinable()接口、查询是否可以对它们进行join或者detach。</li>
+</ul>
+
+<h2 id="线程管理常用api">线程管理常用api</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>api</th>
+      <th>作用</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>yield</td>
+      <td>任务快结束的时候希望出让处理器</td>
+    </tr>
+    <tr>
+      <td>get_id</td>
+      <td>返回当前线程id</td>
+    </tr>
+    <tr>
+      <td>sleep_for</td>
+      <td>睡眠一定是时间</td>
+    </tr>
+    <tr>
+      <td>sleep_until</td>
+      <td>睡眠到指定时间</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="一次调用">一次调用</h2>
+<p>主要API
+|API|主要作用|
+|—|—|
+| call_once | 即便在多线程环境下，也能保证只调用某个函数一次 |
+| once_flag |与call_once配合使用 |
+在一些情况下，我们有些任务需要执行一次，并且我们只希望它执行一次，例如资源的初始化任务。这个时候就可以用到上面的接口。这个接口会保证，即便在多线程的环境下，相应的函数也只会调用一次。</p>
+
+<p>下面就是一个示例：有三个线程都会使用init函数，但是只会有一个线程真正执行它。</p>
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 05_call_once.cpp</span>
+
+<span class="kt">void</span> <span class="nf">init</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Initialing..."</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+  <span class="c1">// Do something...</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">worker</span><span class="p">(</span><span class="n">once_flag</span><span class="o">*</span> <span class="n">flag</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">call_once</span><span class="p">(</span><span class="o">*</span><span class="n">flag</span><span class="p">,</span> <span class="n">init</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">once_flag</span> <span class="n">flag</span><span class="p">;</span>
+
+  <span class="kr">thread</span> <span class="n">t1</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flag</span><span class="p">);</span>
+  <span class="kr">thread</span> <span class="n">t2</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flag</span><span class="p">);</span>
+  <span class="kr">thread</span> <span class="n">t3</span><span class="p">(</span><span class="n">worker</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">flag</span><span class="p">);</span>
+
+  <span class="n">t1</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+  <span class="n">t2</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+  <span class="n">t3</span><span class="p">.</span><span class="n">join</span><span class="p">();</span>
+
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<p>我们无法确定具体是哪一个线程会执行init。而事实上，我们也不关心，因为只要有某个线程完成这个初始化工作就可以了。</p>
 
         <aside class="sidebar inline" id="post-end">
     
@@ -378,9 +559,9 @@ at() 函数抛出的应当是std::out_of_range错误</p>
             
                 <li><a href="./tag.html?tag=c%2B%2B" class="tag inline">c++</a></li>
             
-                <li><a href="./tag.html?tag=STL" class="tag inline">STL</a></li>
+                <li><a href="./tag.html?tag=Parallel" class="tag inline">Parallel</a></li>
             
-                <li><a href="./tag.html?tag=coding" class="tag inline">coding</a></li>
+                <li><a href="./tag.html?tag=Concurrent" class="tag inline">Concurrent</a></li>
             
     
         </ul>
@@ -389,11 +570,11 @@ at() 函数抛出的应当是std::out_of_range错误</p>
     <div class="share-hover inline">
         <span class="share-button inline"><svg fill="currentColor" width="25" height="25" class="inline"><g fill-rule="evenodd"><path d="M15.6 5a.42.42 0 0 0 .17-.3.42.42 0 0 0-.12-.33l-2.8-2.79a.5.5 0 0 0-.7 0l-2.8 2.8a.4.4 0 0 0-.1.32c0 .12.07.23.16.3h.02a.45.45 0 0 0 .57-.04l2-2V10c0 .28.23.5.5.5s.5-.22.5-.5V2.93l2.02 2.02c.08.07.18.12.3.13.11.01.21-.02.3-.08v.01"></path><path d="M18 7h-1.5a.5.5 0 0 0 0 1h1.6c.5 0 .9.4.9.9v10.2c0 .5-.4.9-.9.9H6.9a.9.9 0 0 1-.9-.9V8.9c0-.5.4-.9.9-.9h1.6a.5.5 0 0 0 .35-.15A.5.5 0 0 0 9 7.5a.5.5 0 0 0-.15-.35A.5.5 0 0 0 8.5 7H7a2 2 0 0 0-2 2v10c0 1.1.9 2 2 2h11a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2"></path></g></svg></span>
         <div class="share-icons inline" id="post-end-icons">
-            <a class="twitter" href="https://twitter.com/intent/tweet?text=STL相关的一些面试遭遇&url=http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html" title="Share on Twitter" rel="nofollow" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-            <a class="facebook" href="https://facebook.com/sharer.php?u=http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html" title="Share on Facebook" rel="nofollow" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-            <a class="reddit" href="http://www.reddit.com/submit?url=http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html&title=STL相关的一些面试遭遇" title="Submit to Reddit" rel="nofollow" target="_blank"><i class="fa fa-reddit" aria-hidden="true"></i></a>
-            <a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html&title=STL相关的一些面试遭遇&summary=面试遇到的一些容器库的问题，持续更新&source=http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html" title="Share on LinkedIn" rel="nofollow" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-            <a class="email" href="mailto:?subject=STL相关的一些面试遭遇&body=面试遇到的一些容器库的问题，持续更新%0A%0ARead more here: http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html" title="Share via e-mail" rel="nofollow" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+            <a class="twitter" href="https://twitter.com/intent/tweet?text=CPP并发编程整理(1)&url=http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html" title="Share on Twitter" rel="nofollow" target="_blank"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+            <a class="facebook" href="https://facebook.com/sharer.php?u=http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html" title="Share on Facebook" rel="nofollow" target="_blank"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+            <a class="reddit" href="http://www.reddit.com/submit?url=http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html&title=CPP并发编程整理(1)" title="Submit to Reddit" rel="nofollow" target="_blank"><i class="fa fa-reddit" aria-hidden="true"></i></a>
+            <a class="linkedin" href="https://www.linkedin.com/shareArticle?mini=true&url=http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html&title=CPP并发编程整理(1)&summary=cpp模板常见混淆点做一个自我区分&source=http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html" title="Share on LinkedIn" rel="nofollow" target="_blank"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+            <a class="email" href="mailto:?subject=CPP并发编程整理(1)&body=cpp模板常见混淆点做一个自我区分%0A%0ARead more here: http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html" title="Share via e-mail" rel="nofollow" target="_blank"><i class="fa fa-envelope" aria-hidden="true"></i></a>
             <a class="copy-link" onclick="copyToClipboard()" title="Copy to clipboard" rel="nofollow" target="_blank"><svg width="20px" fill="currentColor" class="inline" viewBox="0 0 18 18"><path d="M16.94 1.1A3.7 3.7 0 0 0 14.3 0c-1 0-1.94.39-2.64 1.1L7.43 5.3c-.91.92-2.09 3.2 0 5.27a.75.75 0 0 0 .82.16c.09-.03.17-.09.24-.15a.74.74 0 0 0 0-1.06c-1.16-1.15-.77-2.39-.02-3.16l4.24-4.22a2.2 2.2 0 0 1 1.58-.65c.6 0 1.16.23 1.58.65.86.87.86 2.29 0 3.16L12.7 8.47a.74.74 0 0 0 1.04 1.05l3.17-3.16a3.73 3.73 0 0 0 0-5.27h.03zM9.54 7.4a.74.74 0 0 0 0 1.06c1.16 1.15.76 2.39 0 3.16l-4.22 4.22c-.42.42-.99.65-1.59.65a2.23 2.23 0 0 1-1.58-3.82l3.17-3.16A.73.73 0 0 0 5.54 9a.78.78 0 0 0-.22-.52.77.77 0 0 0-1.05 0L1.1 11.64A3.72 3.72 0 0 0 3.74 18c1 0 1.94-.39 2.65-1.1l4.23-4.2c.21-.22.94-1.02 1.13-2.2.18-1.12-.2-2.15-1.12-3.07-.27-.27-.78-.27-1.06 0l-.02-.02z" clip-rule="evenodd" fill-rule="evenodd"></path></svg></a>
         </div>
     </div>
@@ -790,14 +971,14 @@ at() 函数抛出的应当是std::out_of_range错误</p>
     }
 
     function copyToClipboard() {
-      navigator.clipboard.writeText('http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html').then(function() {
+      navigator.clipboard.writeText('http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html').then(function() {
       alerts = document.getElementsByClassName('alert')
       for (i=0; i < alerts.length; i++){
         alerts[i].innerHTML='\u00ABlink copied\u00BB';
         setTimeout((function(i){ return function(){alerts[i].innerHTML='';}})(i), 1600 );
       };
       }, function() {
-        prompt("Unable to copy, please use this link:", "http://localhost:4000/STL%E7%9A%84%E8%B8%A9%E5%9D%91%E6%80%BB%E7%BB%93.html");
+        prompt("Unable to copy, please use this link:", "http://localhost:4000/CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86-1.html");
       });
     }
 

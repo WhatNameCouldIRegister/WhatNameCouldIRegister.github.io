@@ -240,46 +240,7 @@
 		<div class="post">
 			
 
-			<a class="post-list-title" href="./CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86.html">CPP并发编程整理(1)</a>
-			
-
-  <span class = "post-card-meta">
-  
-  
-    <span class="meta-pre"></span>
-  
-  
-    
-      
-      <span class="page_meta-date">
-        <time datetime="2021-01-26T03:32:20+08:00">January 26, 2021</time>
-      </span>
-    
-    
-      <span class="meta-sep"></span>
-    
-  
-  
-    
-    
-    <span class="page_meta-readtime">
-      
-        1 minute read
-      
-    </span>
-  
-  
-  </span>
-
-			<div class="post-excerpt">
-				<p>文章主要内容摘自： https://paul.pub/cpp-concurrency/</p><h1 id="why-并发编程">Why 并发编程</h1><ul> <li>所有任务串行处理效率低下</li> <li>虽然CPU处理频率在增长，但是终究会遇到突破的瓶颈。大家会发现曾经有过一段时间CPU的频率从3G到达4G，但在这之后就停滞不前了。因此最近的新款CPU也基本上都是3G左右的频率。相应的，CPU以更多核的形式在增长。目前的Intel i7有8核的版本，Xeon处理器达到了28核。并且，最近几年手机上使用的CPU也基本上是4核或者8核的了。掌握并发编程，可以真正地使处理器协调工作，并行完成任务，提高效率。</li></ul><h2 id="关于并发和并行">关于并发和并行</h2><ul> <li>并发concurrent，一段时间内执行多段任务，从宏观上来看是多任务同时完成的</li> <li>并行parallel，在某一个时刻，有多个任务在实际上同时执行</li></ul><p>更严格的来说：如果一个系统支持多个动作同时存在，那么这个系统就是一个并发系统。如果这个系统还支持多个动作（物理时间上）同时执行，那么这个系统就是一个并行系统。</p><p>你可能已经看出，“并行”其实是“并发”的子集。它们的区别在于是否具有多个处理器。如果存在多个处理器同时执行多个线程，就是并行。</p><p>在不考虑处理器数量的情况下，我们统称之为“并发”。</p><h3 id="多线程一定能提升效率么">多线程一定能提升效率么？</h3><p>但我们需要知道，单纯的使用多线程并不一定能提升系统性能（当然，也并非线程越多系统的性能就越好）。从上面的两幅图我们就可以直观的感受到：线程（任务）的数量要根据具体的处理器数量来决定。假设只有一个处理器，那么划分太多线程可能会适得其反。因为很多时间都花在任务切换上了。</p><h2 id="cpp的并发编程">CPP的并发编程</h2><p>知道cpp 11标准之前，c++标准库都没有对多线程编程的明确支持，如果在linux系统中需要使用linux的系统的api类似pthread_create来创建多线程环境，线程库叫POXIS THREAD</p><center><img src="./assets/img/posts/20230222/cpp_history.jpg" width="480px" /></center><h2 id="编译器与c标准">编译器与C++标准</h2><p>编译器对于语言特性的支持是逐步完成的。想要使用特定的特性你需要相应版本的编译器。</p><p>GCC对于C++特性的支持请参见这里：<a href="https://www.gnu.org/software/gcc/projects/cxx-status.html">C++ Standards Support in GCC</a>。Clang对于C++特性的支持请参见这里：<a href="https://clang.llvm.org/cxx_status.html">C++ Support in Clang</a>。</p><p>关于cpp和gcc的版本对应关系，因为有线程库这样的类似的标志性变化，所以gcc的标志版本可以浅浅记一下</p><table> <thead> <tr> <th>cpp</th> <th>gcc</th> </tr> </thead> <tbody> <tr> <td>c++11</td> <td>4.8</td> </tr> <tr> <td>c++17</td> <td>5.0</td> </tr> <tr> <td>c++20</td> <td>7.0</td> </tr> </tbody></table><p>默认情况下编译器是以较低的标准来进行编译的，如果希望使用新的标准，你需要通过编译参数-std=c++xx告知编译器，例如：</p><blockquote> <p>g++ -std=c++17 your_file.cpp -o your_program</p></blockquote><h1 id="线程">线程</h1><h3 id="创建线程">创建线程</h3><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 01_hello_thread.cpp</span><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="c1"> // ①</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span> <span class="c1">// ②</span><span class="kt">void</span> <span class="nf">hello</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// ③</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Hello World from new thread."</span> <span class="o">&lt;&lt;</span>...<a class="read-more" href="./CPP%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B%E6%95%B4%E7%90%86.html"> read more</a>
-			</div>
-		</div>
-	
-		<div class="post">
-			
-
-			<a class="post-list-title" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html">CPP模板机制（2）</a>
+			<a class="post-list-title" href="./%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E6%95%B4%E7%90%86-2.html">毕业设计整理-1</a>
 			
 
   <span class = "post-card-meta">
@@ -311,14 +272,14 @@
   </span>
 
 			<div class="post-excerpt">
-				<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p><p><strong><em>本篇主要整理可变参数模板</em></strong></p><h3 id="sizeof-运算符">sizeof… 运算符</h3><div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">template</span><span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span> <span class="kt">void</span> <span class="nf">var_fun</span><span class="p">(</span><span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span> <span class="n">t</span><span class="p">,</span> <span class="k">const</span> <span class="n">Args</span><span class="o">&amp;</span><span class="p">...</span> <span class="n">args</span><span class="p">)</span><span class="p">{</span> <span class="c1">//cout &lt;&lt; t;</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"element numbers of packs is "</span> <span class="o">&lt;&lt;</span> <span class="k">sizeof</span><span class="p">...(</span><span class="n">Args</span><span class="p">);</span> <span class="c1">//var_fun(args...);</span><span class="p">}</span></code></pre></div></div><p>能够获得包中参数的个数</p><h2 id="关于包拓展">关于包拓展</h2><p>是否对可变参数解析的省略号…用法存在疑虑？</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>拓展 packs expand包拓展简单的来说将他分解为其构成的元素，如果说将参数变为包的过成类比为压缩未见，那么包拓展就是解压文件，但包拓展不仅仅是包展开。</code></pre></div></div><p>我们知道了拓展包就是解析包内的元素，解析元素的过程在cpp的编译器处理中可以理解成对包内的元素进行分解，并且进行平行的操作。解包，就是在相应的操作后面加上…，编译器的处理逻辑就如上所述。以下引用自原文的说法。</p><ul> <li>当拓展一个包时，我们还要提供用于，每个拓展元素的模式。拓展一个包就是将它分解为构成的元素，对每个元素应用模式，获得拓展后的列表。我们通过在模式右边防一个省略号…来触发拓展操作 。</li> <li> <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>什么是模式？在实际生活中，当我们说以一种模式打开某个东西，或者是什么模式打开时。指定的是固有的模式，比如说性能模式，均衡模式等。而包拓展的模式更像是对于每个元素都调用一次相应的函数，包拓展需要我们自定义模式——其实就是一个函数，返回值为包中的一个元素应用模式后的结果，所有这样的结果组合在一起，也就是包以这个模式（函数）展开。</code></pre></div> </div> </li></ul><p>以下引用自标准库的配置器展开</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>noexcept(noexcept(::new((void *)__p) _Up(std::forward&lt;_Args&gt;(__args)...)))</code></pre></div></div><p>另外，一定要注意省略号的位置，省略号的位置直接表述了对应解包的操作以及如何解包</p><div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">var_func</span><span class="p">(</span><span class="n">args</span><span...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
+				<p><strong>鉴于视频处理脚本开发已经基本完成</strong><strong>本文专注于style-transfer网络训练部分</strong></p><h2 id="基本概念">基本概念</h2><p>以下内容转载自 https://blog.csdn.net/m0_54028213/article/details/127125842</p><ul>  <li>输入中有一张内容图片（Content Image）和一张样式视频（Style Video）</li>  <li>模型所要训练的不是卷积神经网络的权重，而是合成图片，它是样式迁移过程中唯一需要更新的变量，即样式迁移所需迭代的参数模型深度神经网络凭借多个层逐级抽取图像的特征，因此可以选择其中某些层的输出作为内容特征或者样式特征（上图中的卷积神经网络第二层输出内容特征，第一层和第三层输出样式特征）</li></ul><h4 id="选择其中某些层的输出作为内容特征或者样式特征上图中的卷积神经网络第二层输出内容特征第一层和第三层输出样式特征">选择其中某些层的输出作为内容特征或者样式特征（上图中的卷积神经网络第二层输出内容特征，第一层和第三层输出样式特征）</h4><ul>  <li>对于一张输入图片来讲，每一层的卷积神经网络都会有一个输出（特征），整个基于 CNN 的样式迁移的目的是训练出一张合成图片，使得合成图片和内容图片放进同样一个卷积神经网络的时候，合成图片在某一层的输出能够匹配上内容图片在某一层的损失（内容损失，Content Loss），即它们在内容上是相近的；同理，合成图片和内容图片所使用的是同一个卷积神经网络，在某些层的输出（特征）在样式上能够匹配的上。如果训练出一张合成图片同时满足以上需求的话，就可以认为它既保留了内容图片的内容，又保留了样式图片的样式一般来说，越靠近输入层，越容易抽取图片的细节信息；反之，越容易抽取图片的全局信息</li>  <li>为了避免合成图片过多地保留内容图片的细节，选择靠近输出的层（即内容层）来输出图片的内容特征</li>  <li>选择不同层的输出（即风格层）来匹配局部和全局的样式在使用卷积神经网络抽取特征时，只需要用到从输入层到最靠近输出层的内容层或者样式层之间的所有层</li>  <li>因为在训练的时候无需改变预训练的卷积神经网络的模型参数，所以可以在训练开始之前就提取出内容特征和风格特征</li></ul><h4 id="通过前向传播实线箭头方向计算样式迁移的损失函数并通过反向传播虚线箭头方向迭代模型参数即不断更新合成图片">通过前向传播（实线箭头方向）计算样式迁移的损失函数，并通过反向传播（虚线箭头方向）迭代模型参数，即不断更新合成图片</h4><h4 id="关键点总结">关键点总结</h4><p>1、样式迁移常用的损失函数由 3 部分组成：内容损失、样式损失和全变分损失</p><p>内容损失使合成图片与内容图片在内容特征上接近样式损失使合成图片与样式图片在样式特征上接近全变分损失有助于减少合成图片中的噪点2、可以通过预训练好的卷积神经网络来抽取图像的特征，并通过最小化损失函数来不断更新合成图片来作为模型参数</p><p>3、使用格拉姆矩阵表达样式层输出的样式</p><h2 id="关于数据集">关于数据集</h2><p>MSCOCO数据集是微软开发维护的大型图像数据集，数据集标注类型对应任务包括物体检测、关键点检测、实例分割、 stuff分割 （没有特定形状的物体） ，全景分割人体关键点， 人体密度检测 等等。</p><a class="read-more" href="./%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E6%95%B4%E7%90%86-2.html"> read more</a>
 			</div>
 		</div>
 	
 		<div class="post">
 			
 
-			<a class="post-list-title" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html">CPP模板机制（1）</a>
+			<a class="post-list-title" href="./%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E6%95%B4%E7%90%86-1.html">毕业设计整理-1</a>
 			
 
   <span class = "post-card-meta">
@@ -342,7 +303,7 @@
     
     <span class="page_meta-readtime">
       
-        2 minute read
+        less than 1 minute read
       
     </span>
   
@@ -350,7 +311,46 @@
   </span>
 
 			<div class="post-excerpt">
-				<p>主要结构 source from https://blog.csdn.net/JAN6055/article/details/123801017</p><h2 id="模板的声明方式">模板的声明方式</h2><div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// some demo</span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span><span class="n">T</span> <span class="nf">func</span><span class="p">(</span><span class="n">T</span> <span class="n">A</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span><span class="p">}</span><span class="n">templte</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="n">T</span><span class="p">,</span> <span class="k">template</span> <span class="n">A</span><span class="p">&gt;</span> <span class="n">T</span> <span class="nf">func</span><span class="p">(</span><span class="n">A</span> <span class="n">a</span><span class="p">,</span> <span class="n">T</span> <span class="n">t</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span><span class="p">}</span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span><span class="k">class</span> <span class="nc">A</span> <span class="p">{</span><span class="p">};</span><span class="c1">//可变参数模板</span><span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">,</span> <span class="k">typename</span><span class="o">...</span> <span class="nc">Args</span><span class="p">&gt;</span> <span class="n">T</span> <span class="nf">func</span><span class="p">(</span><span class="n">T</span> <span class="n">a</span><span class="p">,</span> <span...<a class="read-more" href="./CPP%E6%A8%A1%E6%9D%BF%E6%9C%BA%E5%88%B6.html"> read more</a>
+				<p><em>** 本篇进行视频处理脚本开发的逻辑疏导，以及附上关键代码 **</em><em>** 本篇并不涉及神经网络训练部分，涉及部分是网络成型后的视频处理步骤 **</em></p><h2 id="准备使用的库">准备使用的库</h2><ul> <li>moviepy <ul> <li>鉴于视频的风格化的需求是含有两个主题，需要python库处理视频的裁剪和音频分离拼接</li> <li>需要注意的是MoviePy常常用在比较复杂的视频处理操作上，包括音频视频分离、音频视频镶嵌、旋转拼接、音视频叠加等等。根据网上的建议，如果仅仅是简单的图像裁剪等等，不需要导入庞大的moviepy，用现有cv库的基本函数都能搞定</li> </ul> </li> <li>argparse <ul> <li>可以通过command line传入定制的参数，第一份脚本版本也许不会激活这个功能。现在目前的想法是通过命令行传入model_path\input_image_path\input_video_path</li> </ul> </li> <li>concurrent <ul> <li>出于工程化目的，我决定使用多线程逻辑，采用该库的线程池：cocurrent.futures.ThreadPoolExecutor</li> </ul> </li></ul><h2 id="脚本相关">脚本相关</h2><h4 id="切割">切割</h4><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="n">sub_clip1</span> <span class="o">=</span> <span class="n">video</span><span class="p">.</span><span class="nf">subclip</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">time_len</span><span class="p">)</span> <span class="n">sub_clip2</span> <span class="o">=</span> <span class="n">video</span><span class="p">.</span><span class="nf">subclip</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">time_len</span><span class="p">,</span> <span class="n">time_len</span><span class="p">)</span> <span class="n">sub_clip1</span><span class="p">.</span><span class="nf">write_videofile</span><span class="p">(</span><span class="n">temp_path1</span><span class="p">,</span> <span class="n">fps</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span> <span class="n">sub_clip2</span><span class="p">.</span><span class="nf">write_videofile</span><span class="p">(</span><span class="n">temp_path2</span><span class="p">,</span> <span class="n">fps</span> <span class="o">=</span> <span class="mi">30</span><span class="p">)</span></code></pre></div></div><h4 id="转换">转换</h4><div class="language-python highlighter-rouge"><div...<a class="read-more" href="./%E6%AF%95%E4%B8%9A%E8%AE%BE%E8%AE%A1%E6%95%B4%E7%90%86-1.html"> read more</a>
+			</div>
+		</div>
+	
+		<div class="post">
+			
+
+			<a class="post-list-title" href="./cmake%E5%92%8Cmake.html">cmake\make\makefile 整理</a>
+			
+
+  <span class = "post-card-meta">
+  
+  
+    <span class="meta-pre"></span>
+  
+  
+    
+      
+      <span class="page_meta-date">
+        <time datetime="2021-01-26T03:32:20+08:00">January 26, 2021</time>
+      </span>
+    
+    
+      <span class="meta-sep"></span>
+    
+  
+  
+    
+    
+    <span class="page_meta-readtime">
+      
+        less than 1 minute read
+      
+    </span>
+  
+  
+  </span>
+
+			<div class="post-excerpt">
+				<p>文章结构参考自： https://zhuanlan.zhihu.com/p/111110992</p><h2 id="gcc">gcc</h2><ul>  <li>GNU Compiler Collection (GNU编译套件)，可以直接理解成编译器，他可以编译的语言包括C、C++、Objective-C、Fortran、Java等等</li>  <li>如果编译少数文件时，可以利用gcc编译器的传入规则，传参规则直接进行编译选项、依赖项的配置、或者进行链接指示，编译器可以正常工作生成目标文件。</li>  <li>如果工程变的复杂，编译指南可能同时变得复杂，直接向compiler传参变得不现实。这个时候可以引入make工具</li></ul><h2 id="makemakefile">make、makefile</h2><ul>  <li>make 的凭证是makefile, 根据编写的makefile指引编译流程和依赖关系。make工具可以看成是一个智能的批处理工具，它本身并没有编译和链接的功能，而是用类似于批处理的方式—通过调用makefile文件中用户指定的命令来进行编译和链接的。</li>  <li>makefile就是编译指引，在里面可以对需要使用的编译器进行指定，make命令按照makefile的指示逐步协调文件与依赖的关系，指引编译器编译</li>  <li>makefile在一些简单的工程完全可以人工拿下，但是当工程非常大的时候，手写makefile也是非常麻烦的，如果换了个平台makefile又要重新修改，这时候就出现了下面的Cmake这个工具。</li></ul><h2 id="cmake">cmake</h2><ul>  <li>cmake生成 makefile给make用，就这么简单</li>  <li>why cmake?更直白的语法，跨平台的兼容、更多样的编译指示，在实际工程中，我甚至在编译前先利用cmake运行准备工作的脚本</li>  <li>cmake更支持分支结构的导入，变量的设置与沿用，总之让编译工程的方式变得更加灵活。</li>  <li>cmake凭证式CmakeList.txt</li></ul><h2 id="总结一下大体流程">总结一下大体流程</h2><p>1.用编辑器编写源代码，如.c文件。</p><p>2.用编译器编译代码生成目标文件，如.o。</p><p>3.用链接器连接目标代码生成可执行文件，如.exe。</p><p>但如果源文件太多，一个一个编译那得多麻烦啊？于是人们想到，为啥不设计一种类似批处理的程序，来批处理编译源文件呢？</p><p>于是就有了make工具，它是一个自动化编译工具，你可以使用一条命令实现完全编译。但是你需要编写一个规则文件，make依据它来批处理编译，这个文件就是makefile，所以编写makefile文件也是一个程序员所必备的技能。</p><p>对于一个大工程，编写makefile实在是件复杂的事，于是人们又想，为什么不设计一个工具，读入所有源文件之后，自动生成makefile呢，于是就出现了cmake工具，它能够输出各种各样的makefile或者project文件,从而帮助程序员减轻负担。但是随之而来也就是编写cmakelist文件，它是cmake所依据的规则。（cmake中有很多设置库的，此时还不是可执行文件，而make生成后才是二进制可执行文件。）</p><p>所以在编程的世界里没有捷径可走，还是要脚踏实地的。</p><a class="read-more" href="./cmake%E5%92%8Cmake.html"> read more</a>
 			</div>
 		</div>
 	
