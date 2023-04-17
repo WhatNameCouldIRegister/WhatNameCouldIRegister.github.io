@@ -5,7 +5,7 @@ show_date: true
 title:  cmake\make\makefile 整理
 date:   2021-01-25 13:32:20 -0600
 description: cpp模板常见混淆点做一个自我区分
-img: posts/20230223/swan.jpg
+img: posts/20230223/swans.jpg
 tags: [cmake]
 author: DD
 mathjax: yes
