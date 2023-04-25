@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-04-17T20:08:03+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">DD’s tenique website</title><subtitle>Artificial Intelligence trends and concepts made easy.</subtitle><author><name>DD</name></author><entry><title type="html">CPP异常知识碎片</title><link href="http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html" rel="alternate" type="text/html" title="CPP异常知识碎片" /><published>2021-01-26T03:32:20+08:00</published><updated>2021-01-26T03:32:20+08:00</updated><id>http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87</id><content type="html" xml:base="http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html"><![CDATA[<center><img src="./assets/img/posts/20220214/exception_list.png" width="480px" /></center>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.3.2">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-04-25T21:34:48+08:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">DD’s tenique website</title><subtitle>Artificial Intelligence trends and concepts made easy.</subtitle><author><name>DD</name></author><entry><title type="html">CPP异常知识碎片</title><link href="http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html" rel="alternate" type="text/html" title="CPP异常知识碎片" /><published>2021-01-26T03:32:20+08:00</published><updated>2021-01-26T03:32:20+08:00</updated><id>http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87</id><content type="html" xml:base="http://localhost:4000/CPP%E5%BC%82%E5%B8%B8%E7%9F%A5%E8%AF%86%E7%A2%8E%E7%89%87.html"><![CDATA[<center><img src="./assets/img/posts/20220214/exception_list.png" width="480px" /></center>
 
 <p>图片取自csdn @任我驰骋</p>
 
@@ -811,4 +811,21 @@ int main() {
 
 <h2 id="关于数据集">关于数据集</h2>
 
-<p>MSCOCO数据集是微软开发维护的大型图像数据集，数据集标注类型对应任务包括物体检测、关键点检测、实例分割、 stuff分割 （没有特定形状的物体） ，全景分割人体关键点， 人体密度检测 等等。</p>]]></content><author><name>DD</name></author><category term="c++" /><category term="Parallel" /><category term="Concurrent" /><summary type="html"><![CDATA[cpp模板常见混淆点做一个自我区分]]></summary></entry></feed>
+<p>MSCOCO数据集是微软开发维护的大型图像数据集，数据集标注类型对应任务包括物体检测、关键点检测、实例分割、 stuff分割 （没有特定形状的物体） ，全景分割人体关键点， 人体密度检测 等等。</p>
+
+<h2 id="部分输出样例展示">部分输出样例展示</h2>
+
+<center><img src="./assets/img/posts/20220214/style-transfer-1.png" width="480px" /></center>
+<center><img src="./assets/img/posts/20220214/style-transfer-2.png" width="480px" /></center>
+
+<center><img src="./assets/img/posts/20220214/1000.jpg" width="480px" /></center>
+<center><img src="./assets/img/posts/20220214/2000.jpg" width="480px" /></center>
+
+<center><img src="./assets/img/posts/20220214/4000.jpg" width="480px" /></center>
+<center><img src="./assets/img/posts/20220214/6000.jpg" width="480px" /></center>
+
+<h2 id="视频输出示例">视频输出示例</h2>
+<center><img src="./assets/img/posts/20220214/flower.jpg" width="240px" /></center>
+<hr />
+<center><img src="./assets/img/posts/20220214/bears.gif" width="480px" /></center>
+<center><img src="./assets/img/posts/20220214/stylized-bears.gif" width="480px" /></center>]]></content><author><name>DD</name></author><category term="c++" /><category term="Parallel" /><category term="Concurrent" /><summary type="html"><![CDATA[cpp模板常见混淆点做一个自我区分]]></summary></entry></feed>
